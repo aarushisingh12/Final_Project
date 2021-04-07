@@ -4,5 +4,6 @@
 #include <stdio.h>
 int main() {
    printf("Hello, World!");
+   print("Testing an update");
    return 0;
 }
