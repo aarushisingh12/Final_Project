@@ -49,18 +49,14 @@ int main() {
       write(fd, &server_name, sizeof(int));
       server_name++; //incrementing name
    }
-    
-
-
-   
 
    /* parent process */
 	/* parent will wait for the child to complete */
 
-   sleep(2); //for debugging to give time for child servers to print to terminal
+   sleep(10); //for debugging to give time for child servers to print to terminal
    close(fd);
    wait(NULL);
-	printf("All child processes complete, Server Driver will exit\n");
+	printf("\nAll child processes complete, Server Driver will exit\n");
 	
    return 0;
 }

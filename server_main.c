@@ -5,9 +5,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 int main() {
    printf("\nServer %d says hello\n",getpid());
@@ -20,6 +26,36 @@ int main() {
 
    printf("\nServer %d is alive and named!\n",server_name);
    close(fd);
+
+   if (server_name == 1){
+
+      char client_message[50]; //buffer for socket receive for testing
+         /* creation of the socket */
+      int server_socket;
+      server_socket = socket(AF_INET, SOCK_STREAM, 0);
+      
+      struct sockaddr_in address;
+      address.sin_family = AF_INET;
+      address.sin_port = htons(8001); //for local connections
+      address.sin_addr.s_addr = INADDR_ANY; //for local connetions
+      //for testing remote connections: these didn't work
+      //address.sin_port = htons(22); //ports csx0.cs.okstate
+      //address.sin_addr.s_addr = inet_addr("10.203.72.24");
+      //inet_pton(AF_INET, "10.203.72.24", &(address.sin_addr));
+
+      bind(server_socket, (struct sockaddr*)&address,sizeof(address));
+      listen(server_socket, 5);
+
+      int client_socket;
+      client_socket = accept(server_socket, NULL, NULL);
+      
+      recv(client_socket,client_message,sizeof(client_message),0);
+      printf("\nServer %d receives following message from client:\n", server_name);
+      printf("%s",client_message);
+      sleep(1);
+
+      close(server_socket);
+   }
 
    return 0;
 }
