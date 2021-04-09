@@ -38,10 +38,6 @@ int main() {
          // send port to server and change port each time
          execlp("./server_main","server_main",NULL); //system call provided by Andrew
       }
-      else {
-         wait(NULL);
-         printf("that's done");
-      }
       sleep(1); //to give time for servers to open
    }
 
@@ -55,7 +51,7 @@ int main() {
    for (int i=0;i<3;i++){
       write(fd, &server_name, sizeof(int));
       server_name++; //incrementing name
-      printf("%d",server_name);
+      //printf("%d",server_name);
    }
 
 
