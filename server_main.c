@@ -15,7 +15,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-int server_main() {
+int main() {
    printf("\nServer %d says hello\n",getpid());
 
    int fd = open("myfifo1", O_RDONLY); //fifo between manager and assistant
