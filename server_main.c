@@ -20,6 +20,8 @@ int main() {
 
    int fd = open("myfifo1", O_RDONLY); //fifo between manager and assistant
 
+   char client_message[50]; //buffer for socket receive for testing
+
    int server_name;
    //reading from pipe connected to managaer
    read(fd,&server_name,sizeof(int));
@@ -27,43 +29,43 @@ int main() {
    printf("\nServer %d is alive and named!\n",server_name);
    close(fd);
 
-   if (server_name == 1){
-         printf("getting there!\n");
+   // if (server_name == 1){  //this was for testing
+   //       printf("getting there!\n");
+   // }
 
-      char client_message[50]; //buffer for socket receive for testing
-         /* creation of the socket */
-      int server_socket;
-      server_socket = socket(AF_INET, SOCK_STREAM, 0);
+   
+      /* creation of the socket */
+   int server_socket;
+   server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
-      struct sockaddr_in address;
-      address.sin_family = AF_INET;
-      switch(server_name) {
-         case 1:
-            address.sin_port = htons(7400); //for local connections
-         case 2:
-            address.sin_port = htons(7401); //for local connections
-         case 3:
-            address.sin_port = htons(7402); //for local connections
-      }
-         printf("\nServer %d is alive and named!\n",server_name);
-
-      address.sin_addr.s_addr = INADDR_ANY; //for local connetions
-
-      bind(server_socket, (struct sockaddr*)&address,sizeof(address));
-
-      //will eventually need to do this within loop so next client can be accepted
-      listen(server_socket, 5);
-      
-      int client_socket;
-      client_socket = accept(server_socket, NULL, NULL);
-
-      recv(client_socket,client_message,sizeof(client_message),0); //for debugging
-      printf("\nServer %d receives following message from client:\n", server_name);
-      printf("%s",client_message);
-      sleep(1);
-
-      close(server_socket);
+   struct sockaddr_in address;
+   address.sin_family = AF_INET;
+   switch(server_name) {
+      case 1:
+         address.sin_port = htons(7400); //for local connections
+      case 2:
+         address.sin_port = htons(7401); //for local connections
+      case 3:
+         address.sin_port = htons(7402); //for local connections
    }
+
+   address.sin_addr.s_addr = INADDR_ANY; //for local connetions
+
+   bind(server_socket, (struct sockaddr*)&address,sizeof(address));
+
+   listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
+   
+   //will eventually need to do this within loop so next client can be accepted
+   int client_socket;
+   client_socket = accept(server_socket, NULL, NULL);
+
+   recv(client_socket,client_message,sizeof(client_message),0); //for debugging
+   printf("\nServer %d receives following message from client:\n", server_name);
+   printf("%s",client_message);
+   sleep(1);
+
+   close(server_socket);
+   
 
    return 0;
 }
