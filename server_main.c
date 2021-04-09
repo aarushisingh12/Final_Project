@@ -50,12 +50,14 @@ int main() {
       address.sin_addr.s_addr = INADDR_ANY; //for local connetions
 
       bind(server_socket, (struct sockaddr*)&address,sizeof(address));
-      listen(server_socket, 5);
 
+      //will eventually need to do this within loop so next client can be accepted
+      listen(server_socket, 5);
+      
       int client_socket;
       client_socket = accept(server_socket, NULL, NULL);
 
-      recv(client_socket,client_message,sizeof(client_message),0);
+      recv(client_socket,client_message,sizeof(client_message),0); //for debugging
       printf("\nServer %d receives following message from client:\n", server_name);
       printf("%s",client_message);
       sleep(1);
