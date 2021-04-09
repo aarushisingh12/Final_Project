@@ -1,7 +1,5 @@
 /* 
- * File:   main.c
- * Author: Max
- *
+ * Created by: Maxwell Meckling
  * Created on April 9, 2021, 12:44 PM
  */
 

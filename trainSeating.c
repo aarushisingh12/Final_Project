@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Created by: Maxwell Meckling
+ * Train Seating is designed to help manage everything to do with seating on the train.
+ * This includes the creation of new seats each day through a struct.
  */
 #include <stdio.h>
 #include <stdlib.h>
