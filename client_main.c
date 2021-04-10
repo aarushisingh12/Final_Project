@@ -50,6 +50,22 @@ int main() {
        printf("There is an issue with connection!!!\n\n");
     }
     send(sock,client_message,sizeof(client_message),0); //a debug test
+
+//RECEIVE LOOP FROM SERVER 
+//will be receiving fixed sized buffer strings from server until received string == "input"
+   //while 1
+         //buffer = receive(sock, messageFromServer, sizeof(buffer))
+         //if buffer == "end"  //server send end message, indicating client sent exit program to main menu
+               //close(sock);
+               //return 0;
+         //if buffer == "input"  //server will send this message when input needed
+               //scanf(%s,input)
+               //send(sock, input, sizeof(buffer))
+         //else //diplay server messages
+            //printf("%s",buffer)
+
+
+
     sleep(1);
     close(sock);
 
