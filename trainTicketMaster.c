@@ -17,50 +17,50 @@
 void trainTicketMaster(socket){
 
 //BEWARE, WORK IN PROGRESS:
-    //while(1) //infinite loop untiil customer exits program
+    //while(1) //infinite loop until customer exits program
 
-    //int customerResponse
-    //customerResponse = mainMenu(socket) returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
+        //int customerResponse;
+        //customerResponse = mainMenu(socket) returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
 
-    //switch(customerResponse)
-    //case 1: //makeReservation
-            //customerInfo nextCustomer //temp struct to hold next customers info
-            //nextCustomer = struct customerInfo makeReservation(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
-            //if (checkAvailableSeats(date, nextCustomer.numberOfTravelers) == TRUE)
-                //if (confirmReservation() == true) //menu asking to confirm reservation//if returns true then proceed
+        //switch(customerResponse)
+        //case 1: //makeReservation
+                //customerInfo nextCustomer //temp struct to hold next customers info
+                //nextCustomer = struct customerInfo makeReservation(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
+                //if (checkAvailableSeats(date, nextCustomer.numberOfTravelers) == TRUE)
+                    //if (confirmReservation() == true) //menu asking to confirm reservation//if returns true then proceed
 
-                    //needs to be synchronized: //priority is given to customers with most travelers
-                    //availableSeats(next.Customer.numberoftravelors) //shows available seats customer selects starting index (seat) and #of travelers fills in seats
-                    //writeToSummaryFile(date) //assigns ticket number writes to apprapriate days summary file
+                        //needs to be synchronized: //priority is given to customers with most travelers
+                        //availableSeats(next.Customer.numberoftravelors) //shows available seats customer selects starting index (seat) and #of travelers fills in seats
+                        //writeToSummaryFile(date) //assigns ticket number writes to apprapriate days summary file
 
-                    //sendReceipt(socket) //via tcp sends receipt strings to client//client has to have function to receive strings open file, prints string to file and close 
-                //else //customer didn't confirm reservation 
-                    //so call trainTicketMaster recursively
-            //else //sorry not enough seats available!
-                //call trainTicketMaster(socket) recursivley       
+                        //sendReceipt(socket) //via tcp sends receipt strings to client//client has to have function to receive strings open file, prints string to file and close 
+                    //else //customer didn't confirm reservation 
+                        //so call trainTicketMaster recursively
+                //else //sorry not enough seats available!
+                    //call trainTicketMaster(socket) recursivley       
 
-    //case 2: ticketInquiry //syncrhonization, just reading so just have to make sure no other writers at time of reading
-            //int ticketNumber
-            //ticket Number = ticketInquiryMenu(socket); //will ask for ticket
-            //displayTicketInfo(ticketNumber) //will search summary files for ticketNumber 
+        //case 2: ticketInquiry //syncrhonization, just reading so just have to make sure no other writers at time of reading
+                //int ticketNumber
+                //ticket Number = ticketInquiryMenu(socket); //will ask for ticket
+                //displayTicketInfo(ticketNumber) //will search summary files for ticketNumber 
 
-    //case 3: modifyReservation //needs to be synchronized so no other concurrent writers or readers
-            //sturct modifiedInfo customersMods  //struct that holds modfied info
-            //customerMods = modifyReservationMenu(); //returns struct holding customers modified info
-            //modifySummaryFile(customerMods) = commits modification to summary files, adds note at end saying which server made modificaitons
+        //case 3: modifyReservation //needs to be synchronized so no other concurrent writers or readers
+                //sturct modifiedInfo customersMods  //struct that holds modfied info
+                //customerMods = modifyReservationMenu(); //returns struct holding customers modified info
+                //modifySummaryFile(customerMods) = commits modification to summary files, adds note at end saying which server made modificaitons
 
-    //case 4: cancelReservation  //writing to summary file needs to be synchronized
-                //bool cancelConfirmation
-                //if (bool cancelMenu() == true)
-                    //cancelReservation(ticketNumber) //cancel reservation by deleting from summary files
+        //case 4: cancelReservation  //writing to summary file needs to be synchronized
+                    //bool cancelConfirmation
+                    //if (bool cancelMenu() == true)
+                        //cancelReservation(ticketNumber) //cancel reservation by deleting from summary files
 
-    //case 5: exitProgram()
-            //Exit message
-            //function returns and thread is returned to server's threadpool
+        //case 5: exitProgram()
+                //Exit message
+                //function returns and thread is returned to server's threadpool
 
-    //default:
-        //non valid input message
-        //so trainTicketMaster(socket) //recursvie call
+        //default:
+            //non valid input message
+            //so trainTicketMaster(socket) //recursvie call
 
 }
 
@@ -100,11 +100,3 @@ void trainTicketMaster(socket){
 //     }
 //   }
 // }
-
-
-//makeReservation()
-//    //asks how many will be travelling with you
-    //for each travelor asks
-//
-//
-//}
