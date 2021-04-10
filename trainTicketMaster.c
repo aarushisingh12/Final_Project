@@ -28,10 +28,10 @@ void trainTicketMaster(socket){
                 //nextCustomer = struct customerInfo makeReservation(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
                 //if (checkAvailableSeats(date, nextCustomer.numberOfTravelers) == TRUE)
                     //if (confirmReservation() == true) //menu asking to confirm reservation//if returns true then proceed
-
+                        //nextCustomer.ticketNumber = //assign ticket number //can be a random num or incremented value
                         //needs to be synchronized: //priority is given to customers with most travelers
                         //availableSeats(next.Customer.numberoftravelors) //shows available seats customer selects starting index (seat) and #of travelers fills in seats
-                        //writeToSummaryFile(date) //assigns ticket number writes to apprapriate days summary file
+                        //writeToSummaryFile(date) //writes to appropriate day's summary file, ticket number will be used to search summary later on
 
                         //sendReceipt(socket) //via tcp sends receipt strings to client//client has to have function to receive strings open file, prints string to file and close 
                     //else //customer didn't confirm reservation 
