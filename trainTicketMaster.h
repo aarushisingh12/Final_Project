@@ -21,6 +21,8 @@ typedef struct customerInfo {
     char governmentID[20];
     char dateOfTravel[20];
     int numberOfTraverler;
+    int ticketNumber; //assigned when confirming reservation
+
 }customerInfo;
 
 #endif /* trainTicketMaster_h */
