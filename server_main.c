@@ -1,7 +1,9 @@
 //Andrew Ingle 04/08/2021 - Team I - Final Project
 //Has to be built but not run.
 //This is the primary server program, will be executed when server_driver calls execpl
-
+//This program receives server name from server_driver parent process, assigns itself a port based on name
+//manages thread pool and listens for next client, and assigns thread to run trainTicketMaster() for each customer
+//when customer exists program via menu selection, thread returns to pool
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,8 +17,12 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+#include "trainTicketMaster.h"
+
 int main() {
    printf("\nServer %d says hello\n",getpid());
+
+   //TODO: Set up thread pool code
 
    int fd = open("myfifo1", O_RDONLY); //fifo between manager and assistant
 
@@ -28,11 +34,6 @@ int main() {
 
    printf("\nServer %d is alive and named!\n",server_name);
    close(fd);
-
-   // if (server_name == 1){  //this was for testing
-   //       printf("getting there!\n");
-   // }
-
    
       /* creation of the socket */
    int server_socket;
@@ -59,7 +60,13 @@ int main() {
    int client_socket;
    client_socket = accept(server_socket, NULL, NULL);
 
-   recv(client_socket,client_message,sizeof(client_message),0); //for debugging
+   //will assign thread to next client, run trainTicketMaster(client_socket)
+   //thread will return to pool when client exits program from menu
+
+   //for debugging
+   recv(client_socket,client_message,sizeof(client_message),0); 
+
+   //for testing
    printf("\nServer %d receives following message from client:\n", server_name);
    printf("%s",client_message);
    sleep(1);
