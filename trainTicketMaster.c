@@ -29,24 +29,38 @@ void trainTicketMaster(socket){
             //if (checkAvailableSeats(date, nextCustomer.numberOfTravelers) == TRUE)
                 //if (confirmReservation() == true) //menu asking to confirm reservation//if returns true then proceed
 
-                    //needs to be synchronized:
+                    //needs to be synchronized: //priority is given to customers with most travelers
                     //availableSeats(next.Customer.numberoftravelors) //shows available seats customer selects starting index (seat) and #of travelers fills in seats
                     //writeToSummaryFile(date) //assigns ticket number writes to apprapriate days summary file
 
                     //sendReceipt(socket) //via tcp sends receipt strings to client//client has to have function to receive strings open file, prints string to file and close 
                 //else //customer didn't confirm reservation 
-                    //so call mainMenu recursively
+                    //so call trainTicketMaster recursively
             //else //sorry not enough seats available!
-                //call mainMenu recursivley       
+                //call trainTicketMaster(socket) recursivley       
 
-    //case 2: ticketInquiry()
-            //present ticketInquiryMenu(socket); //will ask for 
-            //displayTicketInfo(customer name) //will search 
-    //case 3: modifyReservation()
-            //modifyReservationMenu();
-    //case 4: cancelReservation()
-            //cancelMenu
+    //case 2: ticketInquiry //syncrhonization, just reading so just have to make sure no other writers at time of reading
+            //int ticketNumber
+            //ticket Number = ticketInquiryMenu(socket); //will ask for ticket
+            //displayTicketInfo(ticketNumber) //will search summary files for ticketNumber 
+
+    //case 3: modifyReservation //needs to be synchronized so no other concurrent writers or readers
+            //sturct modifiedInfo customersMods  //struct that holds modfied info
+            //customerMods = modifyReservationMenu(); //returns struct holding customers modified info
+            //modifySummaryFile(customerMods) = commits modification to summary files, adds note at end saying which server made modificaitons
+
+    //case 4: cancelReservation  //writing to summary file needs to be synchronized
+                //bool cancelConfirmation
+                //if (bool cancelMenu() == true)
+                    //cancelReservation(ticketNumber) //cancel reservation by deleting from summary files
+
     //case 5: exitProgram()
+            //Exit message
+            //function returns and thread is returned to server's threadpool
+
+    //default:
+        //non valid input message
+        //so trainTicketMaster(socket) //recursvie call
 
 }
 
