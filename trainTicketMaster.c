@@ -16,18 +16,29 @@
 
 void trainTicketMaster(socket){
 
-    //while(1) //infinite loop untiil customer exist program
+//BEWARE, WORK IN PROGRESS:
+    //while(1) //infinite loop untiil customer exits program
+
     //int customerResponse
     //customerResponse = mainMenu(socket) returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
 
-//WORK IN PROGRESS:
     //switch(customerResponse)
-    //case 1: makeReservation()
-            //present struct customerInfo reservationMenu(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
-            //if multiple customers will return multiple structs to be held in customerInfo struct []
-            //availableSeats()
-            //writeToSummaryFile(date)
-            //sendReceipt(socket)
+    //case 1: //makeReservation
+            //customerInfo nextCustomer //temp struct to hold next customers info
+            //nextCustomer = struct customerInfo makeReservation(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
+            //if (checkAvailableSeats(date, nextCustomer.numberOfTravelers) == TRUE)
+                //if (confirmReservation() == true) //menu asking to confirm reservation//if returns true then proceed
+
+                    //needs to be synchronized:
+                    //availableSeats(next.Customer.numberoftravelors) //shows available seats customer selects starting index (seat) and #of travelers fills in seats
+                    //writeToSummaryFile(date) //assigns ticket number writes to apprapriate days summary file
+
+                    //sendReceipt(socket) //via tcp sends receipt strings to client//client has to have function to receive strings open file, prints string to file and close 
+                //else //customer didn't confirm reservation 
+                    //so call mainMenu recursively
+            //else //sorry not enough seats available!
+                //call mainMenu recursivley       
+
     //case 2: ticketInquiry()
             //present ticketInquiryMenu(socket); //will ask for 
             //displayTicketInfo(customer name) //will search 
@@ -70,7 +81,16 @@ void trainTicketMaster(socket){
 //       return 1;
 //     }
 //     else {
-//       send("%s isn't a valid input, please try again!\n", input);
+//      send("%s isn't a valid input, please try again!\n", input);
+//      mainMenu(socket); call itself recursively
 //     }
 //   }
 // }
+
+
+//makeReservation()
+//    //asks how many will be travelling with you
+    //for each travelor asks
+//
+//
+//}
