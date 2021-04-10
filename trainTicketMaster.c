@@ -45,9 +45,9 @@ void trainTicketMaster(socket){
                 //displayTicketInfo(ticketNumber) //will search summary files for ticketNumber 
 
         //case 3: modifyReservation //needs to be synchronized so no other concurrent writers or readers
-                //sturct modifiedInfo customersMods  //struct that holds modfied info
-                //customerMods = modifyReservationMenu(); //returns struct holding customers modified info
-                //modifySummaryFile(customerMods) = commits modification to summary files, adds note at end saying which server made modificaitons
+                //sturct customerInfo modifiedInfo customersMods  //struct that holds modfied info
+                //customerMods = modifyReservationMenu(); //returns struct holding customers modified info //have to get ticket number
+                //modifySummaryFile(customerMods) = will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
 
         //case 4: cancelReservation  //writing to summary file needs to be synchronized
                     //bool cancelConfirmation
