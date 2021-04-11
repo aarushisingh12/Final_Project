@@ -10,6 +10,7 @@
 
 #include "trainSeating.h"
 #include "caleb_server.h"
+#include "server_tempFunctions.h"
 
 
 //trainTicketMaster socket to customer, address pointer to shared memory,pointers to today and tomorrow's reserations files
