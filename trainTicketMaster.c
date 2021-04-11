@@ -33,7 +33,8 @@ void trainTicketMaster(socket){
                         //availableSeats(next.Customer.numberoftravelors) //shows available seats customer selects starting index (seat) and #of travelers fills in seats
                         //writeToSummaryFile(date) //writes to appropriate day's summary file, ticket number will be used to search summary later on
 
-                        //sendReceipt(socket) //via tcp sends receipt strings to client//client has to have function to receive strings open file, prints string to file and close 
+                        //sendReceipt(socket) //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
+                            //then sends receipt strings to client//
                     //else //customer didn't confirm reservation 
                         //so call trainTicketMaster recursively
                 //else //sorry not enough seats available!

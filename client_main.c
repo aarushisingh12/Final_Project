@@ -61,6 +61,8 @@ int main() {
          //if buffer == "input"  //server will send this message when input needed
                //scanf(%s,input)
                //send(sock, input, sizeof(buffer))
+         //if buffer == "receipt"
+               //call makeReceipt() //function that opens file and prints recieved data (receipt) to
          //else //diplay server messages
             //printf("%s",buffer)
 
