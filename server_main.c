@@ -63,15 +63,17 @@ int main() {
    int client_socket;
    client_socket = accept(server_socket, NULL, NULL);
 
+   trainTicketMaster(client_socket);
+
    //will assign thread to next client, run trainTicketMaster(client_socket)
    //thread will return to pool when client exits program from menu
 
-   //for debugging
-   recv(client_socket,client_message,sizeof(client_message),0); 
+   // //for debugging
+   // recv(client_socket,client_message,sizeof(client_message),0); 
 
-   //for testing
-   printf("\nServer %d receives following message from client:\n", server_name);
-   printf("%s",client_message);
+   // //for testing
+   // printf("\nServer %d receives following message from client:\n", server_name);
+   // printf("%s",client_message);
    sleep(1);
 
    close(server_socket);

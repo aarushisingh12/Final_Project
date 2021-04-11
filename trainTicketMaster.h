@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 
+#define STRING_BUFFER_MAX 300//for tcp 
 
 //sturct used to hold customers info, during reservation process
 typedef struct customerInfo {
@@ -20,7 +21,7 @@ typedef struct customerInfo {
     char gender[10];
     char governmentID[20];
     char dateOfTravel[20];
-    int numberOfTraverler;
+    int numberOfTravelers;
     int ticketNumber; //assigned when confirming reservation
 
 }customerInfo;

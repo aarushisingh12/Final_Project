@@ -5,9 +5,53 @@
 
 
 #include "server_tempFunctions.h"
-#include "trainTicketMaster.h"
+
 
 #include <stdbool.h>
+#include <string.h>
+
+
+
+// THIS is just working through an adaptation of caleb's readFromUser() (to be called main menu) 
+// as I am trying to develop overall program flow, this would remain in caleb's client file
+// would move removed submenu responses to actual functions handling those specific request functions
+int mainMenu(socket){
+
+ char stringBuffer[STRING_BUFFER_MAX];
+
+//WORK IN PROGRESS
+//   //send printTrain string
+//   char serverMessage[] = "Hello User! Welcome to the Group I train ticket reservation system!\n";
+//   strcpy(stringBuffer,serverMessage);
+//   send(socket,serverMessage,sizeof(serverMessage),0);
+//   serverMessage = "1. Make a reservation\n2. Inquiry about the ticket.\n3. Modify the reservation.\n4. Cancel the reservation.\n5. Exit the program\n\n";
+
+//     char input[500];
+//     //receive response via tcp
+//    recv(socket,client_message,sizeof(client_message),0); 
+//     if (strcmp(input, "5") == 0) {
+//       return 5;
+//     }
+//     else if (strcmp(input, "4") == 0) {
+//       return 4;
+//     }
+//     else if (strcmp(input, "3") == 0) {
+//      return 3;
+//     }
+//     else if (strcmp(input, "2") == 0) {
+//      return 2;
+//     }
+//     else if (strcmp(input, "1") == 0) {
+//       return 1;
+//     }
+//     else {
+//      send(socket, "isn't a valid input, please try again!\n", 0);
+//      mainMenu(socket); //call itself recursively
+//     }
+//   }
+  return 0;
+}
+
 
 
 
@@ -72,7 +116,7 @@ int ticketInquiryMenu(int socket){
 
 
 
-//will search summary files for ticketNumber 
+//will search summary files for ticketNumber and send to customer via tcp
 void displayTicketInfo(int ticketNumber){
 
 }
@@ -88,7 +132,7 @@ customerInfo modifyReservationMenu(){
 
 //will use customerMods.ticketNumber to search, commits modification to summary files, 
 //adds note at end saying which server made modificaitons
-void modifySummaryFile(customerInfo customerMods){
+void modifyReservation(customerInfo customerMods){
 }
 
 

@@ -12,6 +12,8 @@
 
 #include "client_tempFunctions.h"
 
+#define STRING_BUFFER_MAX 300//for tcp 
+
 void reservationPortal(int);
 void acceptReceipt(int);
 
@@ -23,7 +25,8 @@ int main() {
    printf("\nWhich server do you want to connect to (1, 2 or 3): \n");
 
    int chosenServer;
-   scanf("%d", chosenServer);
+
+   scanf("%d", &chosenServer);
 
    //client side socket creation
    int sock;
@@ -54,7 +57,7 @@ int main() {
    if (connection == -1){
        printf("There is an issue with connection!!!\n\n");
     }
-    send(sock,client_message,sizeof(client_message),0); //a debug test
+    //send(sock,client_message,sizeof(client_message),0); //a debug test
 
     reservationPortal(sock);
 
