@@ -44,6 +44,10 @@ int main() {
 
    struct sockaddr_in address;
    address.sin_family = AF_INET;
+
+
+   //address.sin_port = htons(8001); //for testing on local linux connections
+
    switch(server_name) {
       case 1:
          address.sin_port = htons(7400); //for local connections
@@ -63,9 +67,9 @@ int main() {
    int client_socket;
    client_socket = accept(server_socket, NULL, NULL);
 
+   //will eventually assign thread to call this:
    trainTicketMaster(client_socket);
 
-   //will assign thread to next client, run trainTicketMaster(client_socket)
    //thread will return to pool when client exits program from menu
 
    // //for debugging

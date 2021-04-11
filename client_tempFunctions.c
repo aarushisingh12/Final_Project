@@ -1,10 +1,12 @@
 
 #include "client_tempFunctions.h"
 
+
+
 void reservationPortal(int sock){
 
    int inputInt;
-   //char[STRING_BUFFER] inputString;
+   char inputString[STRING_BUFFER_MAX];
 
    //RECEIVE LOOP FROM SERVER 
 //will be receiving fixed sized buffer strings from server until received string == "input"

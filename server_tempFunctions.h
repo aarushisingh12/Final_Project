@@ -75,5 +75,9 @@ bool cancelMenu();
 void cancelReservation(int ticketNumber);
 
 
+//needs to close socket and have process exit/return thread to pool
+void exitProgram(int socket){
+
+
 
 #endif /* server_tempFunctions.h */

@@ -16,40 +16,40 @@
 // as I am trying to develop overall program flow, this would remain in caleb's client file
 // would move removed submenu responses to actual functions handling those specific request functions
 int mainMenu(socket){
+    
+    char stringBuffer[STRING_BUFFER_MAX];
 
- char stringBuffer[STRING_BUFFER_MAX];
+    //send printTrain string
+    strcpy(stringBuffer,"Hello User! Welcome to the Group I train ticket reservation system!\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    strcpy(stringBuffer, "1. Make a reservation\n2. Inquiry about the ticket.\n3. Modify the reservation.\n4. Cancel the reservation.\n5. Exit the program\n\n");
 
-//WORK IN PROGRESS
-//   //send printTrain string
-//   char serverMessage[] = "Hello User! Welcome to the Group I train ticket reservation system!\n";
-//   strcpy(stringBuffer,serverMessage);
-//   send(socket,serverMessage,sizeof(serverMessage),0);
-//   serverMessage = "1. Make a reservation\n2. Inquiry about the ticket.\n3. Modify the reservation.\n4. Cancel the reservation.\n5. Exit the program\n\n";
-
-//     char input[500];
-//     //receive response via tcp
-//    recv(socket,client_message,sizeof(client_message),0); 
-//     if (strcmp(input, "5") == 0) {
-//       return 5;
-//     }
-//     else if (strcmp(input, "4") == 0) {
-//       return 4;
-//     }
-//     else if (strcmp(input, "3") == 0) {
-//      return 3;
-//     }
-//     else if (strcmp(input, "2") == 0) {
-//      return 2;
-//     }
-//     else if (strcmp(input, "1") == 0) {
-//       return 1;
-//     }
-//     else {
-//      send(socket, "isn't a valid input, please try again!\n", 0);
-//      mainMenu(socket); //call itself recursively
-//     }
-//   }
-  return 0;
+    int input; //int buffer to hold client main menu input
+    
+    //receive response via tcp
+    strcpy(stringBuffer,"inputInt"); //code that customer will read and no to scanf for int
+    recv(socket,input,sizeof(int),0); 
+    if (input == 5) {
+        return 5;
+    }
+    else if (input == 4) {
+        return 4;
+    }
+    else if (input == 3) {
+        return 3;
+    }
+    else if (input == 2) {
+        return 2;
+    }
+    else if (input == 1) {
+        return 1;
+    }
+    else {
+        strcpy(stringBuffer,"isn't a valid input, please try again!\n");
+        send(socket,stringBuffer, 0);
+        mainMenu(socket); //call itself recursively
+    }
+    return 0;
 }
 
 
@@ -148,4 +148,9 @@ void cancelReservation(int ticketNumber){
 
 }
 
+//needs to close socket and have process exit/return thread to pool
+void exitProgram(int socket){
+    close(socket);
+
+}
 

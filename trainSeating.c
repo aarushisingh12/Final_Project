@@ -42,6 +42,8 @@ int trainSeating() {
     printf("%s\n", day2.date);
     
     //Display array for a day in a 3 x 9 format:
+    //this will need to be sent to client over tcp socket
+    //to become function displayAvailableSeats()
     for(int i = 0; i < sizeOfSeatsArray / 9; i++) {
         //Print each column (which is +3 more with each column over)
         printf("A%d:%d, B%d:%d, C%d:%d, D%d:%d, E%d:%d, F%d:%d, G%d:%d, H%d:%d, I%d:%d \n", 

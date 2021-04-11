@@ -8,6 +8,8 @@
 #ifndef TRAINSEATING_H
 #define TRAINSEATING_H
 
+#define STRING_BUFFER_MAX 300//for tcp 
+
 typedef struct StructForSeating {
     //string for the date.
     char date[15];

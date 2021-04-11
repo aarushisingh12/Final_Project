@@ -21,10 +21,7 @@
 #include <string.h>
 
 
-//trainTicketMaster socket to customer, address pointer to shared memory,pointers to today and tomorrow's reserations files
-
-//struct type customerInfo
-
+//trainTicketMaster: will need to add address pointer to shared memory as parameter, pointers to today and tomorrow's reserations files
 
 
 void trainTicketMaster(socket){
@@ -77,8 +74,9 @@ void trainTicketMaster(socket){
                             cancelReservation(ticketNumber); //cancel reservation by deleting from summary files
                     break;
 
-            case 5: //exitProgram()
-                    //Exit message
+            case 5: //exits progrom, closes socket
+                    //send "exit" code via tcp, for client to read
+                    exitProgram(socket);
                     //function returns and thread is returned to server's threadpool
                     break;
 
