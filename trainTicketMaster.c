@@ -13,9 +13,17 @@
 #include "server_tempFunctions.h"
 
 
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
 //trainTicketMaster socket to customer, address pointer to shared memory,pointers to today and tomorrow's reserations files
 
 //struct type customerInfo
+
+
 
 void trainTicketMaster(socket){
 
@@ -28,14 +36,14 @@ void trainTicketMaster(socket){
         //switch(customerResponse)
         //case 1: //makeReservation
                 //customerInfo nextCustomer //temp struct to hold next customers info
-                //nextCustomer = struct customerInfo makeReservation(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
+                //nextCustomer = struct customerInfo reservationMenu(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
                 //if (checkAvailableSeats(date, nextCustomer.numberOfTravelers) == TRUE)
-                    //if (confirmReservation() == true) //menu asking to confirm reservation//if returns true then proceed
+                    //if (confirmReservationMenu() == true) //menu asking to confirm reservation//if returns true then proceed
                         //nextCustomer.ticketNumber = //assign ticket number //can be a random num or incremented value
                         //needs to be synchronized: //priority is given to customers with most travelers
-                        //availableSeats(next.Customer.numberoftravelors) //shows available seats customer selects starting index (seat) and #of travelers fills in seats
-                        //writeToSummaryFile(date) //writes to appropriate day's summary file, ticket number will be used to search summary later on
-
+                        //displayAvailableSeats(nextCustomer.numberoftravelors) //shows available seats customer selects starting index (seat) and #of travelers fills in seats
+                        //selectAvailableSeats(nextCustomer.numberofTravelors)
+                        //writeToSummaryFile() //writes to appropriate day's summary file, ticket number will be used to search summary later on
                         //sendReceipt(socket) //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
                             //then sends receipt strings to client//
                     //else //customer didn't confirm reservation 
