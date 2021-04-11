@@ -34,6 +34,7 @@ int main() {
    struct sockaddr_in server_address;
    server_address.sin_family = AF_INET;
 
+
    //ports need to be appropriate for current OS
    switch(chosenServer) {
          case 1:
