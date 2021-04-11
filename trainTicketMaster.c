@@ -9,6 +9,8 @@
 //will need to have synchronized access to available seats struct in shared memory and "summary" files
 
 #include "trainSeating.h"
+#include "caleb_server.h"
+
 
 //trainTicketMaster socket to customer, address pointer to shared memory,pointers to today and tomorrow's reserations files
 
