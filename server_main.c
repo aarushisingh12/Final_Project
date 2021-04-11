@@ -20,6 +20,9 @@
 #include "trainTicketMaster.h"
 
 int main() {
+
+//NEED TO ADD SHARED MEMORY ACCESS
+
    printf("\nServer %d says hello\n",getpid());
 
    //TODO: Set up thread pool code
