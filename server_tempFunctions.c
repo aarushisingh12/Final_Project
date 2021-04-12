@@ -90,10 +90,14 @@ void displayAvailableSeats(int dayOfTravel,int numberOfTravelers){
 
 
 
+
 //needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory
-void selectAvailableSeats(int dayOfTravel,int numberOfTravelers){
+//will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
+customerInfo selectAvailableSeats(customerInfo nextCustomer){
+    customerInfo nextCustomersInfo;
 
+    return nextCustomersInfo;
 }
 
 

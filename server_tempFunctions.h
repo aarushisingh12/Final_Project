@@ -53,8 +53,9 @@ void displayAvailableSeats(int dayOfTravel,int numberOfTravelers);
 
 
 //needs to be synchronized
-//accesses shared memory and alows customer to select from available seats and writes to shared memory
-void selectAvailableSeats(int dayOfTravel,int numberOfTravelers);
+//accesses shared memory and alows customer to select from available seats and writes to shared memory and saves seats to customer struct copy
+//will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
+customerInfo selectAvailableSeats(customerInfo nextCustomer);
 
 
 
