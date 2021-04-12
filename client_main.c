@@ -10,7 +10,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#include "client_tempFunctions.h"
+#include "andrew_clientFuncs.h"
 
 #define STRING_BUFFER_MAX 300//for tcp 
 
