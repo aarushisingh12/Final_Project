@@ -6,16 +6,25 @@
 
 #include "server_tempFunctions.h"
 
-
 #include <stdbool.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 
 // THIS is just working through an adaptation of caleb's readFromUser() (to be called main menu) 
 // as I am trying to develop overall program flow, this would remain in caleb's client file
 // would move removed submenu responses to actual functions handling those specific request functions
-int mainMenu(socket){
+int mainMenu(int socket){
     
     char stringBuffer[STRING_BUFFER_MAX];
 
@@ -30,7 +39,7 @@ int mainMenu(socket){
     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
     int intInput; //int buffer to hold client main menu input
-    recv(socket,intInput,sizeof(int),0); 
+    recv(socket,&intInput,sizeof(int),0); 
     if (intInput == 5) {
         return 5;
     }
@@ -48,7 +57,7 @@ int mainMenu(socket){
     }
     else {
         strcpy(stringBuffer,"isn't a valid input, please try again!\n");
-        send(socket,stringBuffer, 0);
+        send(socket,stringBuffer, sizeof(stringBuffer), 0);
         mainMenu(socket); //call itself recursively
     }
     return 0;
@@ -66,7 +75,7 @@ customerInfo reservationMenu(int socket){
 
 
 //needs to be synchronized
-bool checkAvailableSeats(int date, int numberOfTravelers){
+bool checkIfAvailableSeats(int date, int numberOfTravelers){
 
     return true;
 }

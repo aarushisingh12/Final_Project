@@ -14,6 +14,8 @@
 
 #define STRING_BUFFER_MAX 300//for tcp 
 
+void trainTicketMaster(int);
+
 //sturct used to hold customers info, during reservation process
 typedef struct customerInfo {
     char fullName[60];
