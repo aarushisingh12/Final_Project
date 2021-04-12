@@ -24,7 +24,7 @@ typedef struct customerInfo {
     char governmentID[20];
     char dateOfTravel[20];
     int numberOfTravelers;
-    int ticketNumber; //assigned when confirming reservation
+    int ticketNumber; //assigned when confirming reservation with assignTicketNumber() func
 
 }customerInfo;
 

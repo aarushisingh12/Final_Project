@@ -18,6 +18,7 @@ typedef struct StructForSeating {
     //There are 27 seats total in three rows and nine columns
     //(just like the assignment document shows).
     int seats[27]; 
+    int nextTicketNumber; //to be assigned to customer with int assignTicketNumber()
 }availableSeats;
 
 int trainSeating();

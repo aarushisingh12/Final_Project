@@ -101,7 +101,7 @@ void selectAvailableSeats(int numberOfTravelers){
 }
 
 
-//accesses shared memory to assign next available ticket number to customer
+//accesses shared memory struct member .nextTicketNumber to assign next available ticket number to customer
 //then increments ticket number for next customer
 int assignTicketNumber(){
     int nextTicketNumber;
