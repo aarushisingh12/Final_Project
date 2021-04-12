@@ -48,11 +48,11 @@ void trainTicketMaster(int socket){
                         nextCustomer = reservationMenu(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
                         if (checkIfAvailableSeats(date, nextCustomer.numberOfTravelers) == true){
                                 if (confirmReservationMenu() == true) {//menu asking to confirm reservation//if returns true then proceed
-                                        nextCustomer.ticketNumber = 100; //assign ticket number //can be a random num or incremented value in shared memory
                                         //needs to be synchronized: //priority is given to customers with most travelers
                                         displayAvailableSeats(nextCustomer.numberOfTravelers); //shows available seats customer selects starting index (seat) and #of travelers fills in seats
                                         selectAvailableSeats(nextCustomer.numberOfTravelers);
-                                        writeToSummaryFile(); //writes to appropriate day's summary file, ticket number will be used to search summary later on
+                                        nextCustomer.ticketNumber = assignTicketNumber(); //assign ticket number //can be a random num or incremented value in shared memory
+                                        writeToSummaryFile(nextCustomer); //writes to appropriate day's summary file, ticket number will be used to search summary later on
                                         sendReceipt(socket); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
                                         // then sends receipt strings to client//
                                 } 

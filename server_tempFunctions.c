@@ -101,8 +101,16 @@ void selectAvailableSeats(int numberOfTravelers){
 }
 
 
+//accesses shared memory to assign next available ticket number to customer
+//then increments ticket number for next customer
+int assignTicketNumber(){
+    int nextTicketNumber;
+      //struct that holds modfied info
+    return nextTicketNumber;
+}
 
-void writeToSummaryFile(){
+
+void writeToSummaryFile(customerInfo nextCustomer){
     //accesses date and writes reservation info to day's summary file 
 }
 
