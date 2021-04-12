@@ -47,4 +47,17 @@ void reservationPortal(int sock){
 //receives receipt strings from server and fprints to receipt file until "receiptend" code from server read into buffer
 void acceptReceipt(int sock){
       printf("\nAccept receipt called\n"); //for debugging
+      char stringBuffer[STRING_BUFFER_MAX]; //buffer to hold string sent from server via tcp
+
+      FILE *fp;
+      fp = fopen ("My Receipt", "a");
+
+      while(1){
+            recv(sock, stringBuffer, sizeof(stringBuffer),0); //receives next message from server, stores in fixed size buffer
+            if (strcmp(stringBuffer, "endreceipt") == 0){ //received endreceipt signal from server
+                  fclose(fp);//close file
+                  return;
+            }
+            fprintf(fp,"%s",stringBuffer); //prints file to receipt
+      }
 }

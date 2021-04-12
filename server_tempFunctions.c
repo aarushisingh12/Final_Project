@@ -21,9 +21,7 @@
 #include <netinet/in.h>
 
 
-// THIS is just working through an adaptation of caleb's readFromUser() (to be called main menu) 
-// as I am trying to develop overall program flow, this would remain in caleb's client file
-// would move removed submenu responses to actual functions handling those specific request functions
+// mainMenu func, sends of tcp and returns int
 int mainMenu(int socket){
     
     char stringBuffer[STRING_BUFFER_MAX];

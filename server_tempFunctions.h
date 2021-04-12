@@ -2,25 +2,11 @@
 #ifndef server_tempFunctions_h
 #define server_tempFunctions_h
 
-//#include "trainTicketMaster.h"
-
 #include "trainTicketMaster.h"
 
 #define STRING_BUFFER_MAX 300//for tcp 
 
 #include <stdbool.h>
-
-// //sturct used to hold customers info, during reservation process
-// typedef struct customerInfo {
-//     char fullName[60];
-//     char dateOfBirth[20];
-//     char gender[10];
-//     char governmentID[20];
-//     char dateOfTravel[20];
-//     int numberOfTravelers;
-//     int ticketNumber; //assigned when confirming reservation
-
-// }customerInfo;
 
 
 int mainMenu(int socket);
