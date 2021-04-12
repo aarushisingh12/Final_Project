@@ -7,6 +7,30 @@
 #define STRING_BUFFER_MAX 300//for tcp 
 
 #include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#include <sys/types.h> //need these for sockets
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+
+#include <time.h> //for date
+
+struct Date {
+     char today[20];
+     char tomorrow[20];
+} dates;
+
+
+//to use:   char date[20];
+//          strcpy(date,getTodaysDate().today)
+struct Date getTodaysDate();
 
 
 int mainMenu(int socket);

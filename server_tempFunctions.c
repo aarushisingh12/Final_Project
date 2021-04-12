@@ -6,20 +6,6 @@
 
 #include "server_tempFunctions.h"
 
-#include <stdbool.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-
 
 // mainMenu func, sends of tcp and returns int
 int mainMenu(int socket){
@@ -61,6 +47,16 @@ int mainMenu(int socket){
     return 0;
 }
 
+
+//to use:   char date[20];
+//          strcpy(date,getTodaysDate().today)
+struct Date getTodaysDate() {
+     struct Date date;
+     time_t t = time(NULL);
+     struct tm tm = *localtime(&t);
+     sprintf(date.today,"%d-%02d-%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+     return date;
+}
 
 
 

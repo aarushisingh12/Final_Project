@@ -14,24 +14,11 @@
 #include "server_tempFunctions.h"
 
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-
-
 //trainTicketMaster: will need to add address pointer to shared memory as parameter, pointers to today and tomorrow's reserations files
 
 
 void trainTicketMaster(int socket){
 
-//BEWARE, WORK IN PROGRESS:
         while(1) {//infinite loop until customer exits program
 
                 int customerResponse = 0;
