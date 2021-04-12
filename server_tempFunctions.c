@@ -29,21 +29,21 @@ int mainMenu(socket){
     strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-    int input; //int buffer to hold client main menu input
-    recv(socket,input,sizeof(int),0); 
-    if (input == 5) {
+    int intInput; //int buffer to hold client main menu input
+    recv(socket,intInput,sizeof(int),0); 
+    if (intInput == 5) {
         return 5;
     }
-    else if (input == 4) {
+    else if (intInput == 4) {
         return 4;
     }
-    else if (input == 3) {
+    else if (intInput == 3) {
         return 3;
     }
-    else if (input == 2) {
+    else if (intInput == 2) {
         return 2;
     }
-    else if (input == 1) {
+    else if (intInput == 1) {
         return 1;
     }
     else {
