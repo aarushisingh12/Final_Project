@@ -23,6 +23,12 @@
 
 #define STRING_BUFFER_MAX 300//for tcp 
 
+
+typedef struct Date {
+     char today[20];
+     char tomorrow[20];
+} dates;
+
 void trainTicketMaster(int);
 
 //sturct used to hold customers info, during reservation process
@@ -31,7 +37,8 @@ typedef struct customerInfo {
     char dateOfBirth[20];
     char gender[10];
     char governmentID[20];
-    char dateOfTravel[20];
+    char dayOfTravel; //1 for day, 2 for tomorrow
+    char dateOfTravel[20];// if dayOfTravel = 1, can use getTodaysDate()
     int numberOfTravelers;
     int ticketNumber; //assigned when confirming reservation with assignTicketNumber() func
 

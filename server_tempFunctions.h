@@ -22,10 +22,6 @@
 
 #include <time.h> //for date
 
-struct Date {
-     char today[20];
-     char tomorrow[20];
-} dates;
 
 
 //to use:   char date[20];
@@ -40,8 +36,8 @@ int mainMenu(int socket);
 customerInfo reservationMenu(int socket);
 
 
-//needs to be synchronized
-bool checkIfAvailableSeats(int date, int numberOfTravelers);
+//needs to be synchronized //checks shared memory using customers numberOfTravelers
+bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers);
 
 
 //menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
@@ -52,13 +48,13 @@ bool confirmReservationMenu();
 //needs to be synchronized
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
 //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
-void displayAvailableSeats();
+void displayAvailableSeats(int dayOfTravel,int numberOfTravelers);
 
 
 
 //needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory
-void selectAvailableSeats(int numberOfTravelers);
+void selectAvailableSeats(int dayOfTravel,int numberOfTravelers);
 
 
 

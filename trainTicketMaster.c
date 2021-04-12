@@ -18,11 +18,14 @@
 
 
 void trainTicketMaster(int socket){
+        
+        char todaysDate[20]; //gets todays date if needed
+        strcpy(todaysDate,getTodaysDate().today);
 
         while(1) {//infinite loop until customer exits program
 
                 int customerResponse = 0;
-                int date = 0;
+                dates date; //struct type dates will hold today and tomorrows date
                 customerResponse = mainMenu(socket); //returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
 
                 customerInfo nextCustomer; //temp struct to hold next customers info
@@ -33,11 +36,11 @@ void trainTicketMaster(int socket){
                 switch(customerResponse){
                 case 1: //makeReservation
                         nextCustomer = reservationMenu(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
-                        if (checkIfAvailableSeats(date, nextCustomer.numberOfTravelers) == true){
+                        if (checkIfAvailableSeats(nextCustomer.dayOfTravel, nextCustomer.numberOfTravelers) == true){ //dayOfTravel 1 for today and 2 for tomorrow
                                 if (confirmReservationMenu() == true) {//menu asking to confirm reservation//if returns true then proceed
                                         //needs to be synchronized: //priority is given to customers with most travelers
-                                        displayAvailableSeats(nextCustomer.numberOfTravelers); //shows available seats customer selects starting index (seat) and #of travelers fills in seats
-                                        selectAvailableSeats(nextCustomer.numberOfTravelers);
+                                        displayAvailableSeats(nextCustomer.dayOfTravel,nextCustomer.numberOfTravelers); //shows available seats customer selects starting index (seat) and #of travelers fills in seats
+                                        selectAvailableSeats(nextCustomer.dayOfTravel, nextCustomer.numberOfTravelers);
                                         nextCustomer.ticketNumber = assignTicketNumber(); //assign ticket number //can be a random num or incremented value in shared memory
                                         writeToSummaryFile(nextCustomer); //writes to appropriate day's summary file, ticket number will be used to search summary later on
                                         sendReceipt(socket); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)

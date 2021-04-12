@@ -69,7 +69,7 @@ customerInfo reservationMenu(int socket){
 
 
 //needs to be synchronized
-bool checkIfAvailableSeats(int date, int numberOfTravelers){
+bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers){
 
     return true;
 }
@@ -84,7 +84,7 @@ bool confirmReservationMenu(){
 //needs to be synchronized
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
 //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
-void displayAvailableSeats(){ 
+void displayAvailableSeats(int dayOfTravel,int numberOfTravelers){ 
 
 } 
 
@@ -92,7 +92,7 @@ void displayAvailableSeats(){
 
 //needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory
-void selectAvailableSeats(int numberOfTravelers){
+void selectAvailableSeats(int dayOfTravel,int numberOfTravelers){
 
 }
 
