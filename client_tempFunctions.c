@@ -4,33 +4,49 @@
 
 
 void reservationPortal(int sock){
+      
+      int intBuffer; //temp buffer to hold int from customer input to send to server
+      //char inputString[STRING_BUFFER_MAX]; //temp string buffer to hold string from customer input to send to server
+      //char messageFromServer[STRING_BUFFER_MAX]//holds message from server
+      char stringBuffer[STRING_BUFFER_MAX];
 
-   int inputInt;
-   char inputString[STRING_BUFFER_MAX];
-
-   //RECEIVE LOOP FROM SERVER 
-//will be receiving fixed sized buffer strings from server until received string == "input"
-   //while 1
-         //buffer = receive(sock, messageFromServer, sizeof(buffer))
-         //if buffer == "end"  //server send end message, indicating client sent exit program to main menu
-               //close(sock);
-               //return 0;
-         //if buffer == "needstring"  //server will send this message when input needed
-               //scanf(%s,inputString)
-               //send(sock, input, sizeof(buffer))
-         //if buffer == "needint"
-               //scanf(%d,inputInt)
-               //send(sock,)
-         //if buffer == "receipt"
-               //call acceptReceipt() //function that opens file and prints recieved data (receipt) to
-         //else //diplay server messages
-            //printf("%s",buffer)
-
+      //RECEIVE LOOP FROM SERVER 
+      //will be receiving fixed sized buffer strings from server until received string == "inputstring" or int is if received string == "inputint"
+      //if received message is "end" or "receipt" custom activity ensues
+      while (1){
+            receive(sock, stringBuffer, sizeof(stringBuffer)); //receives next message from server, stores in fixed size buffer
+            
+            if (strcmp(stringBuffer, "end") == 0){  //server send end message, indicating client sent exit program to main menu
+                  printf("\nReceived end code from server.\n"); //gor debugging
+                  sleep(1);
+                  exit(0);
+                  //close(sock);
+                  return 0;
+            }
+            if (strcmp(stringBuffer, "needstring") == 0){ //server will send this message when string input needed from client needed
+                  printf("\nReceived needstring code from server.\n"); //for debugging
+                  scanf("%s",stringBuffer);
+                  send(sock, stringBuffer, sizeof(stringBuffer));
+            }
+            if (strcmp(stringBuffer, "needint") == 0){
+                  printf("\nReceived needstring code from server.\n"); //for debugging
+                  scanf("%d",&intBuffer);
+                  send(sock, intBuffer, sizeof(int));
+            }
+            if (strcmp(stringBuffer, "receipt") == 0){
+                  acceptReceipt(sock); //function that opens file and prints recieved data (receipt) to
+            }
+            else {//diplay server messages
+                  printf("%s",stringBuffer);
+            }
+      }
 }
 
-void acceptReceipt(int sock){
-   //called when client reads "receipt" string sent to buffer from server via tcp
-   //opens receipt file
-   //receives receipt strings from server and fprints to receipt file until "receiptend" read in buffer
 
+
+//called when client reads "receipt" string sent to buffer from server via tcp
+//creates/opens receipt file
+//receives receipt strings from server and fprints to receipt file until "receiptend" code from server read into buffer
+void acceptReceipt(int sock){
+      printf("\nAccept receipt called\n"); //for debugging
 }

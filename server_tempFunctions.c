@@ -23,11 +23,13 @@ int mainMenu(socket){
     strcpy(stringBuffer,"Hello User! Welcome to the Group I train ticket reservation system!\n");
     send(socket,stringBuffer,sizeof(stringBuffer),0);
     strcpy(stringBuffer, "1. Make a reservation\n2. Inquiry about the ticket.\n3. Modify the reservation.\n4. Cancel the reservation.\n5. Exit the program\n\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //receive response via tcp
+    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
 
     int input; //int buffer to hold client main menu input
-    
-    //receive response via tcp
-    strcpy(stringBuffer,"inputInt"); //code that customer will read and no to scanf for int
     recv(socket,input,sizeof(int),0); 
     if (input == 5) {
         return 5;
@@ -150,7 +152,10 @@ void cancelReservation(int ticketNumber){
 
 //needs to close socket and have process exit/return thread to pool
 void exitProgram(int socket){
-    close(socket);
-
+    char stringBuffer[STRING_BUFFER_MAX];
+    strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    sleep(3); //to give time for customer to process end code
+    close(socket);  //closing socket with this customer
 }
 
