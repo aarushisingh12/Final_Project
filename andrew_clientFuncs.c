@@ -27,7 +27,7 @@ void reservationPortal(int sock){
                   send(sock, stringBuffer, sizeof(stringBuffer),0);
             }
             if (strcmp(stringBuffer, "needint") == 0){
-                  printf("\nReceived needint code from server.\n"); //for debugging
+                  printf("\nReceived need needint code from server.\n"); //for debugging
                   scanf("%d",&intBuffer);
                   send(sock, &intBuffer, sizeof(int),0);
             }
