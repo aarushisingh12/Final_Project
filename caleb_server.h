@@ -2,16 +2,29 @@
 #ifndef caleb_server_h
 #define caleb_server_h
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
 #define SEATS 40
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 // to comipile code, run "gcc -o UICaleb caleb_client.c"
+
+#include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#include <sys/types.h> //need these for sockets
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+
+
+int mainMenu(int socket);
+
 
 int readFromUser();
 // Starts the client reading process

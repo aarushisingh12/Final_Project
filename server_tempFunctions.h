@@ -29,7 +29,7 @@
 struct Date getTodaysDate();
 
 
-int mainMenu(int socket);
+// int mainMenu(int socket);
 
 
 //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
