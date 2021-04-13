@@ -190,5 +190,6 @@ void exitProgram(int socket){
     send(socket,stringBuffer,sizeof(stringBuffer),0);
     sleep(3); //to give time for customer to process end code
     close(socket);  //closing socket with this customer
+    exit(0); //will need to delete this later once live server loop in place
 }
 
