@@ -54,11 +54,12 @@ int main() {
       //printf("%d",server_name);
    }
 
+   printf("\nserver_driver complete");
 
-   sleep(10); //for debugging to give time for child servers to print to terminal
-   close(fd);
-   wait(NULL);
-   printf("\nAll child processes complete, Server Driver will exit\n");
+   //sleep(10); //for debugging to give time for child servers to print to terminal
+   //close(fd);
+   //wait(NULL);
+   //printf("\nAll child processes complete, Server Driver will exit\n");
 
    return 0;
 }

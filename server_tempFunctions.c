@@ -9,7 +9,7 @@
 
 // mainMenu func, sends of tcp and returns int
 int mainMenu(int socket){
-    
+    printf("\nMain menu called.\n");
     char stringBuffer[STRING_BUFFER_MAX];
 
     //send printTrain string

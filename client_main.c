@@ -50,16 +50,18 @@ int main() {
    server_address.sin_addr.s_addr = INADDR_ANY; //for local
 
    //for connecting to receive from Server
+   printf("\nclient going to attempt to connect\n");
    int connection = connect(sock,(struct sockaddr *) &server_address,
    sizeof(server_address));
    if (connection == -1){
-       printf("There is an issue with connection!!!\n\n");
+       printf("There is an issue with connection!!!\n");
     }
 
+     printf("\nclient about to call reservation portal\n"); 
     reservationPortal(sock);
 
     sleep(1);
-    close(sock);
+    //close(sock);
 
    return 0;
 }

@@ -19,8 +19,8 @@
 
 void trainTicketMaster(int socket){
         
-        char todaysDate[20]; //gets todays date if needed
-        strcpy(todaysDate,getTodaysDate().today);
+        //char todaysDate[20]; //gets todays date if needed
+        //strcpy(todaysDate,getTodaysDate().today);
 
         while(1) {//infinite loop until customer exits program
 

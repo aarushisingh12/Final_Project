@@ -66,11 +66,11 @@ int main() {
       bind(server_socket, (struct sockaddr*)&address,sizeof(address));
 
       listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
-      
+      printf("\nserver %d listening for clients\n",server_name);
       //will eventually need to do this within loop so next client can be accepted
       int client_socket;
       client_socket = accept(server_socket, NULL, NULL);
-
+      printf("\nserver %d about to call trainTicketMaster()\n",server_name);
       //will eventually assign thread to call this:
       trainTicketMaster(client_socket);
 
