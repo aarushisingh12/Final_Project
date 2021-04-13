@@ -70,13 +70,17 @@ customerInfo reservationMenu(int socket){
 
 //needs to be synchronized
 bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers){
-
+    printf("\ncheckIfavailableSeats() called\n"); //for debugging
+        //or false if not enough available to cover numberOfTravelers
     return true;
 }
 
 
 
 bool confirmReservationMenu(){
+    printf("\nconfirmtReservationMenu() called\n"); //for debugging
+//return false if they do not confirm, could say reservation not confirmed or something
+
     return true;
 }
 
@@ -85,6 +89,7 @@ bool confirmReservationMenu(){
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
 //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
 void displayAvailableSeats(int dayOfTravel,int numberOfTravelers){ 
+    printf("diplayAvailalbeSeats() called\n"); //for debugging
 
 } 
 
@@ -95,15 +100,16 @@ void displayAvailableSeats(int dayOfTravel,int numberOfTravelers){
 //accesses shared memory and alows customer to select from available seats and writes to shared memory
 //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
 customerInfo selectAvailableSeats(customerInfo nextCustomer){
-    customerInfo nextCustomersInfo;
+    printf("selectAvailalbeSeats() called\n"); //for debugging
 
-    return nextCustomersInfo;
+    return nextCustomer;
 }
 
 
 //accesses shared memory struct member .nextTicketNumber to assign next available ticket number to customer
 //then increments ticket number for next customer
 int assignTicketNumber(){
+    printf("assignTicketNumber() called\n"); //for debugging
     int nextTicketNumber;
       //struct that holds modfied info
     return nextTicketNumber;
@@ -111,12 +117,14 @@ int assignTicketNumber(){
 
 
 void writeToSummaryFile(customerInfo nextCustomer){
+    printf("writeToSummaryFile() called\n"); //for debugging
     //accesses date and writes reservation info to day's summary file 
 }
 
 
 
 void sendReceipt(int socket){
+    printf("sendReceipt() called\n"); //for debugging
     //send "receipt" code to customer via tcp (client will then know to run acceptReceipt() func)
     //then sends receipt data in form of strings (client acceptReceipt func will create/open receipt file print)
 
@@ -126,6 +134,7 @@ void sendReceipt(int socket){
 
 //will ask for ticket customer via tcp for ticket number, returns ticket number
 int ticketInquiryMenu(int socket){
+    printf("ticketInquiryMenu() called\n"); //for debugging
     int ticketNumber;
 
     return ticketNumber;
@@ -135,12 +144,15 @@ int ticketInquiryMenu(int socket){
 
 //will search summary files for ticketNumber and send to customer via tcp
 void displayTicketInfo(int ticketNumber){
+    printf("diplayTicketInfo() called\n"); //for debugging
 
 }
 
 
-//asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
+//asks what fields customer want to modifiy, returns struct holding customers modified info 
+//have to get ticket number to use to search summary files
 customerInfo modifyReservationMenu(){
+    printf("diplayAvailalbeSeats() called\n"); //for debugging
     customerInfo customersMods;  //struct that holds modfied info
 
     return customersMods;
@@ -150,23 +162,29 @@ customerInfo modifyReservationMenu(){
 //will use customerMods.ticketNumber to search, commits modification to summary files, 
 //adds note at end saying which server made modificaitons
 void modifyReservation(customerInfo customerMods){
+    printf("modifyReservation() called\n"); //for debugging
 }
 
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
 bool cancelMenu(){
+    printf("cancelMenu() called\n"); //for debugging
+    //or false if they don't confir
     return true;
 } 
 
 
 //need to be synchronized
-//cancel reservation by deleting from summary files
+//cancel reservation by deleting their entry from summary files
 void cancelReservation(int ticketNumber){
+    printf("cancelReservation() called\n"); //for debugging
+    
 
 }
 
 //needs to close socket and have process exit/return thread to pool
 void exitProgram(int socket){
+    printf("exitProgram() called\n"); //for debugging
     char stringBuffer[STRING_BUFFER_MAX];
     strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
     send(socket,stringBuffer,sizeof(stringBuffer),0);

@@ -46,7 +46,7 @@ void trainTicketMaster(int socket){
                                         sendReceipt(socket); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
                                         // then sends receipt strings to client//
                                 } 
-                                else {//customer didn't confirm reservation 
+                                else {//customer didn't confirm reservation //
                                         trainTicketMaster(socket); //recursively
                                 }
                         }
