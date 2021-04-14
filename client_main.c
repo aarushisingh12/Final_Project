@@ -22,11 +22,12 @@ int main() {
 
    char client_message[50] = "Client message to server"; //for testing, buffer for socket send for testing
 
-   //printf("\nWhich server do you want to connect to (1, 2 or 3): \n");
+   //for now: just pick server 1
+   printf("\nWhich server do you want to connect to (1, 2 or 3): \n");
 
    int chosenServer;
 
-   //scanf("%d", &chosenServer);
+   scanf("%d", &chosenServer);
 
    //client side socket creation
    int sock;
@@ -34,18 +35,18 @@ int main() {
    struct sockaddr_in server_address;
    server_address.sin_family = AF_INET;
 
-   server_address.sin_port = htons(8001);//for local on linux, was using for testing
+   //server_address.sin_port = htons(8001);//for local on linux, was using for testing
 
    //ports need to be appropriate for current OS
-    //windows ports maybe: 7400,7401,7402
-   // switch(chosenServer) {
-   //       case 1:
-   //          server_address.sin_port = htons(8001); //for local connections
-   //       case 2:
-   //          server_address.sin_port = htons(8002); //for local connections
-   //       case 3:
-   //          server_address.sin_port = htons(8003); //for local connections
-   // }
+   // windows ports maybe: 7400,7401,7402
+   switch(chosenServer) {
+         case 1:
+            server_address.sin_port = htons(8001); //for local connections
+         case 2:
+            server_address.sin_port = htons(8002); //for local connections
+         case 3:
+            server_address.sin_port = htons(8003); //for local connections
+   }
 
    server_address.sin_addr.s_addr = INADDR_ANY; //for local
 

@@ -39,47 +39,51 @@ int main() {
    printf("\nServer %d is alive and named!\n",server_name);
    close(fd);
 
-   if (server_name == 1){
+   
 
 
-         /* creation of the socket */
-      int server_socket;
-      server_socket = socket(AF_INET, SOCK_STREAM, 0);
+      /* creation of the socket */
+   int server_socket;
+   server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
-      struct sockaddr_in address;
-      address.sin_family = AF_INET;
+   struct sockaddr_in address;
+   address.sin_family = AF_INET;
 
 
-      address.sin_port = htons(8001); //for testing on local linux connections
-      //windows ports maybe: 7400,7401,7402
-      // switch(server_name) {
-      //    case 1:
-      //       address.sin_port = htons(8001); //for local connections
-      //    case 2:
-      //       address.sin_port = htons(8002); //for local connections
-      //    case 3:
-      //       address.sin_port = htons(8003); //for local connections
-      // }
-
-      address.sin_addr.s_addr = INADDR_ANY; //for local connetions
-
-      bind(server_socket, (struct sockaddr*)&address,sizeof(address));
-
-      listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
-      printf("\nserver %d listening for clients\n",server_name);
-      //will eventually need to do this within loop so next client can be accepted
-      int client_socket;
-      client_socket = accept(server_socket, NULL, NULL);
-      printf("\nserver %d about to call trainTicketMaster()\n",server_name);
-      //will eventually assign thread to call this:
-      trainTicketMaster(client_socket,server_name);
-
-      //thread will return to pool when client exits program from menu
-
-      sleep(1);
-
-      close(server_socket);
+   //address.sin_port = htons(8001); //for testing on local linux connections
+   //windows ports maybe: 7400,7401,7402
+   switch(server_name) {
+      case 1:
+         address.sin_port = htons(8001); //for local connections
+      case 2:
+         address.sin_port = htons(8002); //for local connections
+      case 3:
+         address.sin_port = htons(8003); //for local connections
    }
+   if (server_name!=1){
+      printf("\nserver %d exited\n",server_name);
+      exit(0);
+   }
+
+   address.sin_addr.s_addr = INADDR_ANY; //for local connetions
+
+   bind(server_socket, (struct sockaddr*)&address,sizeof(address));
+
+   listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
+   printf("\nserver %d listening for clients\n",server_name);
+   //will eventually need to do this within loop so next client can be accepted
+   int client_socket;
+   client_socket = accept(server_socket, NULL, NULL);
+   printf("\nserver %d about to call trainTicketMaster()\n",server_name);
+   //will eventually assign thread to call this:
+   trainTicketMaster(client_socket,server_name);
+
+   //thread will return to pool when client exits program from menu
+
+   sleep(1);
+
+   close(server_socket);
+
    
 
    return 0;
