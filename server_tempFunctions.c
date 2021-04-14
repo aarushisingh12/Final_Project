@@ -116,14 +116,14 @@ int assignTicketNumber(){
 }
 
 
-void writeToSummaryFile(customerInfo nextCustomer){
+void writeToSummaryFile(customerInfo nextCustomer, int server_name){
     printf("writeToSummaryFile() called\n"); //for debugging
     //accesses date and writes reservation info to day's summary file 
 }
 
 
 
-void sendReceipt(int socket){
+void sendReceipt(int socket,int server_name){
     printf("sendReceipt() called\n"); //for debugging
     //send "receipt" code to customer via tcp (client will then know to run acceptReceipt() func)
     //then sends receipt data in form of strings (client acceptReceipt func will create/open receipt file print)
@@ -161,7 +161,7 @@ customerInfo modifyReservationMenu(){
 
 //will use customerMods.ticketNumber to search, commits modification to summary files, 
 //adds note at end saying which server made modificaitons
-void modifyReservation(customerInfo customerMods){
+void modifyReservation(customerInfo customerMods, int server_name){
     printf("modifyReservation() called\n"); //for debugging
 }
 

@@ -66,13 +66,13 @@ int assignTicketNumber();
 
 
 //accesses date and writes reservation info to day's summary file
-void writeToSummaryFile(customerInfo nextCustomer); 
+void writeToSummaryFile(customerInfo nextCustomer,int server_name); 
 
 
 
  //send "receipt" code to customer via tcp (client will then know to run acceptReceipt() func)
 //then sends receipt data in form of strings (client acceptReceipt func will create/open receipt file print)
-void sendReceipt(int socket);
+void sendReceipt(int socket, int server_name);
    
 
 
@@ -92,7 +92,7 @@ customerInfo modifyReservationMenu();
 
 //will use customerMods.ticketNumber to search, commits modification to summary files, 
 //adds note at end saying which server made modificaitons
-void modifyReservation(customerInfo customerMods);
+void modifyReservation(customerInfo customerMods, int server_name);
 
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false

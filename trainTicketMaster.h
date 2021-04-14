@@ -29,7 +29,7 @@ typedef struct Date {
      char tomorrow[20];
 } dates;
 
-void trainTicketMaster(int);
+void trainTicketMaster(int, int);
 
 //sturct used to hold customers info, during reservation process
 typedef struct customerInfo {

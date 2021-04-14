@@ -72,7 +72,7 @@ int main() {
       client_socket = accept(server_socket, NULL, NULL);
       printf("\nserver %d about to call trainTicketMaster()\n",server_name);
       //will eventually assign thread to call this:
-      trainTicketMaster(client_socket);
+      trainTicketMaster(client_socket,server_name);
 
       //thread will return to pool when client exits program from menu
 
