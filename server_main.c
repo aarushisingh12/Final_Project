@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -43,27 +43,27 @@ int main() {
 
 
       /* creation of the socket */
-   int server_socket;
+   int server_socket, c;
    server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
-   if (server_socket == -1)
-	{
+   if (server_socket == -1){
 		printf("Could not create socket");
 	}
 
-   struct sockaddr_in address;
-   address.sin_family = AF_INET;
+   struct sockaddr_in server_address, client_address;
+   server_address.sin_family = AF_INET;
+   server_address.sin_addr.s_addr = INADDR_ANY; 
    //windows ports maybe: 7400,7401,7402
    //based on server_name, port is assigned
    switch(server_name) {
       case 1:
-         address.sin_port = htons(8001); //for local connections
+         server_address.sin_port = htons(8001); //for local connections
       case 2:
-         address.sin_port = htons(8002); //for local connections
+         server_address.sin_port = htons(8002); //for local connections
       case 3:
-         address.sin_port = htons(8003); //for local connections
+         server_address.sin_port = htons(8003); //for local connections
    }
-   address.sin_addr.s_addr = INADDR_ANY; //for local connetions
+
 
    //for debugging. shutting down other unused servers before port binding
    if (server_name!=1){
@@ -71,21 +71,29 @@ int main() {
       exit(0);
    }
   
-   bind(server_socket, (struct sockaddr*)&address,sizeof(address));
+   //Bind
+   if( bind(server_socket,(struct sockaddr *)&server_address , sizeof(server_address)) < 0){
+	   printf("bind failed");
+   }
 
    listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
    printf("\nserver %d listening for clients\n",server_name);
 
 
-   //will eventually need to do this within loop so next client can be accepted
    int client_socket;
-   client_socket = accept(server_socket, NULL, NULL);
+   //client_socket = accept(server_socket, NULL, NULL); //if not in accept loop
 
+//live server code
+   while( (client_socket = accept(server_socket, (struct sockaddr *)&client_address, (socklen_t*)&c)) ){
+		printf("\nConnection accepted from within accept loop");
+       printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
+      //will eventually assign thread to call this with pointer to function:
+      trainTicketMaster(client_socket,server_name);
+	}
 
-   printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
-   //will eventually assign thread to call this:
-   trainTicketMaster(client_socket,server_name);
-
+   if (client_socket<0){
+		perror("\nserver accept failed after accept loops\n");
+	}
 
    //thread will return to pool when client exits program from menu
 
