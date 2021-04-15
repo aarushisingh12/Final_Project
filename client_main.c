@@ -32,12 +32,12 @@ int main() {
    //client side socket creation
    int sock;
    sock = socket(AF_INET,SOCK_STREAM,0); // for tcp
+   if (sock == -1){
+		printf("Could not create socket");
+	}
    struct sockaddr_in server_address;
    server_address.sin_family = AF_INET;
 
-   //server_address.sin_port = htons(8001);//for local on linux, was using for testing
-
-   //ports need to be appropriate for current OS
    // windows ports maybe: 7400,7401,7402
    switch(chosenServer) {
          case 1:
@@ -48,7 +48,7 @@ int main() {
             server_address.sin_port = htons(8003); //for local connections
    }
 
-   server_address.sin_addr.s_addr = INADDR_ANY; //for local
+   server_address.sin_addr.s_addr = INADDR_ANY; //for local //if remote would contain ip address of server in long format
 
    //for connecting to receive from Server
    printf("\nclient going to attempt to connect\n");
@@ -58,11 +58,9 @@ int main() {
        printf("There is an issue with connection!!!\n");
     }
 
-     printf("\nclient about to call reservation portal\n"); 
-    reservationPortal(sock);
+   printf("\nclient about to call reservation portal\n"); 
+   reservationPortal(sock); //will close socket and exit from within
 
-    sleep(1);
-    //close(sock);
 
    return 0;
 }

@@ -46,13 +46,14 @@ int main() {
    int server_socket;
    server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
+   if (server_socket == -1)
+	{
+		printf("Could not create socket");
+	}
+
    struct sockaddr_in address;
    address.sin_family = AF_INET;
-
-
- 
    //windows ports maybe: 7400,7401,7402
-
    //based on server_name, port is assigned
    switch(server_name) {
       case 1:
@@ -62,15 +63,14 @@ int main() {
       case 3:
          address.sin_port = htons(8003); //for local connections
    }
+   address.sin_addr.s_addr = INADDR_ANY; //for local connetions
 
-   //for debugging. shutting down other unused servers so their ports are released
+   //for debugging. shutting down other unused servers before port binding
    if (server_name!=1){
       printf("\nserver %d exited\n",server_name);
       exit(0);
    }
-
-   address.sin_addr.s_addr = INADDR_ANY; //for local connetions
-
+  
    bind(server_socket, (struct sockaddr*)&address,sizeof(address));
 
    listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
