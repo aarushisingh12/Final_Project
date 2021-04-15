@@ -2,47 +2,6 @@
 #include "andrew_clientFuncs.h"
 
 
-// mainMenu func, sends of tcp and returns int
-int mainMenu(int socket){
-    printf("\nMain menu called.\n");
-    char stringBuffer[STRING_BUFFER_MAX];
-
-    //send printTrain string
-    strcpy(stringBuffer,"Hello User! Welcome to the Group I train ticket reservation system!\n");
-    send(socket,stringBuffer,sizeof(stringBuffer),0);
-    strcpy(stringBuffer, "1. Make a reservation\n2. Inquiry about the ticket.\n3. Modify the reservation.\n4. Cancel the reservation.\n5. Exit the program\n\n");
-    send(socket,stringBuffer,sizeof(stringBuffer),0);
-
-    //receive response via tcp
-    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
-    send(socket,stringBuffer,sizeof(stringBuffer),0);
-
-    int intInput; //int buffer to hold client main menu input
-    recv(socket,&intInput,sizeof(int),0); 
-    if (intInput == 5) {
-        return 5;
-    }
-    else if (intInput == 4) {
-        return 4;
-    }
-    else if (intInput == 3) {
-        return 3;
-    }
-    else if (intInput == 2) {
-        return 2;
-    }
-    else if (intInput == 1) {
-        return 1;
-    }
-    else {
-        strcpy(stringBuffer,"isn't a valid input, please try again!\n");
-        send(socket,stringBuffer, sizeof(stringBuffer), 0);
-        mainMenu(socket); //call itself recursively
-    }
-    return 0;
-}
-
-
 
 void reservationPortal(int sock){
       printf("\nclient's reservation portal called\n");
