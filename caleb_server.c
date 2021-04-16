@@ -1,4 +1,5 @@
 #include "caleb_server.h"
+#include "server_tempFunctions.h"
 
 // int main(int argc, char const *argv[]) {
 //   // This is is a test file for creating a user UI
@@ -48,14 +49,45 @@ int mainMenu(int socket){
 }
 
 customerInfo reservationMenu(int socket){
+    printf("reservationMenu() called\n"); // for debugging
+
+    if (confirmReservationMenu(socket)) {
+      printf("confirmReservationMenu() returned true\n");
+    }
+    else {
+      printf("confirmReservationMenu() returned false\n");
+    }
+    char stringBuffer[STRING_BUFFER_MAX];
     customerInfo nextCustomersInfo;
 
     return nextCustomersInfo;
 }
-bool confirmReservationMenu(int socket){
-    printf("\nconfirmtReservationMenu() called\n"); //for debugging
-//return false if they do not confirm, could say reservation not confirmed or something
 
+bool confirmReservationMenu(int socket){
+    printf("confirmReservationMenu() called\n"); //for debugging
+//return false if they do not confirm, could say reservation not confirmed or something
+    char stringBuffer[STRING_BUFFER_MAX];
+
+    strcpy(stringBuffer,ANSI_COLOR_GREEN "Confirm reservation? (yes/no)" ANSI_COLOR_RESET "\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //receive response via tcp
+    strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    char stringInput[STRING_BUFFER_MAX]; //string buffer to hold client main menu input
+    recv(socket,&stringInput,sizeof(stringInput),0);
+
+    if (strcmp(stringInput, "yes") == 0) {
+      strcpy(stringBuffer,"Reservation Confirmed.\n"); // Letting user know that their reservation was confirmed
+      send(socket,stringBuffer,sizeof(stringBuffer),0);
+      return true;
+    }
+
+    printf("-d input was not yes, it was %s\n", stringInput); // for debugging purposes
+
+    strcpy(stringBuffer,"Reservation not Confirmed.\n"); // Letting user know that their reservation was not confirmed
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
     return true;
 }
 
@@ -63,6 +95,18 @@ bool confirmReservationMenu(int socket){
 int ticketInquiryMenu(int socket){
     printf("ticketInquiryMenu() called\n"); //for debugging
     int ticketNumber;
+    char stringBuffer[STRING_BUFFER_MAX];
+
+    strcpy(stringBuffer,"Please enter your ticket number for lookup.\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    /*//receive response via tcp
+    strcpy(stringBuffer,"int"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    recv(socket,&ticketNumber,sizeof(int),0);
+
+    displayTicketInfo(ticketNumber, socket);*/
 
     return ticketNumber;
 }

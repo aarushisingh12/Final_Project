@@ -4,6 +4,7 @@
 
 #include "trainTicketMaster.h"
 
+#define STRING_BUFFER_MAX 300//for tcp
 #define SEATS 40
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
