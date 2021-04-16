@@ -18,8 +18,8 @@
 #include "server_tempFunctions.h"
 
 //will have to comment out versions in server_tempFunctions .c and .h to with rest of system
-// int writeToSummaryFile(customerInfo,int);
-// int displayTicketInfo(int ticketNumber);
+// int writeToSummaryFile(customerInfo,int server_name,int socket);
+// int displayTicketInfo(int ticketNumber, int socket);
 
 
 #endif /* aarushi_funcs.h */
