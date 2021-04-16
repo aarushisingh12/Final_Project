@@ -23,7 +23,7 @@
 //     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
 //     int intInput; //int buffer to hold client main menu input
-//     recv(socket,&intInput,sizeof(int),0); 
+//     recv(socket,&intInput,sizeof(int),0);
 //     if (intInput == 5) {
 //         return 5;
 //     }
@@ -61,11 +61,11 @@ struct Date getTodaysDate() {
 
 
 //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
-customerInfo reservationMenu(int socket){
-    customerInfo nextCustomersInfo;
-
-    return nextCustomersInfo;
-}
+//customerInfo reservationMenu(int socket){
+//    customerInfo nextCustomersInfo;
+//
+//    return nextCustomersInfo;
+//}
 
 
 //needs to be synchronized
@@ -77,21 +77,21 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket){
 
 
 
-bool confirmReservationMenu(int socket){
-    printf("\nconfirmtReservationMenu() called\n"); //for debugging
-//return false if they do not confirm, could say reservation not confirmed or something
-
-    return true;
-}
+//bool confirmReservationMenu(int socket){
+//    printf("\nconfirmtReservationMenu() called\n"); //for debugging
+////return false if they do not confirm, could say reservation not confirmed or something
+//
+//    return true;
+//}
 
 
 //needs to be synchronized
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
 //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
-void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket){ 
+void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket){
     printf("diplayAvailalbeSeats() called\n"); //for debugging
 
-} 
+}
 
 
 
@@ -118,7 +118,7 @@ int assignTicketNumber(int socket){
 
 void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
     printf("writeToSummaryFile() called\n"); //for debugging
-    //accesses date and writes reservation info to day's summary file 
+    //accesses date and writes reservation info to day's summary file
 }
 
 
@@ -132,13 +132,13 @@ void sendReceipt(int socket,int server_name){
 
 
 
-//will ask for ticket customer via tcp for ticket number, returns ticket number
-int ticketInquiryMenu(int socket){
-    printf("ticketInquiryMenu() called\n"); //for debugging
-    int ticketNumber;
-
-    return ticketNumber;
-}
+////will ask for ticket customer via tcp for ticket number, returns ticket number
+//int ticketInquiryMenu(int socket){
+//    printf("ticketInquiryMenu() called\n"); //for debugging
+//    int ticketNumber;
+//
+//    return ticketNumber;
+//}
 
 
 
@@ -149,36 +149,36 @@ void displayTicketInfo(int ticketNumber,int socket){
 }
 
 
-//asks what fields customer want to modifiy, returns struct holding customers modified info 
-//have to get ticket number to use to search summary files
-customerInfo modifyReservationMenu(int socket){
-    printf("diplayAvailalbeSeats() called\n"); //for debugging
-    customerInfo customersMods;  //struct that holds modfied info
+////asks what fields customer want to modifiy, returns struct holding customers modified info
+////have to get ticket number to use to search summary files
+//customerInfo modifyReservationMenu(int socket){
+//    printf("diplayAvailalbeSeats() called\n"); //for debugging
+//    customerInfo customersMods;  //struct that holds modfied info/
+//
+//    return customersMods;
+//}
 
-    return customersMods;
-}
 
-
-//will use customerMods.ticketNumber to search, commits modification to summary files, 
+//will use customerMods.ticketNumber to search, commits modification to summary files,
 //adds note at end saying which server made modificaitons
 void modifyReservation(customerInfo customerMods, int server_name, int socket){
     printf("modifyReservation() called\n"); //for debugging
 }
 
 
-//cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool cancelMenu(int socket){
-    printf("cancelMenu() called\n"); //for debugging
-    //or false if they don't confir
-    return true;
-} 
+////cancel confirmation sent over tcp if customer sends back yes then returns true, else false
+//bool cancelMenu(int socket){
+//    printf("cancelMenu() called\n"); //for debugging
+//    //or false if they don't confir
+//    return true;
+//}
 
 
 //need to be synchronized
 //cancel reservation by deleting their entry from summary files
 void cancelReservation(int ticketNumber,int socket){
     printf("cancelReservation() called\n"); //for debugging
-    
+
 
 }
 
@@ -191,7 +191,7 @@ void exitProgram(int socket){
     send(socket,stringBuffer,sizeof(stringBuffer),0);
     //sleep(1);
     int intInput; //int buffer to hold client main menu input
-    recv(socket,&intInput,sizeof(int),0); 
+    recv(socket,&intInput,sizeof(int),0);
     printf("\n user entered %d\n",intInput);
     if (intInput == 1){
         printf("\n user entered %d\n",intInput);
@@ -210,4 +210,3 @@ void exitProgram(int socket){
 
     }
 }
-

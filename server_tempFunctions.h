@@ -4,7 +4,7 @@
 
 #include "trainTicketMaster.h"
 
-#define STRING_BUFFER_MAX 300//for tcp 
+#define STRING_BUFFER_MAX 300//for tcp
 
 #include <stdbool.h>
 #include <string.h>
@@ -33,15 +33,15 @@ struct Date getTodaysDate();
 
 
 //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
-customerInfo reservationMenu(int socket);
+//customerInfo reservationMenu(int socket);
 
 
 //needs to be synchronized //checks shared memory using customers numberOfTravelers
 bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers,int socket);
 
 
-//menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
-bool confirmReservationMenu();
+////menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
+//bool confirmReservationMenu();
 
 
 
@@ -66,19 +66,19 @@ int assignTicketNumber();
 
 
 //accesses date and writes reservation info to day's summary file
-void writeToSummaryFile(customerInfo nextCustomer,int server_name, int socket); 
+void writeToSummaryFile(customerInfo nextCustomer,int server_name, int socket);
 
 
 
  //send "receipt" code to customer via tcp (client will then know to run acceptReceipt() func)
 //then sends receipt data in form of strings (client acceptReceipt func will create/open receipt file print)
 void sendReceipt(int socket, int server_name);
-   
 
 
 
-//will ask for ticket customer via tcp for ticket number, returns ticket number
-int ticketInquiryMenu(int socket);
+
+////will ask for ticket customer via tcp for ticket number, returns ticket number
+//int ticketInquiryMenu(int socket);
 
 
 
@@ -86,17 +86,17 @@ int ticketInquiryMenu(int socket);
 void displayTicketInfo(int ticketNumber, int socket);
 
 
-//asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
-customerInfo modifyReservationMenu(int socket);
+////asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
+//customerInfo modifyReservationMenu(int socket);
 
 
-//will use customerMods.ticketNumber to search, commits modification to summary files, 
+//will use customerMods.ticketNumber to search, commits modification to summary files,
 //adds note at end saying which server made modificaitons
 void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
 
-//cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool cancelMenu(int socket);
+////cancel confirmation sent over tcp if customer sends back yes then returns true, else false
+//bool cancelMenu(int socket);
 
 
 //need to be synchronized

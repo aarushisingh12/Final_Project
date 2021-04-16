@@ -6,7 +6,7 @@
 
 //   return 0;
 // }
-#define STRING_BUFFER_MAX 300//for tcp 
+#define STRING_BUFFER_MAX 300//for tcp
 
 int mainMenu(int socket){
     printf("\nMain menu called.\n");
@@ -23,7 +23,7 @@ int mainMenu(int socket){
     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
     int intInput; //int buffer to hold client main menu input
-    recv(socket,&intInput,sizeof(int),0); 
+    recv(socket,&intInput,sizeof(int),0);
     if (intInput == 5) {
         return 5;
     }
@@ -47,6 +47,42 @@ int mainMenu(int socket){
     return 0;
 }
 
+customerInfo reservationMenu(int socket){
+    customerInfo nextCustomersInfo;
+
+    return nextCustomersInfo;
+}
+bool confirmReservationMenu(int socket){
+    printf("\nconfirmtReservationMenu() called\n"); //for debugging
+//return false if they do not confirm, could say reservation not confirmed or something
+
+    return true;
+}
+
+//will ask for ticket customer via tcp for ticket number, returns ticket number
+int ticketInquiryMenu(int socket){
+    printf("ticketInquiryMenu() called\n"); //for debugging
+    int ticketNumber;
+
+    return ticketNumber;
+}
+
+//asks what fields customer want to modifiy, returns struct holding customers modified info
+//have to get ticket number to use to search summary files
+customerInfo modifyReservationMenu(int socket){
+    printf("diplayAvailalbeSeats() called\n"); //for debugging
+    customerInfo customersMods;  //struct that holds modfied info
+
+    return customersMods;
+}
+//cancel confirmation sent over tcp if customer sends back yes then returns true, else false
+bool cancelMenu(int socket){
+    printf("cancelMenu() called\n"); //for debugging
+    //or false if they don't confir
+    return true;
+}
+
+/*
 int readFromUser(){
   printTrain();
   printf("Hello User! Welcome to the Group I train ticket reservation system!\n");
@@ -148,7 +184,7 @@ int cancelTicket(int ticketNumber) {
 
   return 0;
 }
-
+*/
 void printTrain() {
     printf("\n\n\n\n\n\n\n\n\n\n      __        __________\n     /  \\         ========   _____________\n      ||          =      =  /           ]\n  ___==============      = /            ]\n  \\_[ Group I    ========= [            ]\n    [\\=====================^==============\n___//_(_)_(_)_(_)___\\__/_____(_)_(_)_(_)\n========================================\n\n\n");
 }
