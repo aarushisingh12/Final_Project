@@ -192,4 +192,28 @@ void exitProgram(int socket){
     close(socket);  //closing socket with this customer
     exit(0); //will need to delete this later once live server loop in place
 }
+// //needs to close socket and have process exit/return thread to pool
+// void exitProgram(int socket){
+//     printf("exitProgram() called\n"); //for debugging
+//     char stringBuffer[STRING_BUFFER_MAX];
+//     strcpy(stringBuffer,"\nEnter 1 to just shut down client, Enter 2 to shutdown client and server\n"); //end code to be sent to client, client will then know to call its own exit function
+//     send(socket,stringBuffer,sizeof(stringBuffer),0);
+//     strcpy(stringBuffer,"needInt"); //end code to be sent to client, client will then know to call its own exit function
+//     send(socket,stringBuffer,sizeof(stringBuffer),0);
+//     int intInput; //int buffer to hold client main menu input
+//     recv(socket,&intInput,sizeof(int),0); 
+//     if (intInput == 1){
+//         strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
+//         send(socket,stringBuffer,sizeof(stringBuffer),0);
+//         sleep(3); //to give time for customer to process end code
+//         close(socket);  //closing socket with this customer
+//     }else{
+//         strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
+//         send(socket,stringBuffer,sizeof(stringBuffer),0);
+//         sleep(3); //to give time for customer to process end code
+//         close(socket);  //closing socket with this customer
+//         exit(0); //will need to delete this later once live server loop in place
+
+//     }
+// }
 

@@ -16,9 +16,57 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <pthread.h>
 
 #include "trainTicketMaster.h"
 #include "server_tempFunctions.h"
+
+#define THREAD_NUM 5
+
+//multi thread code
+typedef struct Task {
+    void (*taskFunction)(int, int); //this will become void (*trainTicketMaster(int,int));
+    int arg1, arg2; //will be for clients socket and server_ane
+} Task;
+
+Task taskQueue[256];
+int taskCount = 0;
+pthread_mutex_t mutexQueue;
+pthread_cond_t condQueue;
+
+void executeTask(Task* task) {
+    task->taskFunction(task->arg1, task->arg2);
+}
+
+void submitTask(Task task) {
+    pthread_mutex_lock(&mutexQueue);
+    taskQueue[taskCount] = task;
+    taskCount++;
+    pthread_mutex_unlock(&mutexQueue);
+    pthread_cond_signal(&condQueue);
+}
+
+void* startThread(void* args) {
+    
+        Task task;
+
+        pthread_mutex_lock(&mutexQueue);
+        while (taskCount == 0) {
+            pthread_cond_wait(&condQueue, &mutexQueue);
+        }
+
+        task = taskQueue[0];
+        int i;
+        for (i = 0; i < taskCount - 1; i++) {
+            taskQueue[i] = taskQueue[i + 1];
+        }
+        taskCount--;
+        pthread_mutex_unlock(&mutexQueue);
+        
+        executeTask(&task);
+    
+}
+
 
 int main() {
 
@@ -27,6 +75,8 @@ int main() {
    printf("\nServer %d says hello\n",getpid()); //for debugging
 
    //TODO: Set up thread pool code
+
+
 
    int fd = open("myfifo1", O_RDONLY); //fifo between server_driver and server_main
 
@@ -40,6 +90,16 @@ int main() {
    close(fd);
 
    
+   pthread_t th[THREAD_NUM];
+   pthread_mutex_init(&mutexQueue, NULL);
+   pthread_cond_init(&condQueue, NULL);
+   int i;
+   //creating the threads
+    for (i = 0; i < THREAD_NUM; i++) {
+        if (pthread_create(&th[i], NULL, &startThread, NULL) != 0) {
+            perror("Failed to create the thread");
+        }
+    }
 
 
       /* creation of the socket */
@@ -85,19 +145,27 @@ int main() {
 
 //live server code
    while( (client_socket = accept(server_socket, (struct sockaddr *)&client_address, (socklen_t*)&c)) ){
-		printf("\nConnection accepted from within accept loop");
-       printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
+	    printf("\nConnection accepted from within accept loop");
+        printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
       //will eventually assign thread to call this with pointer to function:
-      trainTicketMaster(client_socket,server_name);
-	}
+      //trainTicketMaster(client_socket,server_name);
+        Task t = {.taskFunction = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name };
+        submitTask(t);
+   }
 
    if (client_socket<0){
 		perror("\nserver accept failed after accept loops\n");
 	}
 
    //thread will return to pool when client exits program from menu
+    for (i = 0; i < THREAD_NUM; i++) {
+        if (pthread_join(th[i], NULL) != 0) {
+            perror("Failed to join the thread");
+        }
+    }
 
-   sleep(1);
+   pthread_mutex_destroy(&mutexQueue);
+   pthread_cond_destroy(&condQueue);
 
    close(server_socket);
 
