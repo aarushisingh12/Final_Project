@@ -169,7 +169,7 @@ int main() {
 
    close(server_socket);
 
-   
+   printf("\nServer Exited from main\n"); //for debugging
 
    return 0;
 }
