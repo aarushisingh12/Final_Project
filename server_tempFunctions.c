@@ -69,7 +69,7 @@ customerInfo reservationMenu(int socket){
 
 
 //needs to be synchronized
-bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers){
+bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket){
     printf("\ncheckIfavailableSeats() called\n"); //for debugging
         //or false if not enough available to cover numberOfTravelers
     return true;
@@ -77,7 +77,7 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers){
 
 
 
-bool confirmReservationMenu(){
+bool confirmReservationMenu(int socket){
     printf("\nconfirmtReservationMenu() called\n"); //for debugging
 //return false if they do not confirm, could say reservation not confirmed or something
 
@@ -88,7 +88,7 @@ bool confirmReservationMenu(){
 //needs to be synchronized
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
 //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
-void displayAvailableSeats(int dayOfTravel,int numberOfTravelers){ 
+void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket){ 
     printf("diplayAvailalbeSeats() called\n"); //for debugging
 
 } 
@@ -99,7 +99,7 @@ void displayAvailableSeats(int dayOfTravel,int numberOfTravelers){
 //needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory
 //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
-customerInfo selectAvailableSeats(customerInfo nextCustomer){
+customerInfo selectAvailableSeats(customerInfo nextCustomer, int socket){
     printf("selectAvailalbeSeats() called\n"); //for debugging
 
     return nextCustomer;
@@ -108,7 +108,7 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer){
 
 //accesses shared memory struct member .nextTicketNumber to assign next available ticket number to customer
 //then increments ticket number for next customer
-int assignTicketNumber(){
+int assignTicketNumber(int socket){
     printf("assignTicketNumber() called\n"); //for debugging
     int nextTicketNumber;
       //struct that holds modfied info
@@ -151,7 +151,7 @@ void displayTicketInfo(int ticketNumber,int socket){
 
 //asks what fields customer want to modifiy, returns struct holding customers modified info 
 //have to get ticket number to use to search summary files
-customerInfo modifyReservationMenu(){
+customerInfo modifyReservationMenu(int socket){
     printf("diplayAvailalbeSeats() called\n"); //for debugging
     customerInfo customersMods;  //struct that holds modfied info
 
@@ -161,13 +161,13 @@ customerInfo modifyReservationMenu(){
 
 //will use customerMods.ticketNumber to search, commits modification to summary files, 
 //adds note at end saying which server made modificaitons
-void modifyReservation(customerInfo customerMods, int server_name){
+void modifyReservation(customerInfo customerMods, int server_name, int socket){
     printf("modifyReservation() called\n"); //for debugging
 }
 
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool cancelMenu(){
+bool cancelMenu(int socket){
     printf("cancelMenu() called\n"); //for debugging
     //or false if they don't confir
     return true;
@@ -176,7 +176,7 @@ bool cancelMenu(){
 
 //need to be synchronized
 //cancel reservation by deleting their entry from summary files
-void cancelReservation(int ticketNumber){
+void cancelReservation(int ticketNumber,int socket){
     printf("cancelReservation() called\n"); //for debugging
     
 

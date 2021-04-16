@@ -37,7 +37,7 @@ customerInfo reservationMenu(int socket);
 
 
 //needs to be synchronized //checks shared memory using customers numberOfTravelers
-bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers);
+bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers,int socket);
 
 
 //menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
@@ -48,14 +48,14 @@ bool confirmReservationMenu();
 //needs to be synchronized
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
 //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
-void displayAvailableSeats(int dayOfTravel,int numberOfTravelers);
+void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket);
 
 
 
 //needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves seats to customer struct copy
 //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
-customerInfo selectAvailableSeats(customerInfo nextCustomer);
+customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket);
 
 
 
@@ -87,21 +87,21 @@ void displayTicketInfo(int ticketNumber, int socket);
 
 
 //asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
-customerInfo modifyReservationMenu();
+customerInfo modifyReservationMenu(int socket);
 
 
 //will use customerMods.ticketNumber to search, commits modification to summary files, 
 //adds note at end saying which server made modificaitons
-void modifyReservation(customerInfo customerMods, int server_name);
+void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool cancelMenu();
+bool cancelMenu(int socket);
 
 
 //need to be synchronized
 //cancel reservation by deleting from summary files
-void cancelReservation(int ticketNumber);
+void cancelReservation(int ticketNumber,int socket);
 
 
 //needs to close socket and have process exit/return thread to pool
