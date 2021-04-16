@@ -17,7 +17,7 @@
 //trainTicketMaster: will need to add address pointer to shared memory as parameter, pointers to today and tomorrow's reserations files
 
 
-void trainTicketMaster(int socket){
+void trainTicketMaster(int socket, int server_name){
         
         //char todaysDate[20]; //gets todays date if needed
         //strcpy(todaysDate,getTodaysDate().today);
@@ -36,38 +36,38 @@ void trainTicketMaster(int socket){
                 switch(customerResponse){
                 case 1: //makeReservation
                         nextCustomer = reservationMenu(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
-                        if (checkIfAvailableSeats(nextCustomer.dayOfTravel, nextCustomer.numberOfTravelers) == true){ //dayOfTravel 1 for today and 2 for tomorrow
+                        if (checkIfAvailableSeats(nextCustomer.dayOfTravel, nextCustomer.numberOfTravelers,socket) == true){ //dayOfTravel 1 for today and 2 for tomorrow
                                 if (confirmReservationMenu() == true) {//menu asking to confirm reservation//if returns true then proceed
                                         //needs to be synchronized: //priority is given to customers with most travelers
-                                        displayAvailableSeats(nextCustomer.dayOfTravel,nextCustomer.numberOfTravelers); //shows available seats customer selects starting index (seat) and #of travelers fills in seats
-                                        nextCustomer = selectAvailableSeats(nextCustomer); //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves bookedSeats to customer struct copy
+                                        displayAvailableSeats(nextCustomer.dayOfTravel,nextCustomer.numberOfTravelers,socket); //shows available seats customer selects starting index (seat) and #of travelers fills in seats
+                                        nextCustomer = selectAvailableSeats(nextCustomer,socket); //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves bookedSeats to customer struct copy
                                         nextCustomer.ticketNumber = assignTicketNumber(); //assign ticket number //can be a random num or incremented value in shared memory
-                                        writeToSummaryFile(nextCustomer); //writes to appropriate day's summary file, ticket number will be used to search summary later on
-                                        sendReceipt(socket); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
+                                        writeToSummaryFile(nextCustomer,server_name,socket); //writes to appropriate day's summary file, ticket number will be used to search summary later on
+                                        sendReceipt(socket,server_name); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
                                         // then sends receipt strings to client//
                                 } 
                                 else {//customer didn't confirm reservation //
-                                        trainTicketMaster(socket); //recursively
+                                        trainTicketMaster(socket,server_name); //recursively
                                 }
                         }
                         else {//sorry not enough seats available!
-                                trainTicketMaster(socket); //recursivley  
+                                trainTicketMaster(socket,server_name); //recursivley  
                         }   
                         break;
 
                 case 2: //ticketInquiry //syncrhonization, just reading so just have to make sure no other writers at time of reading
                         ticketNumber = ticketInquiryMenu(socket); //will ask for ticket
-                        displayTicketInfo(ticketNumber); //will search summary files for ticketNumber 
+                        displayTicketInfo(ticketNumber,socket); //will search summary files for ticketNumber 
                         break;
 
                 case 3: //modifyReservation //needs to be synchronized so no other concurrent writers or readers
-                        customersMods = modifyReservationMenu(); //returns struct holding customers modified info //have to get ticket number
-                        modifyReservation(customersMods); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
+                        customersMods = modifyReservationMenu(socket); //returns struct holding customers modified info //have to get ticket number
+                        modifyReservation(customersMods,server_name,socket); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
                         break;
 
                 case 4: //cancelReservation  //writing to summary file needs to be synchronized
-                        if (cancelMenu() == true){
-                                cancelReservation(ticketNumber); //cancel reservation by deleting from summary files
+                        if (cancelMenu(socket) == true){
+                                cancelReservation(ticketNumber,socket); //cancel reservation by deleting from summary files
                         }
                         break;
 
@@ -79,7 +79,7 @@ void trainTicketMaster(int socket){
 
                 default: //this is probably redundant
                         //send not a valid input message 
-                        trainTicketMaster(socket); //recursvie call
+                        trainTicketMaster(socket,server_name); //recursvie call
                 
                 }
         }
