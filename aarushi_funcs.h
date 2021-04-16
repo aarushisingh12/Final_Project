@@ -14,8 +14,12 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-int writeToSummaryFile(nextCustomer,server_name);
-int displayTicketInfo(int ticketNumber) {
+#include "trainTicketMaster.h"
+#include "server_tempFunctions.h"
+
+//will have to comment out versions in server_tempFunctions .c and .h to with rest of system
+// int writeToSummaryFile(customerInfo,int);
+// int displayTicketInfo(int ticketNumber);
 
 
 #endif /* aarushi_funcs.h */
