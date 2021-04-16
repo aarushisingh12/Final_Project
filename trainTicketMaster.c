@@ -42,7 +42,7 @@ void trainTicketMaster(int socket, int server_name){
                                         displayAvailableSeats(nextCustomer.dayOfTravel,nextCustomer.numberOfTravelers); //shows available seats customer selects starting index (seat) and #of travelers fills in seats
                                         nextCustomer = selectAvailableSeats(nextCustomer); //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves bookedSeats to customer struct copy
                                         nextCustomer.ticketNumber = assignTicketNumber(); //assign ticket number //can be a random num or incremented value in shared memory
-                                        writeToSummaryFile(nextCustomer,server_name); //writes to appropriate day's summary file, ticket number will be used to search summary later on
+                                        writeToSummaryFile(nextCustomer,server_name,socket); //writes to appropriate day's summary file, ticket number will be used to search summary later on
                                         sendReceipt(socket,server_name); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
                                         // then sends receipt strings to client//
                                 } 
@@ -57,7 +57,7 @@ void trainTicketMaster(int socket, int server_name){
 
                 case 2: //ticketInquiry //syncrhonization, just reading so just have to make sure no other writers at time of reading
                         ticketNumber = ticketInquiryMenu(socket); //will ask for ticket
-                        displayTicketInfo(ticketNumber); //will search summary files for ticketNumber 
+                        displayTicketInfo(ticketNumber,socket); //will search summary files for ticketNumber 
                         break;
 
                 case 3: //modifyReservation //needs to be synchronized so no other concurrent writers or readers

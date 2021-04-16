@@ -116,7 +116,7 @@ int assignTicketNumber(){
 }
 
 
-void writeToSummaryFile(customerInfo nextCustomer, int server_name){
+void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
     printf("writeToSummaryFile() called\n"); //for debugging
     //accesses date and writes reservation info to day's summary file 
 }
@@ -143,7 +143,7 @@ int ticketInquiryMenu(int socket){
 
 
 //will search summary files for ticketNumber and send to customer via tcp
-void displayTicketInfo(int ticketNumber){
+void displayTicketInfo(int ticketNumber,int socket){
     printf("diplayTicketInfo() called\n"); //for debugging
 
 }

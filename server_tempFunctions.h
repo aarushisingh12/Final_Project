@@ -66,7 +66,7 @@ int assignTicketNumber();
 
 
 //accesses date and writes reservation info to day's summary file
-void writeToSummaryFile(customerInfo nextCustomer,int server_name); 
+void writeToSummaryFile(customerInfo nextCustomer,int server_name, int socket); 
 
 
 
@@ -83,7 +83,7 @@ int ticketInquiryMenu(int socket);
 
 
 //will search summary files for ticketNumber and send to customer via tcp
-void displayTicketInfo(int ticketNumber);
+void displayTicketInfo(int ticketNumber, int socket);
 
 
 //asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
