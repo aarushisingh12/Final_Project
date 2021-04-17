@@ -11,6 +11,7 @@
 //#include <sys/stat.h>   //I don't think this one helps
 #include <fcntl.h>      // Needed for shared memory
 #include <semaphore.h>  // Used for semaphores
+#include <stdbool.h>    // Used to declare boolean values
 
 #include "trainSeating.h" //Include our own header file
 
@@ -36,7 +37,7 @@ void updateDays(availableSeats *day1, availableSeats *day2, int sizeOfSeatsArray
     }
 }
 
-sem_t mutex; 
+sem_t mutex; //semaphore
 
 /*
 void semaphoreStuff() {
@@ -98,6 +99,65 @@ void removeSharedMemory(availableSeats *ptr) {
     shm_unlink(name);
 }
 */
+
+//calculates and then returns the number of available seats for a given day
+int countNumberOfAvailableSeats(availableSeats *dayToCount) {
+    int numberOfAvailableSeats = 0;
+    for(int i = 0; i < sizeof(dayToCount->seats) / sizeof(int); i++) {
+        if(dayToCount->seats[i] == 0) {
+            numberOfAvailableSeats++;
+        }
+    }
+    return numberOfAvailableSeats;
+}
+
+//Finds which day struct we should be looking at based on the passed dayOfTravel variable
+availableSeats matchDayOfTravel(availableSeats *ptr, int dayOfTravel) {
+    //if statement to compare which dayOfTravel we are on
+    if(*(ptr)->date == dayOfTravel) {
+        //day 1 match
+        return *(ptr);
+    } else {
+        //day 2 match
+        return *(ptr+1);
+    }
+}
+
+//needs to be synchronized
+bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, availableSeats *ptr){
+    printf("\ncheckIfavailableSeats() called\n"); //for debugging
+    
+    int numberOfAvailableSeats;
+    availableSeats currentDay = matchDayOfTravel(ptr, dayOfTravel);
+    
+    numberOfAvailableSeats = countNumberOfAvailableSeats(&currentDay);
+    
+    if(numberOfTravelers > numberOfAvailableSeats) {
+        //more travelers than available seats
+        return false;
+    } else {
+        //equal to or more than enough seats for the number of travelers
+        return true;
+    }
+}
+
+//needs to be synchronized
+//shows seats customer selects starting index (seat) and #of travelers fills in seats
+//accesses shared memory to read seats available and copies to string buffer and then sends to client via tcp
+void displayAvailableSeats(int dayOfTravel, int socket, availableSeats *ptr){
+    printf("diplayAvailalbeSeats() called\n"); //for debugging
+    
+    availableSeats currentDay = matchDayOfTravel(ptr, dayOfTravel);
+
+    //Display array for a day in a 3 x 9 format:
+    for(int i = 0; i < sizeof(currentDay.seats) / sizeof(int) / 9; i++) {
+        //Print each column (which is +3 more with each column over)
+        printf("A%d:%d, B%d:%d, C%d:%d, D%d:%d, E%d:%d, F%d:%d, G%d:%d, H%d:%d, I%d:%d \n", 
+                i+1, currentDay.seats[i], i+1, currentDay.seats[i+3], i+1, currentDay.seats[i+6], 
+                i+1, currentDay.seats[i+9], i+1, currentDay.seats[i+12], i+1, currentDay.seats[i+15],
+                i+1, currentDay.seats[i+18], i+1, currentDay.seats[i+21], i+1, currentDay.seats[i+24]);
+    }
+}
 
 int trainSeating() {
     availableSeats day1; //Struct for the first day
