@@ -43,6 +43,8 @@ customerInfo reservationMenu(int socket);
 // //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
 // bool cancelMenu(int socket);
 
+//self test method for making sure everything is put together correctly
+void printCustomerFromStruct(customerInfo info);
 //convienience methoud for requesting ints from the user
 int requestInt(char *message, int socket);
 

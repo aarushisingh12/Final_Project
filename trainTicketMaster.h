@@ -1,8 +1,8 @@
 //Andrew Ingle 04/010/2021 - Team I - Final Project
-//An overall algorithmic loop, a master function manages sequencing of menu functions 
-//and the functions needed to handle the server processing of the next client/customer's selections. 
-//When new client connects to chosen server’s port, 
-//server commits a thread to run this master function 
+//An overall algorithmic loop, a master function manages sequencing of menu functions
+//and the functions needed to handle the server processing of the next client/customer's selections.
+//When new client connects to chosen server’s port,
+//server commits a thread to run this master function
 //loop continues until until client ends session by choosing “exit the program”from main menu
 
 
@@ -21,7 +21,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#define STRING_BUFFER_MAX 300//for tcp 
+#define STRING_BUFFER_MAX 300//for tcp
 
 
 typedef struct Date {
@@ -37,7 +37,7 @@ typedef struct customerInfo {
     char dateOfBirth[20];
     char gender[10];
     char governmentID[20];
-    char dayOfTravel; //1 for day, 2 for tomorrow
+    int dayOfTravel; //1 for day, 2 for tomorrow
     char dateOfTravel[20];// if dayOfTravel = 1, can use getTodaysDate()
     int numberOfTravelers;
     int ticketNumber; //assigned when confirming reservation with assignTicketNumber() func

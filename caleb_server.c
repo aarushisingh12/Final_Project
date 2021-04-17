@@ -59,8 +59,7 @@ customerInfo reservationMenu(int socket){
     // // Get full name
     char firstname[20];
     char lastname[40];
-    //sorry caleb I think we lost your str cat stuff :(
-  
+
     strcpy(stringBuffer,"Please enter your First name\n");
     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
@@ -71,8 +70,72 @@ customerInfo reservationMenu(int socket){
 
     strcpy(nextCustomersInfo.fullName, stringBuffer);
 
+    strcpy(stringBuffer,"Please enter your Last name\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-    printf("\n\n%s\n", nextCustomersInfo.fullName);
+    //receive response via tcp
+    strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    recv(socket,&stringBuffer,sizeof(stringBuffer),0);
+
+    strncat(nextCustomersInfo.fullName, " ", 2);
+    strncat(nextCustomersInfo.fullName, stringBuffer, sizeof(nextCustomersInfo.fullName));
+
+    strcpy(stringBuffer,"Please enter your Date of Birth. (MM/DD/YYYY Format)\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //receive response via tcp
+    strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    recv(socket,&stringBuffer,sizeof(stringBuffer),0);
+
+    strcpy(nextCustomersInfo.dateOfBirth, stringBuffer);
+
+
+
+    strcpy(stringBuffer,"Please enter your Gender\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //receive response via tcp
+    strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    recv(socket,&stringBuffer,sizeof(stringBuffer),0);
+
+    strcpy(nextCustomersInfo.gender, stringBuffer);
+
+
+
+    strcpy(stringBuffer,"Please enter your Government ID number\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //receive response via tcp
+    strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    recv(socket,&stringBuffer,sizeof(stringBuffer),0);
+
+    strcpy(nextCustomersInfo.governmentID, stringBuffer);
+
+
+
+    strcpy(stringBuffer,"Are you reserving for:\n1.Today\n2.Tomorrow\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //receive response via tcp
+    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    recv(socket,&nextCustomersInfo.dayOfTravel,sizeof(int),0);
+
+
+    strcpy(stringBuffer,"How many people are in your party?\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //receive response via tcp
+    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    recv(socket,&nextCustomersInfo.numberOfTravelers,sizeof(int),0);
+
+    printCustomerFromStruct(nextCustomersInfo);
+
     strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
     send(socket,stringBuffer,sizeof(stringBuffer),0);
     sleep(4);
@@ -249,6 +312,17 @@ int cancelTicket(int ticketNumber) {
   return 0;
 }
 */
+void printCustomerFromStruct(customerInfo info) {
+  printf("\n================================\n");
+  printf("Customer name: %s\nCustomer DOB: %s\nCustomer Gender: %s\nGovernmentID Number: %s\n",info.fullName,info.dateOfBirth,info.gender,info.governmentID);
+  if (info.dayOfTravel == 1) {
+    printf("Travelling today with a party of size %d",info.numberOfTravelers);
+  }
+  else {
+    printf("Travelling tomorrow with a party of size %d\n",info.numberOfTravelers);
+  }
+  printf("================================\n");
+}
 void printTrain() {
     printf("\n\n\n\n\n\n\n\n\n\n      __        __________\n     /  \\         ========   _____________\n      ||          =      =  /           ]\n  ___==============      = /            ]\n  \\_[ Group I    ========= [            ]\n    [\\=====================^==============\n___//_(_)_(_)_(_)___\\__/_____(_)_(_)_(_)\n========================================\n\n\n");
 }
