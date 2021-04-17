@@ -57,11 +57,10 @@ customerInfo reservationMenu(int socket){
     customerInfo nextCustomersInfo;
 
     // // Get full name
-    // char firstname[20];
-    // char lastname[40];
-
-    // char fullName[];
-
+    char firstname[20];
+    char lastname[40];
+    //sorry caleb I think we lost your str cat stuff :(
+  
     strcpy(stringBuffer,"Please enter your First name\n");
     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
@@ -127,7 +126,7 @@ customerInfo reservationMenu(int socket){
 //     return customersMods;
 // }
 // //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-// bool cancelMenu(int socket){
+// bool confirmCancellationMenu(int socket){
 //     printf("cancelMenu() called\n"); //for debugging
 //     //or false if they don't confir
 //     return true;

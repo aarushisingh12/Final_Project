@@ -167,16 +167,16 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket){
 
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool cancelMenu(int socket){
+bool confirmCancellationMenu(int socket){
    printf("cancelMenu() called\n"); //for debugging
-   //or false if they don't confir
+   //or false if they don't confirm
    return true;
 }
 
 
 //need to be synchronized
-//cancel reservation by deleting their entry from summary files
-void cancelReservation(int ticketNumber,int socket){
+//needs to ask for ticket number and then go to summary file(s) and delete entry
+void cancelReservation(int socket){
     printf("cancelReservation() called\n"); //for debugging
 
 

@@ -96,12 +96,12 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
 
 ////cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool cancelMenu(int socket);
+bool confirmCancellationMenu(int socket);
 
 
 //need to be synchronized
-//cancel reservation by deleting from summary files
-void cancelReservation(int ticketNumber,int socket);
+//needs to ask for ticket number and then go to summary file(s) and delete entry
+void cancelReservation(int socket);
 
 
 //needs to close socket and have process exit/return thread to pool

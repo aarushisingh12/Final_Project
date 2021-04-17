@@ -66,8 +66,8 @@ void trainTicketMaster(int socket, int server_name){
                         break;
 
                 case 4: //cancelReservation  //writing to summary file needs to be synchronized
-                        if (cancelMenu(socket) == true){
-                                cancelReservation(ticketNumber,socket); //cancel reservation by deleting from summary files
+                        if (confirmCancellationMenu(socket) == true){ //confirm cancellation menu 
+                                cancelReservation(socket); //ask for ticket number, cancel reservation by deleting from summary files
                         }
                         break;
 
