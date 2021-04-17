@@ -43,6 +43,9 @@ customerInfo modifyReservationMenu(int socket);
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
 bool cancelMenu(int socket);
 
+//convienience methoud for requesting ints from the user
+int requestInt(char *message, int socket);
+
 /*
 int readFromUser();
 // Starts the client reading process
