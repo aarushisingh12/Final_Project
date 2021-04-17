@@ -77,12 +77,12 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket){
 
 
 
-//bool confirmReservationMenu(int socket){
-//    printf("\nconfirmtReservationMenu() called\n"); //for debugging
-////return false if they do not confirm, could say reservation not confirmed or something
-//
-//    return true;
-//}
+bool confirmReservationMenu(int socket){
+   printf("\nconfirmtReservationMenu() called\n"); //for debugging
+//return false if they do not confirm, could say reservation not confirmed or something
+
+   return true;
+}
 
 
 //needs to be synchronized
@@ -132,13 +132,13 @@ void sendReceipt(int socket,int server_name){
 
 
 
-////will ask for ticket customer via tcp for ticket number, returns ticket number
-//int ticketInquiryMenu(int socket){
-//    printf("ticketInquiryMenu() called\n"); //for debugging
-//    int ticketNumber;
-//
-//    return ticketNumber;
-//}
+//will ask for ticket customer via tcp for ticket number, returns ticket number
+int ticketInquiryMenu(int socket){
+   printf("ticketInquiryMenu() called\n"); //for debugging
+   int ticketNumber;
+
+   return ticketNumber;
+}
 
 
 
@@ -149,14 +149,14 @@ void displayTicketInfo(int ticketNumber,int socket){
 }
 
 
-////asks what fields customer want to modifiy, returns struct holding customers modified info
-////have to get ticket number to use to search summary files
-//customerInfo modifyReservationMenu(int socket){
-//    printf("diplayAvailalbeSeats() called\n"); //for debugging
-//    customerInfo customersMods;  //struct that holds modfied info/
-//
-//    return customersMods;
-//}
+//asks what fields customer want to modifiy, returns struct holding customers modified info
+//have to get ticket number to use to search summary files
+customerInfo modifyReservationMenu(int socket){
+   printf("diplayAvailalbeSeats() called\n"); //for debugging
+   customerInfo customersMods;  //struct that holds modfied info/
+
+   return customersMods;
+}
 
 
 //will use customerMods.ticketNumber to search, commits modification to summary files,
@@ -166,12 +166,12 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket){
 }
 
 
-////cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-//bool cancelMenu(int socket){
-//    printf("cancelMenu() called\n"); //for debugging
-//    //or false if they don't confir
-//    return true;
-//}
+//cancel confirmation sent over tcp if customer sends back yes then returns true, else false
+bool cancelMenu(int socket){
+   printf("cancelMenu() called\n"); //for debugging
+   //or false if they don't confir
+   return true;
+}
 
 
 //need to be synchronized

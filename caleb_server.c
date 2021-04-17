@@ -56,9 +56,11 @@ customerInfo reservationMenu(int socket){
     char stringBuffer[STRING_BUFFER_MAX];
     customerInfo nextCustomersInfo;
 
-    // Get full name
-    char firstname[20];
-    char lastname[40];
+    // // Get full name
+    // char firstname[20];
+    // char lastname[40];
+
+    // char fullName[];
 
     strcpy(stringBuffer,"Please enter your First name\n");
     send(socket,stringBuffer,sizeof(stringBuffer),0);
@@ -66,90 +68,85 @@ customerInfo reservationMenu(int socket){
     //receive response via tcp
     strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
     send(socket,stringBuffer,sizeof(stringBuffer),0);
-    recv(socket,&firstname,sizeof(firstname),0);
+    recv(socket,&stringBuffer,sizeof(stringBuffer),0);
 
-    strcpy(nextCustomersInfo.fullName, firstname);
+    strcpy(nextCustomersInfo.fullName, stringBuffer);
 
-    //strcpy(stringBuffer,"Please enter your Last name\n");
-    //send(socket,stringBuffer,sizeof(stringBuffer),0);
-
-    //receive response via tcp
-    //strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
-    //send(socket,stringBuffer,sizeof(stringBuffer),0);
-    //recv(socket,&lastname,sizeof(lastname),0);
-
-    strncat(nextCustomersInfo.fullName, lastname, sizeof(lastname));
 
     printf("\n\n%s\n", nextCustomersInfo.fullName);
+    strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    sleep(4);
+    exit(0);
 
     return nextCustomersInfo;
 }
 
-bool confirmReservationMenu(int socket){
-    printf("confirmReservationMenu() called\n"); //for debugging
-//return false if they do not confirm, could say reservation not confirmed or something
-    char stringBuffer[STRING_BUFFER_MAX];
+// bool confirmReservationMenu(int socket){
+//     printf("confirmReservationMenu() called\n"); //for debugging
+// //return false if they do not confirm, could say reservation not confirmed or something
+//     char stringBuffer[STRING_BUFFER_MAX];
 
-    strcpy(stringBuffer,ANSI_COLOR_GREEN "Confirm reservation? (yes/no)" ANSI_COLOR_RESET "\n");
-    send(socket,stringBuffer,sizeof(stringBuffer),0);
+//     strcpy(stringBuffer,ANSI_COLOR_GREEN "Confirm reservation? (yes/no)" ANSI_COLOR_RESET "\n");
+//     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-    //receive response via tcp
-    strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
-    send(socket,stringBuffer,sizeof(stringBuffer),0);
+//     //receive response via tcp
+//     strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
+//     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-    char stringInput[STRING_BUFFER_MAX]; //string buffer to hold client main menu input
-    recv(socket,&stringInput,sizeof(stringInput),0);
+//     char stringInput[STRING_BUFFER_MAX]; //string buffer to hold client main menu input
+//     recv(socket,&stringInput,sizeof(stringInput),0);
 
-    if (strcmp(stringInput, "yes") == 0) {
-      strcpy(stringBuffer,"Reservation Confirmed.\n"); // Letting user know that their reservation was confirmed
-      send(socket,stringBuffer,sizeof(stringBuffer),0);
-      return true;
-    }
+//     if (strcmp(stringInput, "yes") == 0) {
+//       strcpy(stringBuffer,"Reservation Confirmed.\n"); // Letting user know that their reservation was confirmed
+//       send(socket,stringBuffer,sizeof(stringBuffer),0);
+//       return true;
+//     }
 
-    printf("-d input was not yes, it was %s\n", stringInput); // for debugging purposes
+//     printf("-d input was not yes, it was %s\n", stringInput); // for debugging purposes
 
-    strcpy(stringBuffer,"Reservation not Confirmed.\n"); // Letting user know that their reservation was not confirmed
-    send(socket,stringBuffer,sizeof(stringBuffer),0);
-    return true;
-}
+//     strcpy(stringBuffer,"Reservation not Confirmed.\n"); // Letting user know that their reservation was not confirmed
+//     send(socket,stringBuffer,sizeof(stringBuffer),0);
+//     return true;
+// }
 
-//will ask for ticket customer via tcp for ticket number, returns ticket number
-int ticketInquiryMenu(int socket){
-    printf("ticketInquiryMenu() called\n"); //for debugging
-    int ticketNumber = requestInt("Please enter your ticket number for lookup.\n", socket);
+// //will ask for ticket customer via tcp for ticket number, returns ticket number
+// int ticketInquiryMenu(int socket){
+//     printf("ticketInquiryMenu() called\n"); //for debugging
+//     int ticketNumber = requestInt("Please enter your ticket number for lookup.\n", socket);
 
-    return ticketNumber;
-}
+//     return ticketNumber;
+// }
 
-//asks what fields customer want to modifiy, returns struct holding customers modified info
-//have to get ticket number to use to search summary files
-customerInfo modifyReservationMenu(int socket){
-    printf("diplayAvailalbeSeats() called\n"); //for debugging
-    customerInfo customersMods;  //struct that holds modfied info
+// //asks what fields customer want to modifiy, returns struct holding customers modified info
+// //have to get ticket number to use to search summary files
+// customerInfo modifyReservationMenu(int socket){
+//     printf("diplayAvailalbeSeats() called\n"); //for debugging
+//     customerInfo customersMods;  //struct that holds modfied info
 
-    return customersMods;
-}
-//cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool cancelMenu(int socket){
-    printf("cancelMenu() called\n"); //for debugging
-    //or false if they don't confir
-    return true;
-}
+//     return customersMods;
+// }
+// //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
+// bool cancelMenu(int socket){
+//     printf("cancelMenu() called\n"); //for debugging
+//     //or false if they don't confir
+//     return true;
+// }
 
-int requestInt(char *message, int socket){
-  int returnInt;
-  char stringBuffer[STRING_BUFFER_MAX];
-  strcpy(stringBuffer,message);
-  send(socket,stringBuffer,sizeof(stringBuffer),0);
+// int requestInt(char *message, int socket){
+//   int returnInt;
+//   char stringBuffer[STRING_BUFFER_MAX];
+//   strcpy(stringBuffer,message);
+//   send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-  //receive response via tcp
-  strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
-  send(socket,stringBuffer,sizeof(stringBuffer),0);
+//   //receive response via tcp
+//   strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+//   send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-  recv(socket,&returnInt,sizeof(int),0);
+//   recv(socket,&returnInt,sizeof(int),0);
 
-  return returnInt;
-}
+//   return returnInt;
+// }
 /*
 int readFromUser(){
   printTrain();
