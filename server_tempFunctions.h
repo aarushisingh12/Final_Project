@@ -40,8 +40,8 @@ struct Date getTodaysDate();
 bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers,int socket);
 
 
-////menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
-bool confirmReservationMenu();
+// //menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
+// bool confirmReservationMenu();
 
 
 
@@ -77,8 +77,8 @@ void sendReceipt(int socket, int server_name);
 
 
 
-////will ask for ticket customer via tcp for ticket number, returns ticket number
-int ticketInquiryMenu(int socket);
+// //will ask for ticket customer via tcp for ticket number, returns ticket number
+// int ticketInquiryMenu(int socket);
 
 
 

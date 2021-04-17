@@ -31,11 +31,11 @@ int mainMenu(int socket);
 //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
 customerInfo reservationMenu(int socket);
 
-// //menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
-// bool confirmReservationMenu();
+//menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
+bool confirmReservationMenu();
 
-// //will ask for ticket customer via tcp for ticket number, returns ticket number
-// int ticketInquiryMenu(int socket);
+//will ask for ticket customer via tcp for ticket number, returns ticket number
+int ticketInquiryMenu(int socket);
 
 // //asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
 // customerInfo modifyReservationMenu(int socket);

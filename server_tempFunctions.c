@@ -77,12 +77,12 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket){
 
 
 
-bool confirmReservationMenu(int socket){
-   printf("\nconfirmtReservationMenu() called\n"); //for debugging
-//return false if they do not confirm, could say reservation not confirmed or something
-
-   return true;
-}
+// bool confirmReservationMenu(int socket){
+//    printf("\nconfirmtReservationMenu() called\n"); //for debugging
+// //return false if they do not confirm, could say reservation not confirmed or something
+//
+//    return true;
+// }
 
 
 //needs to be synchronized
@@ -132,13 +132,13 @@ void sendReceipt(int socket,int server_name){
 
 
 
-//will ask for ticket customer via tcp for ticket number, returns ticket number
-int ticketInquiryMenu(int socket){
-   printf("ticketInquiryMenu() called\n"); //for debugging
-   int ticketNumber;
-
-   return ticketNumber;
-}
+// //will ask for ticket customer via tcp for ticket number, returns ticket number
+// int ticketInquiryMenu(int socket){
+//    printf("ticketInquiryMenu() called\n"); //for debugging
+//    int ticketNumber;
+//
+//    return ticketNumber;
+// }
 
 
 

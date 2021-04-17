@@ -46,7 +46,7 @@ int mainMenu(int socket){
     else {
         strcpy(stringBuffer,"isn't a valid input, please try again!\n");
         send(socket,stringBuffer, sizeof(stringBuffer), 0);
-        mainMenu(socket); //call itself recursively
+        return 0;
     }
     return 0;
 }
@@ -136,49 +136,48 @@ customerInfo reservationMenu(int socket){
 
     printCustomerFromStruct(nextCustomersInfo);
 
-    strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
+    /*strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
     send(socket,stringBuffer,sizeof(stringBuffer),0);
     sleep(4);
-    exit(0);
+    exit(0);*/
 
     return nextCustomersInfo;
 }
 
-// bool confirmReservationMenu(int socket){
-//     printf("confirmReservationMenu() called\n"); //for debugging
-// //return false if they do not confirm, could say reservation not confirmed or something
-//     char stringBuffer[STRING_BUFFER_MAX];
+bool confirmReservationMenu(int socket){
+    printf("confirmReservationMenu() called\n"); //for debugging
+//return false if they do not confirm, could say reservation not confirmed or something
+    char stringBuffer[STRING_BUFFER_MAX];
 
-//     strcpy(stringBuffer,ANSI_COLOR_GREEN "Confirm reservation? (yes/no)" ANSI_COLOR_RESET "\n");
-//     send(socket,stringBuffer,sizeof(stringBuffer),0);
+    strcpy(stringBuffer,ANSI_COLOR_GREEN "Confirm reservation? (yes/no)" ANSI_COLOR_RESET "\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-//     //receive response via tcp
-//     strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
-//     send(socket,stringBuffer,sizeof(stringBuffer),0);
+    //receive response via tcp
+    strcpy(stringBuffer,"needstring"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-//     char stringInput[STRING_BUFFER_MAX]; //string buffer to hold client main menu input
-//     recv(socket,&stringInput,sizeof(stringInput),0);
+    recv(socket,&stringBuffer,sizeof(stringBuffer),0);
 
-//     if (strcmp(stringInput, "yes") == 0) {
-//       strcpy(stringBuffer,"Reservation Confirmed.\n"); // Letting user know that their reservation was confirmed
-//       send(socket,stringBuffer,sizeof(stringBuffer),0);
-//       return true;
-//     }
+    if (strcmp(stringBuffer, "yes") == 0) {
+      strcpy(stringBuffer,"Reservation Confirmed.\n"); // Letting user know that their reservation was confirmed
+      send(socket,stringBuffer,sizeof(stringBuffer),0);
+      return true;
+    }
 
-//     printf("-d input was not yes, it was %s\n", stringInput); // for debugging purposes
+    printf("-d input was not yes, it was %s\n", stringBuffer); // for debugging purposes
 
-//     strcpy(stringBuffer,"Reservation not Confirmed.\n"); // Letting user know that their reservation was not confirmed
-//     send(socket,stringBuffer,sizeof(stringBuffer),0);
-//     return true;
-// }
+    strcpy(stringBuffer,"Reservation not Confirmed.\n"); // Letting user know that their reservation was not confirmed
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    return false;
+}
 
-// //will ask for ticket customer via tcp for ticket number, returns ticket number
-// int ticketInquiryMenu(int socket){
-//     printf("ticketInquiryMenu() called\n"); //for debugging
-//     int ticketNumber = requestInt("Please enter your ticket number for lookup.\n", socket);
+//will ask for ticket customer via tcp for ticket number, returns ticket number
+int ticketInquiryMenu(int socket){
+   printf("ticketInquiryMenu() called\n"); //for debugging
+   int ticketNumber = requestInt("Please enter your ticket number for lookup.\n", socket);
 
-//     return ticketNumber;
-// }
+   return ticketNumber;
+}
 
 // //asks what fields customer want to modifiy, returns struct holding customers modified info
 // //have to get ticket number to use to search summary files
@@ -195,20 +194,19 @@ customerInfo reservationMenu(int socket){
 //     return true;
 // }
 
-// int requestInt(char *message, int socket){
-//   int returnInt;
-//   char stringBuffer[STRING_BUFFER_MAX];
-//   strcpy(stringBuffer,message);
-//   send(socket,stringBuffer,sizeof(stringBuffer),0);
+int requestInt(char *message, int socket){
+ int returnInt;
+ char stringBuffer[STRING_BUFFER_MAX];
+ strcpy(stringBuffer,message);
+ send(socket,stringBuffer,sizeof(stringBuffer),0);
 
-//   //receive response via tcp
-//   strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
-//   send(socket,stringBuffer,sizeof(stringBuffer),0);
+ //receive response via tcp
+ strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+ send(socket,stringBuffer,sizeof(stringBuffer),0);
+ recv(socket,&returnInt,sizeof(int),0);
 
-//   recv(socket,&returnInt,sizeof(int),0);
-
-//   return returnInt;
-// }
+ return returnInt;
+}
 /*
 int readFromUser(){
   printTrain();
@@ -321,7 +319,7 @@ void printCustomerFromStruct(customerInfo info) {
   else {
     printf("Travelling tomorrow with a party of size %d\n",info.numberOfTravelers);
   }
-  printf("================================\n");
+  printf("\n================================\n");
 }
 void printTrain() {
     printf("\n\n\n\n\n\n\n\n\n\n      __        __________\n     /  \\         ========   _____________\n      ||          =      =  /           ]\n  ___==============      = /            ]\n  \\_[ Group I    ========= [            ]\n    [\\=====================^==============\n___//_(_)_(_)_(_)___\\__/_____(_)_(_)_(_)\n========================================\n\n\n");

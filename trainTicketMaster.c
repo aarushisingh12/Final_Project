@@ -1,8 +1,8 @@
 //Andrew Ingle 04/010/2021 - Team I - Final Project
-//An overall algorithmic loop, a master function manages sequencing of menu functions 
-//and the functions needed to handle the server processing of the next client/customer's selections. 
-//When new client connects to chosen server’s port, 
-//server commits a thread to run this master function 
+//An overall algorithmic loop, a master function manages sequencing of menu functions
+//and the functions needed to handle the server processing of the next client/customer's selections.
+//When new client connects to chosen server’s port,
+//server commits a thread to run this master function
 //loop continues until until client ends session by choosing “exit the program”from main menu
 
 
@@ -18,7 +18,7 @@
 
 
 void trainTicketMaster(int socket, int server_name){
-        
+
         //char todaysDate[20]; //gets todays date if needed
         //strcpy(todaysDate,getTodaysDate().today);
 
@@ -32,7 +32,7 @@ void trainTicketMaster(int socket, int server_name){
                 int ticketNumber = 0;
                 customerInfo customersMods; //struct that holds modfied info
                 bool cancelConfirmation = false;
-                
+
                 switch(customerResponse){
                 case 1: //makeReservation
                         nextCustomer = reservationMenu(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
@@ -45,19 +45,19 @@ void trainTicketMaster(int socket, int server_name){
                                         writeToSummaryFile(nextCustomer,server_name,socket); //writes to appropriate day's summary file, ticket number will be used to search summary later on
                                         sendReceipt(socket,server_name); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
                                         // then sends receipt strings to client//
-                                } 
+                                }
                                 else {//customer didn't confirm reservation //
                                         trainTicketMaster(socket,server_name); //recursively
                                 }
                         }
                         else {//sorry not enough seats available!
-                                trainTicketMaster(socket,server_name); //recursivley  
-                        }   
+                                trainTicketMaster(socket,server_name); //recursivley
+                        }
                         break;
 
                 case 2: //ticketInquiry //syncrhonization, just reading so just have to make sure no other writers at time of reading
                         ticketNumber = ticketInquiryMenu(socket); //will ask for ticket
-                        displayTicketInfo(ticketNumber,socket); //will search summary files for ticketNumber 
+                        displayTicketInfo(ticketNumber,socket); //will search summary files for ticketNumber
                         break;
 
                 case 3: //modifyReservation //needs to be synchronized so no other concurrent writers or readers
@@ -66,7 +66,7 @@ void trainTicketMaster(int socket, int server_name){
                         break;
 
                 case 4: //cancelReservation  //writing to summary file needs to be synchronized
-                        if (confirmCancellationMenu(socket) == true){ //confirm cancellation menu 
+                        if (confirmCancellationMenu(socket) == true){ //confirm cancellation menu
                                 cancelReservation(socket); //ask for ticket number, cancel reservation by deleting from summary files
                         }
                         break;
@@ -78,9 +78,9 @@ void trainTicketMaster(int socket, int server_name){
                         break;
 
                 default: //this is probably redundant
-                        //send not a valid input message 
+                        //send not a valid input message
                         trainTicketMaster(socket,server_name); //recursvie call
-                
+                        
                 }
         }
 
