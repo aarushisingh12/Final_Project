@@ -99,11 +99,22 @@ void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket){
 //needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory
 //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers 
-//had to add addedSeatsIf Modified for when just adding select number number of seats
+//had to add addedSeatsIfModified for when just adding select number number of seats
+//if addedSeatsIfModified is non-zero than that is the number you would use for the aount of seats that can be selected
+//then update .bookedSeats struct member accordingly
 customerInfo selectAvailableSeats(customerInfo nextCustomer, int socket, int addedSeatsIfModified){
     printf("selectAvailalbeSeats() called\n"); //for debugging
 
     return nextCustomer;
+}
+
+//NEW FUNC
+customerInfo freeCustomersSeatsInSharedMem(customerInfo customersMods, int customersRequestedSeatReduction){
+    //using customerForSeatsFreed.dayOfTravel and cusomerForSeatsFreed.bookedSeats, find customers seats in shared memory and free them
+    //if customer modifying their ticket by removing a few seats, you can use customersRequestedSeatReduction to delete this number of seats but keep the rest of theirs)
+    //basically you would want to check if their is a non-zero value in customersRequestedSeatReduction and if so that is the number you use for amount of seats to be freed
+    //then update their booked seats accordingly
+    return customersMods;  //return used when customer modifies seats by deselecting some
 }
 
 
@@ -122,6 +133,13 @@ void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
     //accesses date and writes reservation info to day's summary file
 }
 
+//NEW FUNC
+//find customers entry in by ticket number and save to struct, return struct
+customerInfo retrieveCustomersInfo(int ticketNumber){
+    customerInfo customersInfo;
+   
+    return customersInfo;
+}
 
 
 void sendReceipt(customerInfo nextCustomer, int socket,int server_name){
@@ -167,20 +185,9 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket){
 }
 
 
- //find customers entry in by ticket number and save to struct, return struct
-customerInfo retrieveCustomersInfo(int ticketNumber){
-    customerInfo customersInfo;
-   
-    return customersInfo;
-}
+ 
 
 
-customerInfo freeCustomersSeatsInSharedMem(customerInfo customersMods, int customersRequestedSeatReduction){
-    //using customerForSeatsFreed.dayOfTravel and cusomerForSeatsFreed.bookedSeats, find customers seats in shared memory and free them
-    //if customer modifying their ticket by removing a few seats, you can use customersRequestedSeatReduction to delete this number of seats but keep the rest of theirs)
-    //then update their booked seats accordingly
-    return customersMods;  //return used when customer modifies seats by deselecting some
-}
 
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
