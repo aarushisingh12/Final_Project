@@ -110,6 +110,7 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer, int socket, int add
 
 //NEW FUNC
 customerInfo freeCustomersSeatsInSharedMem(customerInfo customersMods, int customersRequestedSeatReduction){
+    printf("\nfreeCustomersSeatsInSharedMem called");
     //using customerForSeatsFreed.dayOfTravel and cusomerForSeatsFreed.bookedSeats, find customers seats in shared memory and free them
     //if customer modifying their ticket by removing a few seats, you can use customersRequestedSeatReduction to delete this number of seats but keep the rest of theirs)
     //basically you would want to check if their is a non-zero value in customersRequestedSeatReduction and if so that is the number you use for amount of seats to be freed
@@ -136,6 +137,7 @@ void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
 //NEW FUNC
 //find customers entry in by ticket number and save to struct, return struct
 customerInfo retrieveCustomersInfo(int ticketNumber){
+    printf("\nretrieveCustomersInfo called\n"); //for debugging
     customerInfo customersInfo;
    
     return customersInfo;

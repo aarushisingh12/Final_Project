@@ -24,46 +24,46 @@
 #define THREAD_NUM 5
 
 //multi thread code
-typedef struct Task {
-    void (*taskFunction)(int, int); //this will become void (*trainTicketMaster(int,int));
-    int arg1, arg2; //will be for clients socket and server_ane
-} Task;
+typedef struct Job {
+    void (*functionToExecute)(int, int); //this will become void (*trainTicketMaster(int,int));
+    int arg1, arg2; //will be for clients socket and server_name
+} Job;
 
-Task taskQueue[256];
-int taskCount = 0;
+Job jobQueue[200];
+int jobCount = 0;
 pthread_mutex_t mutexQueue;
 pthread_cond_t condQueue;
 
-void executeTask(Task* task) {
-    task->taskFunction(task->arg1, task->arg2);
+void executeJob(Job* job) {
+    job->functionToExecute(job->arg1, job->arg2);
 }
 
-void submitTask(Task task) {
+void submitJobForExecution(Job job) {
     pthread_mutex_lock(&mutexQueue);
-    taskQueue[taskCount] = task;
-    taskCount++;
+    jobQueue[jobCount] = job;
+    jobCount++;
     pthread_mutex_unlock(&mutexQueue);
     pthread_cond_signal(&condQueue);
 }
 
 void* startThread(void* args) {
     
-        Task task;
+        Job job;
 
         pthread_mutex_lock(&mutexQueue);
-        while (taskCount == 0) {
+        while (jobCount == 0) {
             pthread_cond_wait(&condQueue, &mutexQueue);
         }
 
-        task = taskQueue[0];
-        int i;
-        for (i = 0; i < taskCount - 1; i++) {
-            taskQueue[i] = taskQueue[i + 1];
+        job = jobQueue[0];
+       
+        for (int i = 0; i < jobCount - 1; i++) {
+            jobQueue[i] = jobQueue[i + 1];
         }
-        taskCount--;
+        jobCount--;
         pthread_mutex_unlock(&mutexQueue);
         
-        executeTask(&task);
+        executeJob(&job);
     
 }
 
@@ -149,8 +149,8 @@ int main() {
         printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
       //will eventually assign thread to call this with pointer to function:
       //trainTicketMaster(client_socket,server_name);
-        Task t = {.taskFunction = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name };
-        submitTask(t);
+        Job t = {.functionToExecute = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name };
+        submitJobForExecution(t);
    }
 
    if (client_socket<0){
