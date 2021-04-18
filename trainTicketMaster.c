@@ -32,6 +32,8 @@ void trainTicketMaster(int socket, int server_name){
                 int ticketNumber = 0;
                 customerInfo customersMods; //struct that holds modfied info
                 bool cancelConfirmation = false;
+                int previousDayOfTravel = 0;
+                int newDayOfTravel = 0;
 
                 switch(customerResponse){
                 case 1: //makeReservation
@@ -61,7 +63,35 @@ void trainTicketMaster(int socket, int server_name){
                         break;
 
                 case 3: //modifyReservation //needs to be synchronized so no other concurrent writers or readers
-                        customersMods = modifyReservationMenu(socket); //returns struct holding customers modified info //have to get ticket number
+                        ticketNumber = ticketInquiryMenu(socket); //will ask for ticket
+                        customersMods = retrieveCustomersInfo(ticketNumber);
+                        displayTicketInfo(ticketNumber,socket);
+                        customerResponse = modifyReservationMenu(socket); //returns int showing
+                        switch (customerResponse){
+                        case 1: //change customers seats
+                                freeCustomersSeatsInSharedMem(customersMods); //uses cutomer struct properties to find and free seats in shared memory
+                                displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket);
+                                customersMods = selectAvailableSeats(customersMods,socket);
+                                //send seats changed message
+                                break;
+                        case 2: //change day of travel
+                                previousDayOfTravel = customersMods.dayOfTravel;
+                                //TODO: newDayOfTravel == ask customer what day of travel, save to variable return
+                                if (checkIfAvailableSeats(nextCustomer.dayOfTravel, nextCustomer.numberOfTravelers,socket) == true){
+                                        freeCustomersSeatsInSharedMem(customersMods); 
+                                        customersMods.dayOfTravel = newDayOfTravel;
+                                        displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket);
+                                        selectAvailableSeats(customersMods,socket);
+                                        //send dayOfTravelChanged
+                                }else{
+                                        //send sorry not enought seats available on this day
+                                }
+
+                        case 3: //TODO: change number of travelers
+                        
+                        default:
+                                break;
+                        }
                         modifyReservation(customersMods,server_name,socket); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
                         break;
 

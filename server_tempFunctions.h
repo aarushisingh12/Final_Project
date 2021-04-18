@@ -30,16 +30,11 @@ struct Date getTodaysDate();
 
 
 
-//new functions related to changing customers seats//ask Andrew
+//new functions related to modifying reservation//ask Andrew
 
-customerInfo changeCustomerSeats(int ticketNumber,int socket);
+customerInfo retrieveCustomersInfo(int ticketNumber); //uses ticket number to access sumary files and save and return customer struct
 
-customerInfo findSelectedSeatsInSummaryFile(customerInfo customerForSeatsFreed,int socket);
-
-void freeCustomersSeatsInSharedMem(customerInfo customerForSeatsFreed);
-
-
-
+void freeCustomersSeatsInSharedMem(customerInfo customerMods);
 
 
 // int mainMenu(int socket);

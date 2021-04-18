@@ -38,8 +38,10 @@ bool confirmReservationMenu();
 //will ask for ticket customer via tcp for ticket number, returns ticket number
 int ticketInquiryMenu(int socket);
 
-//asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
-customerInfo modifyReservationMenu(int socket);
+//customerInfo modifyReservation(int socket);
+
+//asks what fields customer want to modifiy, returns int response
+int modifyReservationMenu(int socket);
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
 bool confirmCancellationMenu(int socket);

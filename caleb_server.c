@@ -179,33 +179,57 @@ int ticketInquiryMenu(int socket){
    return ticketNumber;
 }
 
-//asks what fields customer want to modifiy, returns struct holding customers modified info
-//have to get ticket number to use to search summary files
-customerInfo modifyReservationMenu(int socket){
-    printf("diplayAvailalbeSeats() called\n"); //for debugging
-    customerInfo customersMods;  //struct that holds modfied info
-    int ticketNumber = requestInt("Please enter your Ticket Number:",socket);
-    customersMods.ticketNumber = ticketNumber;
-
-    sendMessageToClient("\nPulling up reservation now . . . \n", socket);
-
+//asks what fields customer want to modifiy, returns int based on choice
+int modifyReservationMenu(int socket){
+    printf("modifyReservation() called\n"); //for debugging
+ 
     int option = requestInt("\nWhich would you like to modify:\n1.Seat\n2.Travel Date\n3.Size of party\n",socket);
 
     if (option == 1) {
-      sendMessageToClient("\nSeat Changed!\n", socket); // will need more info on seats
+      return 1;
     }
     else if (option == 2) {
-      customersMods.dayOfTravel = requestInt("\nWhen would you prefer to travel:\n1.Today\n2.Tomorrow\n",socket);
+      return 2;
     }
     else if (option == 3) {
-      customersMods.numberOfTravelers = requestInt("\nHow many people are in the party?\n",socket);
+      return 3;
     }
     else {
       sendMessageToClient("\nNothing changed!\n", socket);
     }
 
-    return customersMods;
+    return 0;
 }
+
+// //asks what fields customer want to modifiy, returns struct holding customers modified info
+// //have to get ticket number to use to search summary files
+// customerInfo modifyReservationMenu(int socket){
+//     printf("modifyReservation() called\n"); //for debugging
+//     customerInfo customersMods;  //struct that holds modfied info
+//     int ticketNumber = requestInt("Please enter your Ticket Number:",socket);
+//     customersMods.ticketNumber = ticketNumber;
+
+//     sendMessageToClient("\nPulling up reservation now . . . \n", socket);
+
+//     int option = requestInt("\nWhich would you like to modify:\n1.Seat\n2.Travel Date\n3.Size of party\n",socket);
+
+//     if (option == 1) {
+//       sendMessageToClient("\nSeat Changed!\n", socket); // will need more info on seats
+//     
+//     }
+//     else if (option == 2) {
+//       customersMods.dayOfTravel = requestInt("\nWhen would you prefer to travel:\n1.Today\n2.Tomorrow\n",socket);
+//     }
+//     else if (option == 3) {
+//       customersMods.numberOfTravelers = requestInt("\nHow many people are in the party?\n",socket);
+//     }
+//     else {
+//       sendMessageToClient("\nNothing changed!\n", socket);
+//     }
+
+//     return customersMods;
+// }
+
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
 bool confirmCancellationMenu(int socket){
