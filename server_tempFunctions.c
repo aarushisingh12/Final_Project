@@ -166,6 +166,58 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket){
 }
 
 
+//called during modify reservation if change of seats option selected
+customerInfo changeCustomerSeats(int ticketNumber,int socket){
+    int dayOfTravel = 0;
+    char stringBuffer[STRING_BUFFER_MAX];
+    customerInfo customerForSeatsFreed;
+    customerForSeatsFreed.ticketNumber = ticketNumber; //for use in findSelectedSeatsInSummaryFile
+    strcpy(stringBuffer,"\nWhat day are you traveling? If today enter 1. If tommorrow enter 2:\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    //receive response via tcp
+    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    recv(socket,&dayOfTravel,sizeof(int),0);
+
+    strcpy(stringBuffer,"\nHow Many Travelers?\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    //receive response via tcp
+    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    recv(socket,&dayOfTravel,sizeof(int),0);
+
+    if(dayOfTravel==1){
+        customerForSeatsFreed.dayOfTravel = 1;
+    }else if (dayOfTravel==2){
+        customerForSeatsFreed.dayOfTravel = 2;
+    }
+    
+    customerForSeatsFreed = findSelectedSeatsInSummaryFile(customerForSeatsFreed,socket);
+
+    freeCustomersSeatsInSharedMem(customerForSeatsFreed);
+
+    displayAvailableSeats(customerForSeatsFreed.dateOfTravel,customerForSeatsFreed.numberOfTravelers,socket);
+
+    selectAvailableSeats(customerForSeatsFreed,socket);
+
+    return customerForSeatsFreed;
+    
+}
+
+customerInfo findSelectedSeatsInSummaryFile(customerInfo customerForSeatsFreed,int socket){
+    customerInfo customerForSeatsFreed;
+    //using customerForSeatsFreed.dayOfTravel and/or customerForSeatsFreed.ticketNumber find entry in summary files
+    //customerForSeatsFreed.numberOfTravelers = find #of travelers
+    //customerForSeatsFreed.bookedSeats = found seats//will need to be parsed from string and added to int[] bookedSeats in loop
+    return customerForSeatsFreed;
+}
+
+
+void freeCustomersSeats(customerInfo customerForSeatsFreed){
+    //using customerForSeatsFreed.dayOfTravel and cusomerForSeatsFreed.bookedSeats, find customers seats in shared memory and free them
+}
+
+
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
 // bool confirmCancellationMenu(int socket){
 //    printf("cancelMenu() called\n"); //for debugging

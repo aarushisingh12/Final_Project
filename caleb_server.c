@@ -185,6 +185,7 @@ customerInfo modifyReservationMenu(int socket){
     printf("diplayAvailalbeSeats() called\n"); //for debugging
     customerInfo customersMods;  //struct that holds modfied info
     int ticketNumber = requestInt("Please enter your Ticket Number:",socket);
+    customersMods.ticketNumber = ticketNumber;
 
     sendMessageToClient("\nPulling up reservation now . . . \n", socket);
 

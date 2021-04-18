@@ -29,6 +29,19 @@
 struct Date getTodaysDate();
 
 
+
+//new functions related to changing customers seats//ask Andrew
+
+customerInfo changeCustomerSeats(int ticketNumber,int socket);
+
+customerInfo findSelectedSeatsInSummaryFile(customerInfo customerForSeatsFreed,int socket);
+
+void freeCustomersSeatsInSharedMem(customerInfo customerForSeatsFreed);
+
+
+
+
+
 // int mainMenu(int socket);
 
 
@@ -56,6 +69,7 @@ void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket);
 //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves seats to customer struct copy
 //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
 customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket);
+
 
 
 
