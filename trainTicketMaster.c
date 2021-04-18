@@ -43,7 +43,7 @@ void trainTicketMaster(int socket, int server_name){
                                         nextCustomer = selectAvailableSeats(nextCustomer,socket); //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves bookedSeats to customer struct copy
                                         nextCustomer.ticketNumber = assignTicketNumber(); //assign ticket number //can be a random num or incremented value in shared memory
                                         writeToSummaryFile(nextCustomer,server_name,socket); //writes to appropriate day's summary file, ticket number will be used to search summary later on
-                                        sendReceipt(socket,server_name); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
+                                        sendReceipt(nextCustomer,socket,server_name); //sends receipt code via tcp (which tell client to get call makeReceipt(), which opens a file fprints received data(receipt) and closes file)
                                         // then sends receipt strings to client//
                                 }
                                 else {//customer didn't confirm reservation //

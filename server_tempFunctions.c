@@ -123,7 +123,7 @@ void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
 
 
 
-void sendReceipt(int socket,int server_name){
+void sendReceipt(customerInfo nextCustomer, int socket,int server_name){
     printf("sendReceipt() called\n"); //for debugging
     //send "receipt" code to customer via tcp (client will then know to run acceptReceipt() func)
     //then sends receipt data in form of strings (client acceptReceipt func will create/open receipt file print)
