@@ -35,10 +35,9 @@ void trainTicketMaster(int socket, int server_name){
                 int previousDayOfTravel = 0;
                 int newDayOfTravel = 0;
                 int numberOfTravelersRequested = 0;
-                int updatedTravelerCount = 0;
                 int addedTravelers = 0;
                 int travelersToRemove = 0;
-                int travelerCountChange = 0;
+          
 
 
                 switch(customerResponse){
