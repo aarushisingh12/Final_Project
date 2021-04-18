@@ -98,8 +98,9 @@ void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket){
 
 //needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory
-//will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
-customerInfo selectAvailableSeats(customerInfo nextCustomer, int socket){
+//will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers 
+//had to add addedSeatsIf Modified for when just adding select number number of seats
+customerInfo selectAvailableSeats(customerInfo nextCustomer, int socket, int addedSeatsIfModified){
     printf("selectAvailalbeSeats() called\n"); //for debugging
 
     return nextCustomer;
@@ -174,8 +175,11 @@ customerInfo retrieveCustomersInfo(int ticketNumber){
 }
 
 
-void freeCustomersSeatsInSharedMem(customerInfo customersMods){
+customerInfo freeCustomersSeatsInSharedMem(customerInfo customersMods, int customersRequestedSeatReduction){
     //using customerForSeatsFreed.dayOfTravel and cusomerForSeatsFreed.bookedSeats, find customers seats in shared memory and free them
+    //if customer modifying their ticket by removing a few seats, you can use customersRequestedSeatReduction to delete this number of seats but keep the rest of theirs)
+    //then update their booked seats accordingly
+    return customersMods;  //return used when customer modifies seats by deselecting some
 }
 
 

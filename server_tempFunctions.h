@@ -34,7 +34,7 @@ struct Date getTodaysDate();
 
 customerInfo retrieveCustomersInfo(int ticketNumber); //uses ticket number to access sumary files and save and return customer struct
 
-void freeCustomersSeatsInSharedMem(customerInfo customerMods);
+customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods,int travelersToRemove);
 
 
 // int mainMenu(int socket);
@@ -63,7 +63,8 @@ void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket);
 //needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves seats to customer struct copy
 //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
-customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket);
+//had to add addedSeatsIf Modified for when just adding select number number of seats
+customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int addedSeatsIfModified);
 
 
 
@@ -109,7 +110,7 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
 
 //need to be synchronized
-//needs to ask for ticket number and then go to summary file(s) and delete entry
+//using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
 void cancelReservation(customerInfo customer,int socket);
 
 
