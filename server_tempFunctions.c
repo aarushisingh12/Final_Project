@@ -168,7 +168,7 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket){
 
 //called during modify reservation if change of seats option selected
 customerInfo changeCustomerSeats(int ticketNumber,int socket){
-    int dayOfTravel = 0;
+    int intBuffer = 0;
     char stringBuffer[STRING_BUFFER_MAX];
     customerInfo customerForSeatsFreed;
     customerForSeatsFreed.ticketNumber = ticketNumber; //for use in findSelectedSeatsInSummaryFile
@@ -177,21 +177,22 @@ customerInfo changeCustomerSeats(int ticketNumber,int socket){
     //receive response via tcp
     strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
     send(socket,stringBuffer,sizeof(stringBuffer),0);
-    recv(socket,&dayOfTravel,sizeof(int),0);
+    recv(socket,&intBuffer,sizeof(int),0);
+
+    if(intBuffer==1){
+        customerForSeatsFreed.dayOfTravel = 1;
+    }else if (intBuffer==2){
+        customerForSeatsFreed.dayOfTravel = 2;
+    }
 
     strcpy(stringBuffer,"\nHow Many Travelers?\n");
     send(socket,stringBuffer,sizeof(stringBuffer),0);
     //receive response via tcp
     strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
     send(socket,stringBuffer,sizeof(stringBuffer),0);
-    recv(socket,&dayOfTravel,sizeof(int),0);
+    recv(socket,&intBuffer,sizeof(int),0);
+    customerForSeatsFreed.numberOfTravelers = intBuffer;
 
-    if(dayOfTravel==1){
-        customerForSeatsFreed.dayOfTravel = 1;
-    }else if (dayOfTravel==2){
-        customerForSeatsFreed.dayOfTravel = 2;
-    }
-    
     customerForSeatsFreed = findSelectedSeatsInSummaryFile(customerForSeatsFreed,socket);
 
     freeCustomersSeatsInSharedMem(customerForSeatsFreed);
