@@ -188,8 +188,8 @@ void freeCustomersSeatsInSharedMem(customerInfo customersMods){
 
 
 //need to be synchronized
-//needs to ask for ticket number and then go to summary file(s) and delete entry
-void cancelReservation(int socket){
+//using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
+void cancelReservation(customerInfo customer,int socket){
     printf("cancelReservation() called\n"); //for debugging
 
 

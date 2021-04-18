@@ -110,7 +110,7 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
 //need to be synchronized
 //needs to ask for ticket number and then go to summary file(s) and delete entry
-void cancelReservation(int socket);
+void cancelReservation(customerInfo customer,int socket);
 
 
 //needs to close socket and have process exit/return thread to pool

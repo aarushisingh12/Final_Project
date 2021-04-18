@@ -30,7 +30,7 @@ void trainTicketMaster(int socket, int server_name){
 
                 customerInfo nextCustomer; //temp struct to hold next customers info
                 int ticketNumber = 0;
-                customerInfo customersMods; //struct that holds modfied info
+                customerInfo customersMods; //struct that holds customers info for modification or cancellation
                 bool cancelConfirmation = false;
                 int previousDayOfTravel = 0;
                 int newDayOfTravel = 0;
@@ -64,21 +64,21 @@ void trainTicketMaster(int socket, int server_name){
 
                 case 3: //modifyReservation //needs to be synchronized so no other concurrent writers or readers
                         ticketNumber = ticketInquiryMenu(socket); //will ask for ticket
-                        customersMods = retrieveCustomersInfo(ticketNumber);
-                        displayTicketInfo(ticketNumber,socket);
-                        customerResponse = modifyReservationMenu(socket); //returns int showing
+                        customersMods = retrieveCustomersInfo(ticketNumber); //will retrieve customer info from summary file
+                        displayTicketInfo(ticketNumber,socket); //display ticket info to customer
+                        customerResponse = modifyReservationMenu(socket); //returns int for response
                         switch (customerResponse){
                         case 1: //change customers seats
-                                freeCustomersSeatsInSharedMem(customersMods); //uses cutomer struct properties to find and free seats in shared memory
+                                freeCustomersSeatsInSharedMem(customersMods); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory
                                 displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket);
-                                customersMods = selectAvailableSeats(customersMods,socket);
+                                customersMods = selectAvailableSeats(customersMods,socket); //customer selects new seats
                                 //send seats changed message
                                 break;
                         case 2: //change day of travel
                                 previousDayOfTravel = customersMods.dayOfTravel;
                                 //TODO: newDayOfTravel == ask customer what day of travel, save to variable return
-                                if (checkIfAvailableSeats(nextCustomer.dayOfTravel, nextCustomer.numberOfTravelers,socket) == true){
-                                        freeCustomersSeatsInSharedMem(customersMods); 
+                                if (checkIfAvailableSeats(newDayOfTravel, nextCustomer.numberOfTravelers,socket) == true){
+                                        freeCustomersSeatsInSharedMem(customersMods); //using customers old dayOfTravel and booked seats, frees customers seats
                                         customersMods.dayOfTravel = newDayOfTravel;
                                         displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket);
                                         selectAvailableSeats(customersMods,socket);
@@ -89,15 +89,17 @@ void trainTicketMaster(int socket, int server_name){
 
                         case 3: //TODO: change number of travelers
                         
-                        default:
-                                break;
-                        }
                         modifyReservation(customersMods,server_name,socket); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
                         break;
 
                 case 4: //cancelReservation  //writing to summary file needs to be synchronized
                         if (confirmCancellationMenu(socket) == true){ //confirm cancellation menu
-                                cancelReservation(socket); //ask for ticket number, cancel reservation by deleting from summary files
+                                ticketNumber = ticketInquiryMenu(socket); //will ask for ticket
+                                customersMods = retrieveCustomersInfo(ticketNumber); //will retrieve customer info from summary file
+                                displayTicketInfo(ticketNumber,socket); //display ticket info to customer
+                                freeCustomersSeatsInSharedMem(customersMods); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory
+                                cancelReservation(customersMods,socket); //using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
+                                //let customer know reservation cancelled, maybe send receipt that says cancelled or just message
                         }
                         break;
 
