@@ -151,12 +151,12 @@ void displayTicketInfo(int ticketNumber,int socket){
 
 //asks what fields customer want to modifiy, returns struct holding customers modified info
 //have to get ticket number to use to search summary files
-customerInfo modifyReservationMenu(int socket){
-   printf("diplayAvailalbeSeats() called\n"); //for debugging
-   customerInfo customersMods;  //struct that holds modfied info/
-
-   return customersMods;
-}
+// customerInfo modifyReservationMenu(int socket){
+//    printf("diplayAvailalbeSeats() called\n"); //for debugging
+//    customerInfo customersMods;  //struct that holds modfied info/
+//
+//    return customersMods;
+// }
 
 
 //will use customerMods.ticketNumber to search, commits modification to summary files,
@@ -167,11 +167,11 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket){
 
 
 //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool confirmCancellationMenu(int socket){
-   printf("cancelMenu() called\n"); //for debugging
-   //or false if they don't confirm
-   return true;
-}
+// bool confirmCancellationMenu(int socket){
+//    printf("cancelMenu() called\n"); //for debugging
+//    //or false if they don't confirm
+//    return true;
+// }
 
 
 //need to be synchronized

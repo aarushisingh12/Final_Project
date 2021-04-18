@@ -179,21 +179,59 @@ int ticketInquiryMenu(int socket){
    return ticketNumber;
 }
 
-// //asks what fields customer want to modifiy, returns struct holding customers modified info
-// //have to get ticket number to use to search summary files
-// customerInfo modifyReservationMenu(int socket){
-//     printf("diplayAvailalbeSeats() called\n"); //for debugging
-//     customerInfo customersMods;  //struct that holds modfied info
+//asks what fields customer want to modifiy, returns struct holding customers modified info
+//have to get ticket number to use to search summary files
+customerInfo modifyReservationMenu(int socket){
+    printf("diplayAvailalbeSeats() called\n"); //for debugging
+    customerInfo customersMods;  //struct that holds modfied info
+    int ticketNumber = requestInt("Please enter your Ticket Number:",socket);
 
-//     return customersMods;
-// }
-// //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-// bool confirmCancellationMenu(int socket){
-//     printf("cancelMenu() called\n"); //for debugging
-//     //or false if they don't confir
-//     return true;
-// }
+    sendMessageToClient("\nPulling up reservation now . . . \n", socket);
 
+    int option = requestInt("\nWhich would you like to modify:\n1.Seat\n2.Travel Date\n3.Size of party\n",socket);
+
+    if (option == 1) {
+      sendMessageToClient("\nSeat Changed!\n", socket); // will need more info on seats
+    }
+    else if (option == 2) {
+      customersMods.dayOfTravel = requestInt("\nWhen would you prefer to travel:\n1.Today\n2.Tomorrow\n",socket);
+    }
+    else if (option == 3) {
+      customersMods.numberOfTravelers = requestInt("\nHow many people are in the party?\n",socket);
+    }
+    else {
+      sendMessageToClient("\nNothing changed!\n", socket);
+    }
+
+    return customersMods;
+}
+
+//cancel confirmation sent over tcp if customer sends back yes then returns true, else false
+bool confirmCancellationMenu(int socket){
+    printf("confirmCancellationMenu() called\n"); //for debugging
+    char stringBuffer[STRING_BUFFER_MAX];
+    int cancel;
+
+    strcpy(stringBuffer,ANSI_COLOR_RED "Confirm Cancellation?\n1.Yes\n2.No" ANSI_COLOR_RESET "\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //receive response via tcp
+    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    recv(socket,&cancel,sizeof(int),0);
+
+    if (cancel == 1) {
+      return true;
+    }
+    return false;
+}
+
+void sendMessageToClient(char *message, int socket){
+  char stringBuffer[STRING_BUFFER_MAX];
+  strcpy(stringBuffer,message);
+  send(socket,stringBuffer,sizeof(stringBuffer),0);
+}
 int requestInt(char *message, int socket){
  int returnInt;
  char stringBuffer[STRING_BUFFER_MAX];

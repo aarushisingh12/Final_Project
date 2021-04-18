@@ -7,6 +7,7 @@
 #define STRING_BUFFER_MAX 300//for tcp
 #define SEATS 40
 #define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_RED   "\x1b[31m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
 // to comipile code, run "gcc -o UICaleb caleb_client.c"
@@ -37,14 +38,16 @@ bool confirmReservationMenu();
 //will ask for ticket customer via tcp for ticket number, returns ticket number
 int ticketInquiryMenu(int socket);
 
-// //asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
-// customerInfo modifyReservationMenu(int socket);
+//asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
+customerInfo modifyReservationMenu(int socket);
 
-// //cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-// bool cancelMenu(int socket);
+//cancel confirmation sent over tcp if customer sends back yes then returns true, else false
+bool confirmCancellationMenu(int socket);
 
 //self test method for making sure everything is put together correctly
 void printCustomerFromStruct(customerInfo info);
+//convienience method for cleanlyness
+void sendMessageToClient(char *message, int socket);
 //convienience methoud for requesting ints from the user
 int requestInt(char *message, int socket);
 

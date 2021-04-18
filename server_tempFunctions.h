@@ -86,8 +86,8 @@ void sendReceipt(int socket, int server_name);
 void displayTicketInfo(int ticketNumber, int socket);
 
 
-////asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
-customerInfo modifyReservationMenu(int socket);
+// //asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number
+// customerInfo modifyReservationMenu(int socket);
 
 
 //will use customerMods.ticketNumber to search, commits modification to summary files,
@@ -95,8 +95,8 @@ customerInfo modifyReservationMenu(int socket);
 void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
 
-////cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-bool confirmCancellationMenu(int socket);
+// ////cancel confirmation sent over tcp if customer sends back yes then returns true, else false
+// bool confirmCancellationMenu(int socket);
 
 
 //need to be synchronized
