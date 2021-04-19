@@ -128,7 +128,7 @@ void trainTicketMaster(int socket, int server_name){
                         //send "exit" code via tcp, for client to read
                         exitProgram(socket);
                         //function returns and thread is returned to server's threadpool
-                        break;
+                        return;
 
                 default: //this is probably redundant
                         //send not a valid input message
