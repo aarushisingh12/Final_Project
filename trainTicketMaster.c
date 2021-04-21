@@ -74,9 +74,9 @@ void trainTicketMaster(int socket, int server_name){
                         customerResponse = modifyReservationMenu(socket); //returns int for response
                         switch (customerResponse){
                                 case 1: //change customers seats
-                                        customersMods = freeCustomersSeatsInSharedMem(customersMods,0); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory, updats customers bookedSeats[]
+                                        customersMods = freeCustomersSeatsInSharedMem(customersMods,0); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory, updates customers .bookedSeats[] to be empty
                                         displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket);
-                                        customersMods = selectAvailableSeats(customersMods,socket,0); //customer selects new seats
+                                        customersMods = selectAvailableSeats(customersMods,socket,0); //customer selects new seats, updates shared mem, can use .numberOfTravelers to cap how many they can select
                                         //send seats changed message
                                         break;
                                 case 2: //change day of travel
@@ -86,7 +86,7 @@ void trainTicketMaster(int socket, int server_name){
                                                 customersMods = freeCustomersSeatsInSharedMem(customersMods,0); //using customers old dayOfTravel and booked seats, frees customers seats,updates their bookedSeats[]
                                                 customersMods.dayOfTravel = newDayOfTravel;
                                                 displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket);
-                                                customersMods = selectAvailableSeats(customersMods,socket,0);
+                                                customersMods = selectAvailableSeats(customersMods,socket,0); 
                                                 //send dayOfTravelChanged
                                         }else{
                                                 //send sorry not enought seats available on this day
@@ -98,13 +98,13 @@ void trainTicketMaster(int socket, int server_name){
                                         if (numberOfTravelersRequested > customersMods.numberOfTravelers){
                                                 addedTravelers= numberOfTravelersRequested - customersMods.numberOfTravelers;
                                                 if (checkIfAvailableSeats(customersMods.dayOfTravel,addedTravelers,socket)== true){
-                                                        customersMods.numberOfTravelers = numberOfTravelersRequested;
                                                         displayAvailableSeats(customersMods.dayOfTravel,addedTravelers,socket);
-                                                        customersMods = selectAvailableSeats(customersMods,socket,addedTravelers);
+                                                        customersMods = selectAvailableSeats(customersMods,socket,addedTravelers); //optionally can use cutomerMods.numberOftravel, which would still be to let you know which bookedSeats index to start write writing to
+                                                        customersMods.numberOfTravelers = numberOfTravelersRequested;
                                                 }
                                         } else if (numberOfTravelersRequested < customersMods.numberOfTravelers){
                                                 travelersToRemove = customersMods.numberOfTravelers - numberOfTravelersRequested;
-                                                customersMods = freeCustomersSeatsInSharedMem(customersMods, travelersToRemove);
+                                                customersMods = freeCustomersSeatsInSharedMem(customersMods, travelersToRemove); //this also updates the customersMods struct with removed seats and returns this struct
                                                 customersMods.numberOfTravelers = numberOfTravelersRequested;
                                         }
                                         break;
