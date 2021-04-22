@@ -71,6 +71,7 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int added
 
 //accesses shared memory to assign next available ticket number to customer
 //then increments ticket number for next customer
+//returns int ticket number
 int assignTicketNumber();
 
 

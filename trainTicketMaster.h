@@ -41,7 +41,7 @@ typedef struct customerInfo {
     char dateOfTravel[20];// if dayOfTravel = 1, can use getTodaysDate()
     int numberOfTravelers;
     int ticketNumber; //assigned when confirming reservation with assignTicketNumber() func
-    int bookedSeats[10]; //assigned after selectAvailableSeats()
+    int bookedSeats[27]; //assigned after selectAvailableSeats()
 
 }customerInfo;
 

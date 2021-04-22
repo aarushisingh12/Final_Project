@@ -26,7 +26,7 @@ void trainTicketMaster(int socket, int server_name){
 
                 int customerResponse = 0;
                 dates date; //struct type dates will hold today and tomorrows date
-                customerResponse = mainMenu(socket); //returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
+                
 
                 customerInfo nextCustomer; //temp struct to hold next customers info
                 int ticketNumber = 0;
@@ -39,7 +39,7 @@ void trainTicketMaster(int socket, int server_name){
                 int travelersToRemove = 0;
           
 
-
+                customerResponse = mainMenu(socket); //returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
                 switch(customerResponse){
                 case 1: //makeReservation
                         nextCustomer = reservationMenu(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
@@ -93,7 +93,7 @@ void trainTicketMaster(int socket, int server_name){
                                         }
 
                                 case 3: //change number of travelers
-                                        displayTicketInfo(ticketNumber,socket); //to show them current number of travelers chosen
+                                       // displayTicketInfo(ticketNumber,socket); //to show them current number of travelers chosen
                                         numberOfTravelersRequested = requestInt("\nHow many total travelers are you requesting\n",socket);//caleb wrote request int and string
                                         if (numberOfTravelersRequested > customersMods.numberOfTravelers){
                                                 addedTravelers= numberOfTravelersRequested - customersMods.numberOfTravelers;
@@ -109,7 +109,7 @@ void trainTicketMaster(int socket, int server_name){
                                         }
                                         break;
                         }
-                        modifyReservation(customersMods,server_name,socket); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
+                        modifyReservationReservation(customersMods,server_name,socket); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
                         sendReceipt(customersMods,socket,server_name);
                        
 
@@ -117,7 +117,7 @@ void trainTicketMaster(int socket, int server_name){
                         if (confirmCancellationMenu(socket) == true){ //confirm cancellation menu
                                 ticketNumber = ticketInquiryMenu(socket); //will ask for ticket
                                 customersMods = retrieveCustomersInfo(ticketNumber); //will retrieve customer info from summary file
-                                displayTicketInfo(ticketNumber,socket); //display ticket info to customer
+                                //displayTicketInfo(ticketNumber,socket); //display ticket info to customer
                                 freeCustomersSeatsInSharedMem(customersMods,0); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory
                                 cancelReservation(customersMods,socket); //using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
                                 //message customer know reservation cancelled
