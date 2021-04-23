@@ -18,8 +18,88 @@
 #include "server_tempFunctions.h"
 
 //will have to comment out versions in server_tempFunctions .c and .h to with rest of system
-// int writeToSummaryFile(customerInfo,int server_name,int socket);
-// int displayTicketInfo(int ticketNumber, int socket);
+int writeToSummaryFile(customerInfo,int server_name,int socket);
+int displayTicketInfo(int ticketNumber, int socket);
 
+typedef struct Date {
+     char today[20];
+     char tomorrow[20];
+} dates;
+
+struct Date getTodaysDate() {
+     struct Date date;
+     time_t t = time(NULL);
+     struct tm tm = *localtime(&t);
+     sprintf(date.today,"%d-%02d-%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+     return date;
+}
+
+struct Date getTomorrowsDate() {
+    char name[20];
+    struct Date today = getTodaysDate();
+    sprintf(name,"%s",today.today);
+
+    char *token;
+    char *token1;
+    char *token2;
+    char *search = "-";
+
+    token = strtok(name,search); //year
+    int year = atoi(token);
+    token1 = strtok(NULL, search); // month
+    int month = atoi(token1);
+    token2 = strtok(NULL, search); // date
+    int day = atoi(token2);
+
+    switch(month) {
+        case 1:
+            if (day == 31) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 2:
+            if (day == 28) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 3:
+            if (day == 31) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 4:
+            if (day == 30) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 5:
+            if (day == 31) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 6:
+            if (day == 30) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 7:
+            if (day == 31) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 8:
+            if (day == 31) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 9:
+            if (day == 30) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 10:
+            if (day == 31) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 11:
+            if (day == 30) { day = 1; month++; }
+            else { day++; }
+            break;
+        case 12:
+            if (day == 31) { day = 1; month++; }
+            else { day++;}
+            break;
+    }
 
 #endif /* aarushi_funcs.h */
