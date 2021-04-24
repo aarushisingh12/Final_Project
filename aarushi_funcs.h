@@ -18,8 +18,10 @@
 #include "server_tempFunctions.h"
 
 //will have to comment out versions in server_tempFunctions .c and .h to with rest of system
-int writeToSummaryFile(customerInfo,int server_name,int socket);
-int displayTicketInfo(int ticketNumber, int socket);
+void writeToSummaryFile(customerInfo,int server_name,int socket);
+void displayTicketInfo(int ticketNumber, int socket);
+customerInfo retrieveCustomersInfo(int ticketNumber);
+void cancelReservation(customerInfo customerMods);
 
 typedef struct Date {
      char today[20];
