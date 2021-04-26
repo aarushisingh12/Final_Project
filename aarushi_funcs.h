@@ -22,6 +22,7 @@ void writeToSummaryFile(customerInfo,int server_name,int socket);
 void displayTicketInfo(int ticketNumber, int socket);
 customerInfo retrieveCustomersInfo(int ticketNumber);
 void cancelReservation(customerInfo customerMods);
+void modifyReservation(customerInfo customerMods, int server_name);
 
 typedef struct Date {
      char today[20];
