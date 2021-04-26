@@ -189,7 +189,8 @@ customerInfo retrieveCustomersInfo(int ticketNumber) { //uses ticket number to a
     }
 }
 
-void cancelReservation(customerInfo customerMods) {
+void cancelReservation(customerInfo customerMods, int socket) {
+    char stringBuffer[STRING_BUFFER_MAX]; // used to send output to server
     // variables needed to read struct
     int server_name;
     char bookedseats[100];
@@ -261,9 +262,13 @@ void cancelReservation(customerInfo customerMods) {
         sprintf(name,"%s",tomorrow.tomorrow);
         rename("del.txt",name);
     }
+    // sends message to server
+    strcpy(stringBuffer,"\nThe receipt was removed from the summary file!\n");        
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    stringBuffer[0] = 0;
 }
 
-void modifyReservation(customerInfo customerMods, int server_name) { // modifies reservation on summary file
+void modifyReservation(customerInfo customerMods, int server_name, int socket) { // modifies reservation on summary file
     // convert customerMods bookedseats into a string
     char seat[3];
     char bookedseatsUpdated[200];
@@ -445,4 +450,8 @@ Modifications: ",read.ticketNumber, server_name_read, read.fullName, read.dateOf
         sprintf(name1,"%s",tomorrow.tomorrow);
         rename("del1.txt",name1);
     }
+    // sends message to server
+    strcpy(stringBuffer,"\nThe receipt was modified in the  summary file!\n");        
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    stringBuffer[0] = 0;
 }

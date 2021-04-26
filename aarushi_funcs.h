@@ -21,13 +21,9 @@
 void writeToSummaryFile(customerInfo,int server_name,int socket);
 void displayTicketInfo(int ticketNumber, int socket);
 customerInfo retrieveCustomersInfo(int ticketNumber);
-void cancelReservation(customerInfo customerMods);
-void modifyReservation(customerInfo customerMods, int server_name);
+void cancelReservation(customerInfo customerMods, int socket);
+void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
-typedef struct Date {
-     char today[20];
-     char tomorrow[20];
-} dates;
 
 struct Date getTodaysDate() {
      struct Date date;
@@ -104,5 +100,6 @@ struct Date getTomorrowsDate() {
             else { day++;}
             break;
     }
+}
 
 #endif /* aarushi_funcs.h */
