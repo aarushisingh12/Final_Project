@@ -44,7 +44,7 @@ void trainTicketMaster(int socket, int server_name){
                 case 1: //makeReservation
                         nextCustomer = reservationMenu(socket); //will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
                         if (checkIfAvailableSeats(nextCustomer.dayOfTravel, nextCustomer.numberOfTravelers,socket) == true){ //dayOfTravel 1 for today and 2 for tomorrow
-                                if (confirmReservationMenu() == true) {//menu asking to confirm reservation//if returns true then proceed
+                                if (confirmReservationMenu(socket) == true) {//menu asking to confirm reservation//if returns true then proceed
                                         //needs to be synchronized: //priority is given to customers with most travelers
                                         displayAvailableSeats(nextCustomer.dayOfTravel,nextCustomer.numberOfTravelers,socket); //shows available seats customer selects starting index (seat) and #of travelers fills in seats
                                         nextCustomer = selectAvailableSeats(nextCustomer,socket,0); //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves bookedSeats to customer struct copy

@@ -33,7 +33,7 @@ int mainMenu(int socket);
 customerInfo reservationMenu(int socket);
 
 //menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
-bool confirmReservationMenu();
+bool confirmReservationMenu(int socket);
 
 //will ask for ticket customer via tcp for ticket number, returns ticket number
 int ticketInquiryMenu(int socket);
