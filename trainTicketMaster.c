@@ -109,7 +109,7 @@ void trainTicketMaster(int socket, int server_name){
                                         }
                                         break;
                         }
-                        modifyReservationReservation(customersMods,server_name,socket); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
+                        modifyReservation(customersMods,server_name,socket); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
                         sendReceipt(customersMods,socket,server_name);
                        
 
