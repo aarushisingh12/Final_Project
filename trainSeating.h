@@ -7,13 +7,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ipc.h> 	// Used by IPC maechanisms: messages, shared memory and semaphores
-//#include <sys/shm.h>  // Possibly also for shared memory
+#include <sys/shm.h>  // Possibly also for shared memory
 #include <sys/mman.h>   // Needed for shared memory
-//#include <sys/stat.h> //I don't think this one helps
+#include <sys/stat.h> //I don't think this one helps
 #include <fcntl.h>      // Needed for shared memory
 #include <semaphore.h>  // Used for semaphores
 #include <stdbool.h>    // Used to declare boolean values
 #include <unistd.h>     // Used for ftruncate in shared memory
+
+
 
 #ifndef TRAINSEATING_H
 #define TRAINSEATING_H
@@ -35,22 +37,22 @@ typedef struct StructForSeating {
     int seats[27]; 
 }availableSeats;
 
-typedef struct Date {
-    char today[20];
-    char tomorrow[20];
-}dates;
+// typedef struct Date {
+//     char today[20];
+//     char tomorrow[20];
+// }dates;
 
-typedef struct customerInfo {
-    char fullName[60];
-    char dateOfBirth[20];
-    char gender[10];
-    char governmentID[20];
-    int dayOfTravel; //1 for today, 2 for tomorrow, convenience property for other functions
-    char dateOfTravel[20]; //if dayOfTravel == 1 for today, can use to fill in date if needed
-    int numberOfTravelers;
-    int ticketNumber; //assigned when confirming reservation
-    int bookedSeats[27]; //assigned after selectAvailableSeats()
-}customerInfo;
+// typedef struct customerInfo {
+//     char fullName[60];
+//     char dateOfBirth[20];
+//     char gender[10];
+//     char governmentID[20];
+//     int dayOfTravel; //1 for today, 2 for tomorrow, convenience property for other functions
+//     char dateOfTravel[20]; //if dayOfTravel == 1 for today, can use to fill in date if needed
+//     int numberOfTravelers;
+//     int ticketNumber; //assigned when confirming reservation
+//     int bookedSeats[27]; //assigned after selectAvailableSeats()
+// }customerInfo;
 
 
 int trainSeating();

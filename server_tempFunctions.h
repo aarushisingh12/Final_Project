@@ -22,7 +22,7 @@
 
 #include <time.h> //for date
 
-
+#include "trainSeating.h"
 
 //to use:   char date[20];
 //          strcpy(date,getTodaysDate().today)
@@ -34,7 +34,7 @@ struct Date getTodaysDate();
 
 customerInfo retrieveCustomersInfo(int ticketNumber); //uses ticket number to access sumary files and save and return customer struct
 
-customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods,int travelersToRemove);
+// customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods,int travelersToRemove);
 
 
 // int mainMenu(int socket);
@@ -44,8 +44,8 @@ customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods,int travele
 //customerInfo reservationMenu(int socket);
 
 
-//needs to be synchronized //checks shared memory using customers numberOfTravelers
-bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers,int socket);
+// //needs to be synchronized //checks shared memory using customers numberOfTravelers
+// bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers,int socket);
 
 
 // //menu that asks customer via tcp if they want to confirm reservation, returns true if yes, else false
@@ -53,26 +53,26 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers,int socket);
 
 
 
-//needs to be synchronized
-//shows seats customer selects starting index (seat) and #of travelers fills in seats
-//accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
-void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket);
+// //needs to be synchronized
+// //shows seats customer selects starting index (seat) and #of travelers fills in seats
+// //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
+// void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket);
 
 
 
-//needs to be synchronized
-//accesses shared memory and alows customer to select from available seats and writes to shared memory and saves seats to customer struct copy
-//will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
-//had to add addedSeatsIf Modified for when just adding select number number of seats
-customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int addedSeatsIfModified);
+// //needs to be synchronized
+// //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves seats to customer struct copy
+// //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
+// //had to add addedSeatsIf Modified for when just adding select number number of seats
+// customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int addedSeatsIfModified);
 
 
 
 
-//accesses shared memory to assign next available ticket number to customer
-//then increments ticket number for next customer
-//returns int ticket number
-int assignTicketNumber();
+// //accesses shared memory to assign next available ticket number to customer
+// //then increments ticket number for next customer
+// //returns int ticket number
+// int assignTicketNumber();
 
 
 
@@ -116,7 +116,7 @@ void cancelReservation(customerInfo customer,int socket);
 
 
 //needs to close socket and have process exit/return thread to pool
-void exitProgram(int socket);
+int exitProgram(int socket,availableSeats*, int);
 
 
 

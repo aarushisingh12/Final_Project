@@ -68,12 +68,12 @@ struct Date getTodaysDate() {
 //}
 
 
-//needs to be synchronized
-bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket){
-    printf("\ncheckIfavailableSeats() called\n"); //for debugging
-        //or false if not enough available to cover numberOfTravelers
-    return true;
-}
+// //needs to be synchronized
+// bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket){
+//     printf("\ncheckIfavailableSeats() called\n"); //for debugging
+//         //or false if not enough available to cover numberOfTravelers
+//     return true;
+// }
 
 
 
@@ -85,48 +85,48 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket){
 // }
 
 
-//needs to be synchronized
-//shows seats customer selects starting index (seat) and #of travelers fills in seats
-//accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
-void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket){
-    printf("diplayAvailalbeSeats() called\n"); //for debugging
+// //needs to be synchronized
+// //shows seats customer selects starting index (seat) and #of travelers fills in seats
+// //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
+// void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket){
+//     printf("diplayAvailalbeSeats() called\n"); //for debugging
 
-}
-
-
+// }
 
 
-//needs to be synchronized
-//accesses shared memory and alows customer to select from available seats and writes to shared memory
-//will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers 
-//had to add addedSeatsIfModified for when just adding select number number of seats
-//if addedSeatsIfModified is non-zero than that is the number you would use for the aount of seats that can be selected
-//then update .bookedSeats struct member accordingly
-customerInfo selectAvailableSeats(customerInfo nextCustomer, int socket, int addedSeatsIfModified){
-    printf("selectAvailalbeSeats() called\n"); //for debugging
-
-    return nextCustomer;
-}
-
-//NEW FUNC
-customerInfo freeCustomersSeatsInSharedMem(customerInfo customersMods, int customersRequestedSeatReduction){
-    printf("\nfreeCustomersSeatsInSharedMem called");
-    //using customerForSeatsFreed.dayOfTravel and cusomerForSeatsFreed.bookedSeats, find customers seats in shared memory and free them
-    //if customer modifying their ticket by removing a few seats, you can use customersRequestedSeatReduction to delete this number of seats but keep the rest of theirs)
-    //basically you would want to check if their is a non-zero value in customersRequestedSeatReduction and if so that is the number you use for amount of seats to be freed
-    //then update their booked seats accordingly
-    return customersMods;  //return used when customer modifies seats by deselecting some
-}
 
 
-//accesses shared memory struct member .nextTicketNumber to assign next available ticket number to customer
-//then increments ticket number for next customer
-int assignTicketNumber(int socket){
-    printf("assignTicketNumber() called\n"); //for debugging
-    int nextTicketNumber;
-      //struct that holds modfied info
-    return nextTicketNumber;
-}
+// //needs to be synchronized
+// //accesses shared memory and alows customer to select from available seats and writes to shared memory
+// //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers 
+// //had to add addedSeatsIfModified for when just adding select number number of seats
+// //if addedSeatsIfModified is non-zero than that is the number you would use for the aount of seats that can be selected
+// //then update .bookedSeats struct member accordingly
+// customerInfo selectAvailableSeats(customerInfo nextCustomer, int socket, int addedSeatsIfModified){
+//     printf("selectAvailalbeSeats() called\n"); //for debugging
+
+//     return nextCustomer;
+// }
+
+// //NEW FUNC
+// customerInfo freeCustomersSeatsInSharedMem(customerInfo customersMods, int customersRequestedSeatReduction){
+//     printf("\nfreeCustomersSeatsInSharedMem called");
+//     //using customerForSeatsFreed.dayOfTravel and cusomerForSeatsFreed.bookedSeats, find customers seats in shared memory and free them
+//     //if customer modifying their ticket by removing a few seats, you can use customersRequestedSeatReduction to delete this number of seats but keep the rest of theirs)
+//     //basically you would want to check if their is a non-zero value in customersRequestedSeatReduction and if so that is the number you use for amount of seats to be freed
+//     //then update their booked seats accordingly
+//     return customersMods;  //return used when customer modifies seats by deselecting some
+// }
+
+
+// //accesses shared memory struct member .nextTicketNumber to assign next available ticket number to customer
+// //then increments ticket number for next customer
+// int assignTicketNumber(int socket){
+//     printf("assignTicketNumber() called\n"); //for debugging
+//     int nextTicketNumber;
+//       //struct that holds modfied info
+//     return nextTicketNumber;
+// }
 
 
 void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
@@ -208,7 +208,13 @@ void cancelReservation(customerInfo customer,int socket){
 
 }
 
-void exitProgram(int socket){
+int exitProgram(int socket,availableSeats* ptr,int shm_fd){
+
+    const int SIZE = sizeof(availableSeats)*2;
+ // name of the shared memory object
+    const char *name = "CS4323";
+
+
     printf("exitProgram() called\n"); //for debugging
     char stringBuffer[STRING_BUFFER_MAX];
     strcpy(stringBuffer,"\nEnter 1 to just shut down client, Enter 2 to shutdown client and server\n"); //end code to be sent to client, client will then know to call its own exit function
@@ -225,6 +231,7 @@ void exitProgram(int socket){
         send(socket,stringBuffer,sizeof(stringBuffer),0);
         sleep(3); //to give time for customer to process end code
         close(socket);  //closing socket with this customer
+        return 1;
     }else if (intInput == 2){
         printf("\n user entered %d\n",intInput);
         strcpy(stringBuffer,"end"); //end code to be sent to client, client will then know to call its own exit function
@@ -232,7 +239,21 @@ void exitProgram(int socket){
         sleep(3); //to give time for customer to process end code
         close(socket);  //closing socket with this customer
         printf("\nServer about to exit\n");
+
+
+        // Unmap the shared memory
+        munmap(&ptr, SIZE);
+        // Close the shared memory object
+        close(shm_fd);
+        // Delete the shared memory object
+        shm_unlink(name);
+        
+
         exit(0); //will need to delete this later once live server loop in place
+        
+        return 2;
+
+
 
     }
 }

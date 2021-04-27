@@ -21,6 +21,8 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+#include "trainSeating.h"
+
 #define STRING_BUFFER_MAX 300//for tcp
 
 
@@ -29,7 +31,7 @@ typedef struct Date {
      char tomorrow[20];
 } dates;
 
-void trainTicketMaster(int, int);
+int trainTicketMaster(int, int,availableSeats*,int);
 
 //sturct used to hold customers info, during reservation process
 typedef struct customerInfo {

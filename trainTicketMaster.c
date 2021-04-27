@@ -17,7 +17,7 @@
 //trainTicketMaster: will need to add address pointer to shared memory as parameter, pointers to today and tomorrow's reserations files
 
 
-void trainTicketMaster(int socket, int server_name){
+int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int shm_fd){
 
         //char todaysDate[20]; //gets todays date if needed
         //strcpy(todaysDate,getTodaysDate().today);
@@ -37,6 +37,8 @@ void trainTicketMaster(int socket, int server_name){
                 int numberOfTravelersRequested = 0;
                 int addedTravelers = 0;
                 int travelersToRemove = 0;
+
+                int exitReturnType = 0;
           
 
                 customerResponse = mainMenu(socket); //returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
@@ -54,11 +56,11 @@ void trainTicketMaster(int socket, int server_name){
                                         // then sends receipt strings to client//
                                 }
                                 else {//customer didn't confirm reservation //
-                                        trainTicketMaster(socket,server_name); //recursively
+                                        trainTicketMaster(socket,server_name,shm_ptr,shm_fd); //recursively
                                 }
                         }
                         else {//sorry not enough seats available!
-                                trainTicketMaster(socket,server_name); //recursivley
+                                trainTicketMaster(socket,server_name,shm_ptr,shm_fd); //recursivley
                         }
                         break;
 
@@ -74,7 +76,7 @@ void trainTicketMaster(int socket, int server_name){
                         customerResponse = modifyReservationMenu(socket); //returns int for response
                         switch (customerResponse){
                                 case 1: //change customers seats
-                                        customersMods = freeCustomersSeatsInSharedMem(customersMods,0); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory, updates customers .bookedSeats[] to be empty
+                                        customersMods = freeCustomersSeatsInSharedMem(customersMods,0,shm_ptr); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory, updates customers .bookedSeats[] to be empty
                                         displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket);
                                         customersMods = selectAvailableSeats(customersMods,socket,0); //customer selects new seats, updates shared mem, can use .numberOfTravelers to cap how many they can select
                                         //send seats changed message
@@ -83,7 +85,7 @@ void trainTicketMaster(int socket, int server_name){
                                         previousDayOfTravel = customersMods.dayOfTravel;
                                         newDayOfTravel = requestInt("\nWhen would you prefer to travel:\n1.Today\n2.Tomorrow\n",socket);//caleb wrote request int and string
                                         if (checkIfAvailableSeats(newDayOfTravel, nextCustomer.numberOfTravelers,socket) == true){
-                                                customersMods = freeCustomersSeatsInSharedMem(customersMods,0); //using customers old dayOfTravel and booked seats, frees customers seats,updates their bookedSeats[]
+                                                customersMods = freeCustomersSeatsInSharedMem(customersMods,0,shm_ptr); //using customers old dayOfTravel and booked seats, frees customers seats,updates their bookedSeats[]
                                                 customersMods.dayOfTravel = newDayOfTravel;
                                                 displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket);
                                                 customersMods = selectAvailableSeats(customersMods,socket,0); 
@@ -104,7 +106,7 @@ void trainTicketMaster(int socket, int server_name){
                                                 }
                                         } else if (numberOfTravelersRequested < customersMods.numberOfTravelers){
                                                 travelersToRemove = customersMods.numberOfTravelers - numberOfTravelersRequested;
-                                                customersMods = freeCustomersSeatsInSharedMem(customersMods, travelersToRemove); //this also updates the customersMods struct with removed seats and returns this struct
+                                                customersMods = freeCustomersSeatsInSharedMem(customersMods, travelersToRemove,shm_ptr); //this also updates the customersMods struct with removed seats and returns this struct
                                                 customersMods.numberOfTravelers = numberOfTravelersRequested;
                                         }
                                         break;
@@ -126,13 +128,13 @@ void trainTicketMaster(int socket, int server_name){
 
                 case 5: //exits progrom, closes socket
                         //send "exit" code via tcp, for client to read
-                        exitProgram(socket);
+                        exitReturnType = exitProgram(socket,shm_ptr,shm_fd);
                         //function returns and thread is returned to server's threadpool
-                        return;
+                        return exitReturnType;
 
                 default: //this is probably redundant
                         //send not a valid input message
-                        trainTicketMaster(socket,server_name); //recursvie call
+                        trainTicketMaster(socket,server_name,shm_ptr,shm_fd); //recursvie call
                         
                 }
         }
