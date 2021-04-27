@@ -37,25 +37,42 @@ typedef struct StructForSeating {
     int seats[27]; 
 }availableSeats;
 
-// typedef struct Date {
-//     char today[20];
-//     char tomorrow[20];
-// }dates;
 
-// typedef struct customerInfo {
-//     char fullName[60];
-//     char dateOfBirth[20];
-//     char gender[10];
-//     char governmentID[20];
-//     int dayOfTravel; //1 for today, 2 for tomorrow, convenience property for other functions
-//     char dateOfTravel[20]; //if dayOfTravel == 1 for today, can use to fill in date if needed
-//     int numberOfTravelers;
-//     int ticketNumber; //assigned when confirming reservation
-//     int bookedSeats[27]; //assigned after selectAvailableSeats()
-// }customerInfo;
+//int trainSeating();
 
+//calculates and then returns the number of available seats for a given day
+int countNumberOfAvailableSeats(availableSeats*)
 
-int trainSeating();
+//Returns 0 or 1 based on the passed dayOfTravel variable to match which day we should be on.
+//Looks at the int, not the string
+int matchDayOfTravel(availableSeats*, int)
+
+//Function for moving data to a new day:
+//We copy day2 into day1 and reset day2.
+void updateDays(availableSeats*, char[15]) 
+
+//accesses shared memory to assign next available ticket number to customer
+//then increments ticket number for next customer
+//returns int ticket number
+int assignTicketNumber(customerInfo, int, availableSeats*);
+
+//needs to be synchronized 
+//checks shared memory using customers numberOfTravelers
+bool checkIfAvailableSeats(int, int, int, availableSeats*);
+
+//needs to be synchronized
+//shows seats customer selects starting index (seat) and #of travelers fills in seats
+//accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
+void displayAvailableSeats(int, int, int, availableSeats*);
+
+//needs to be synchronized
+//accesses shared memory and alows customer to select from available seats and writes to shared memory and saves seats to customer struct copy
+//will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
+//had to add addedSeatsIf Modified for when just adding select number number of seats
+customerInfo selectAvailableSeats(customerInfo, int, int, availableSeats*);
+
+//Frees the customer's seats and frees those seats in shared memory too
+customerInfo freeCustomersSeatsInSharedMem(customerInfo, int, availableSeats*);
 
 #endif /* TRAINSEATING_H */
 

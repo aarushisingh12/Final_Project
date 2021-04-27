@@ -128,7 +128,6 @@ void displayAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, a
     //sendMessageToClient(messageToPassToClient, socket);
 }
 
-//Function may need a parameter for the pointer to our shared memory object.
 customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int addedSeatsIfModified, availableSeats *ptr) {
     printf("\nselectAvailalbeSeats() called\n"); //for debugging
     
@@ -177,7 +176,6 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int added
     return nextCustomer;
 }
 
-//May also require shared memory object 
 customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods, int customersRequestedSeatReduction, availableSeats *ptr) {
     printf("\nfreeCustomersSeatsInSharedMem() called\n"); //for debugging
     
