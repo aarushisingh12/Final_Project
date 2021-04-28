@@ -23,22 +23,10 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+#include "trainTicketMaster.h"
+
 #define STRING_BUFFER_MAX 300//for tcp 
 
-typedef struct StructForSeating {
-    //string for the date.
-    char dateStr[15];
-    //int for the date (1 or 2)
-    int dateInt;
-    //int for keeping track of which ticket number we are on each day.
-    //ticketNumber will start at 1 and increment from there.
-    int ticketNumber;
-    //int array for the seats. 
-    //0 means the seat is open and 1 means it is already taken.
-    //There are 27 seats total in three rows and nine columns
-    //(just like the assignment document shows).
-    int seats[27]; 
-}availableSeats;
 
 
 //int trainSeating();
