@@ -43,7 +43,7 @@ void seatingSendMessageToClient(char*, int);
 
 //Function for moving data to a new day:
 //We copy day2 into day1 and reset day2.
-void updateDays(availableSeats*, char[15]);
+void updateDays(availableSeats*, char[20]);
 
 //accesses shared memory to assign next available ticket number to customer
 //then increments ticket number for next customer
