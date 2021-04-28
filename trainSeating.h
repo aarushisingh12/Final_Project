@@ -15,7 +15,10 @@
 #include <stdbool.h>    // Used to declare boolean values
 #include <unistd.h>     // Used for ftruncate in shared memory
 
-
+#include <sys/types.h> //need these for sockets
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 #ifndef TRAINSEATING_H
 #define TRAINSEATING_H
@@ -37,19 +40,36 @@ typedef struct StructForSeating {
     int seats[27]; 
 }availableSeats;
 
+//sturct used to hold customers info, during reservation process
+typedef struct customerInfo {
+    char fullName[60];
+    char dateOfBirth[20];
+    char gender[10];
+    char governmentID[20];
+    int dayOfTravel; //1 for day, 2 for tomorrow
+    char dateOfTravel[20];// if dayOfTravel = 1, can use getTodaysDate()
+    int numberOfTravelers;
+    int ticketNumber; //assigned when confirming reservation with assignTicketNumber() func
+    int bookedSeats[27]; //assigned after selectAvailableSeats()
+
+}customerInfo;
+
 
 //int trainSeating();
 
 //calculates and then returns the number of available seats for a given day
-int countNumberOfAvailableSeats(availableSeats*)
+int countNumberOfAvailableSeats(availableSeats*);
 
 //Returns 0 or 1 based on the passed dayOfTravel variable to match which day we should be on.
 //Looks at the int, not the string
-int matchDayOfTravel(availableSeats*, int)
+int matchDayOfTravel(availableSeats*, int);
+
+//helps with sending a message through tcp
+void seatingSendMessageToClient(char*, int);
 
 //Function for moving data to a new day:
 //We copy day2 into day1 and reset day2.
-void updateDays(availableSeats*, char[15]) 
+void updateDays(availableSeats*, char[15]);
 
 //accesses shared memory to assign next available ticket number to customer
 //then increments ticket number for next customer
@@ -72,7 +92,7 @@ void displayAvailableSeats(int, int, int, availableSeats*);
 customerInfo selectAvailableSeats(customerInfo, int, int, availableSeats*);
 
 //Frees the customer's seats and frees those seats in shared memory too
-customerInfo freeCustomersSeatsInSharedMem(customerInfo, int, availableSeats*);
+customerInfo freeCustomersSeatsInSharedMem(customerInfo, int, int, availableSeats*);
 
 #endif /* TRAINSEATING_H */
 

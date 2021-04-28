@@ -7,7 +7,6 @@
 
 
 #include "trainSeating.h" //Include our own header file
-#include "trainTicketMaster.h"
 
 //calculates and then returns the number of available seats for a given day
 int countNumberOfAvailableSeats(availableSeats *dayToCount) {
@@ -32,6 +31,13 @@ int matchDayOfTravel(availableSeats *ptr, int dayOfTravel) {
         return 1;
     }
 }
+
+void seatingSendMessageToClient(char *message, int socket){
+  	char stringBuffer[STRING_BUFFER_MAX];
+  	strcpy(stringBuffer,message);
+  	send(socket,stringBuffer,sizeof(stringBuffer),0);
+}
+
 
 //Function for moving data to a new day:
 //We copy day2 into day1 and reset day2.
@@ -106,7 +112,8 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, a
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
 //accesses shared memory to read seats available and copies to string buffer and then sends to client via tcp
 void displayAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, availableSeats *ptr){
-    printf("\ndiplayAvailalbeSeats() called\n"); //for debugging
+	char debugMessage[100] = "\ndiplayAvailalbeSeats() called\n";
+    seatingSendMessageToClient(debugMessage, socket); //for debugging
     
     //Variable to help match the day we are on to the proper struct in the shared memory pointer object: (ptr+currentDayModifier)
     int currentDayModifier = matchDayOfTravel(ptr, dayOfTravel);
@@ -122,24 +129,31 @@ void displayAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, a
                 i+18, (ptr+currentDayModifier)->seats[i+18], i+21, (ptr+currentDayModifier)->seats[i+21], i+24, (ptr+currentDayModifier)->seats[i+24]);
         strcat(messageToPassToClient, messageOnEachRow); //save each row onto the main message
     }
-    printf("client message: \n%s", messageToPassToClient); //print debug
+    //v printf("client message: \n%s", messageToPassToClient); //print debug
     
-    //sendMessageToClient(char *message, int socket) method from Caleb's caleb_server.c file for sending the message through TCP.
-    //sendMessageToClient(messageToPassToClient, socket);
+    //seatingSendMessageToClient(char *message, int socket) method from Caleb's caleb_server.c file for sending the message through TCP.
+    seatingSendMessageToClient(messageToPassToClient, socket);
 }
 
 customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int addedSeatsIfModified, availableSeats *ptr) {
     printf("\nselectAvailalbeSeats() called\n"); //for debugging
+    char stringBuffer[STRING_BUFFER_MAX];
     
     //When there are actual seats to change
-    printf("\nWelcome to seat selection.");
+    seatingSendMessageToClient("\nWelcome to seat selection.", socket);
     while(addedSeatsIfModified == 0) {
-        printf("\nHow many seats would you like to select?: ");
-        scanf("%d", &addedSeatsIfModified); //change the addedSeatsIfModified variable to match how many seats the user wants
+        seatingSendMessageToClient("\nHow many seats would you like to select?: ", socket);
+        
+        //receive response via tcp
+	    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+	    send(socket,stringBuffer,sizeof(stringBuffer),0);
+	    recv(socket,&addedSeatsIfModified,sizeof(int),0); //change the addedSeatsIfModified variable to match how many seats the user wants
         
         //check to make sure we have enough seats available based on what the user just entered.
         if(!checkIfAvailableSeats(nextCustomer.dayOfTravel, addedSeatsIfModified, socket, ptr)) {
-            printf("Sorry, but there aren't %d seats available right now. Please enter a lower amount.", addedSeatsIfModified);
+        	char messageToPassToClient[100] = "";
+            sprintf(messageToPassToClient, "\nSorry, but there aren't %d seats available right now. Please enter a lower amount.", addedSeatsIfModified);
+            seatingSendMessageToClient(messageToPassToClient, socket);
             addedSeatsIfModified = 0;
         }
     }
@@ -151,19 +165,25 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int added
     int currentDayModifier = matchDayOfTravel(ptr, nextCustomer.dayOfTravel);
 
     //Begin gathering user input
-    printf("\nFor the following prompt(s), please enter an integer (value 0 to 26) matching an available seat from above.\n");
+    seatingSendMessageToClient("\nFor the following prompt(s), please enter an integer (value 0 to 26) matching an available seat from above.\n", socket);
     for(int i = 0; i < addedSeatsIfModified; i++) {
-        printf("\nPlease select seat %d out of %d: ", i+1, addedSeatsIfModified);
-        scanf("%d", &currentSelectedSeatNumber); //If the user doesn't enter an integer, an error will be thrown here.
+        char messageToPassToClient[100] = "";
+        sprintf(messageToPassToClient, "\nPlease select seat %d out of %d: ", i+1, addedSeatsIfModified);
+        seatingSendMessageToClient(messageToPassToClient, socket);
+        
+        //receive response via tcp
+	    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+	    send(socket,stringBuffer,sizeof(stringBuffer),0);
+	    recv(socket,&currentSelectedSeatNumber,sizeof(int),0); //If the user doesn't enter an integer, an error will be thrown here.
 
         if(currentSelectedSeatNumber < 0 || currentSelectedSeatNumber > 26) {
             //catch possible problem of user entering an int outside our scope of seat numbers
-            printf("\nError: Please try again and enter a seat number between 0 and 26.");
+            seatingSendMessageToClient("\nError: Please try again and enter a seat number between 0 and 26.", socket);
             //lower i by 1 so that the user has a chance to try again
             i--;
         } else if((ptr+currentDayModifier)->seats[currentSelectedSeatNumber] == 1) {
             //if the seat is already selected then the user will have to select another one
-            printf("\nError: Seat already taken. Please select an open seat.");
+            seatingSendMessageToClient("\nError: Seat already taken. Please select an open seat.", socket);
             //lower i by 1 so that the user has a chance to try again
             i--;
         } else {
@@ -176,8 +196,9 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int added
     return nextCustomer;
 }
 
-customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods, int customersRequestedSeatReduction, availableSeats *ptr) {
+customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods, int socket, int customersRequestedSeatReduction, availableSeats *ptr) {
     printf("\nfreeCustomersSeatsInSharedMem() called\n"); //for debugging
+    char stringBuffer[STRING_BUFFER_MAX];
     
     //Variable to help match the day we are on to the proper struct in the shared memory pointer object: (ptr+currentDayModifier)
     int currentDayModifier = matchDayOfTravel(ptr, customerMods.dayOfTravel);
@@ -188,19 +209,27 @@ customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods, int custom
         int currentSelectedSeatNumber;
         
         //Ask customer which seats they would like to free specifically
-        printf("\nFor the following prompt(s), please enter an integer (value 0 to 26) of a seat you have already booked from above.\n");
+        seatingSendMessageToClient("\nFor the following prompt(s), please enter an integer (value 0 to 26) of a seat you have already booked from above.\n", socket);
         for(int i = 0; i < customersRequestedSeatReduction; i++) {
-            printf("\nWhich seat would you like to free next? (freeing seat %d of %d): ", i+1, customersRequestedSeatReduction);
-            scanf("%d", &currentSelectedSeatNumber);
+        	char messageToPassToClient[100] = "";
+            sprintf(messageToPassToClient, "\nWhich seat would you like to free next? (freeing seat %d of %d): ", i+1, customersRequestedSeatReduction);
+            seatingSendMessageToClient(messageToPassToClient,socket);
+            
+            //receive response via tcp
+		    strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
+		    send(socket,stringBuffer,sizeof(stringBuffer),0);
+		    recv(socket,&currentSelectedSeatNumber,sizeof(int),0);
             
             if(currentSelectedSeatNumber < 0 || currentSelectedSeatNumber > 26) {
                 //catch possible problem of user entering an int outside our scope of seat numbers
-                printf("\nError: Please try again and enter a seat number between 0 and 26.");
+                seatingSendMessageToClient("\nError: Please try again and enter a seat number between 0 and 26.", socket);
                 //lower i by 1 so that the user has a chance to try again
                 i--;
             } else if(customerMods.bookedSeats[currentSelectedSeatNumber] == 0) {
                 //if the user selects a seat they don't own, then they will have to try again and select one they do own
-                printf("\nError: You don't own seat %d. Please select a seat you already have selected to remove.", currentSelectedSeatNumber);
+                char messageToPassToClient[100] = "";
+            	sprintf(messageToPassToClient, "\nError: You don't own seat %d. Please select a seat you already have selected to remove.", currentSelectedSeatNumber);
+                seatingSendMessageToClient(messageToPassToClient, socket);
                 //lower i by 1 so that the user has a chance to try again
                 i--;
             } else {

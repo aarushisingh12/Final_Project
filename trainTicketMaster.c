@@ -76,7 +76,7 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                         customerResponse = modifyReservationMenu(socket); //returns int for response
                         switch (customerResponse){
                                 case 1: //change customers seats
-                                        customersMods = freeCustomersSeatsInSharedMem(customersMods,0,shm_ptr); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory, updates customers .bookedSeats[] to be empty
+                                        customersMods = freeCustomersSeatsInSharedMem(customersMods,socket,0,shm_ptr); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory, updates customers .bookedSeats[] to be empty
                                         displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket,shm_ptr);
                                         customersMods = selectAvailableSeats(customersMods,socket,nextCustomer.numberOfTravelers,shm_ptr); //customer selects new seats, updates shared mem, can use .numberOfTravelers to cap how many they can select
                                         //send seats changed message
@@ -85,7 +85,7 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                                         previousDayOfTravel = customersMods.dayOfTravel;
                                         newDayOfTravel = requestInt("\nWhen would you prefer to travel:\n1.Today\n2.Tomorrow\n",socket);//caleb wrote request int and string
                                         if (checkIfAvailableSeats(newDayOfTravel, nextCustomer.numberOfTravelers,socket,shm_ptr) == true){
-                                                customersMods = freeCustomersSeatsInSharedMem(customersMods,0,shm_ptr); //using customers old dayOfTravel and booked seats, frees customers seats,updates their bookedSeats[]
+                                                customersMods = freeCustomersSeatsInSharedMem(customersMods,socket,0,shm_ptr); //using customers old dayOfTravel and booked seats, frees customers seats,updates their bookedSeats[]
                                                 customersMods.dayOfTravel = newDayOfTravel;
                                                 displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket,shm_ptr);
                                                 customersMods = selectAvailableSeats(customersMods,socket,nextCustomer.numberOfTravelers,shm_ptr); 
@@ -106,7 +106,7 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                                                 }
                                         } else if (numberOfTravelersRequested < customersMods.numberOfTravelers){
                                                 travelersToRemove = customersMods.numberOfTravelers - numberOfTravelersRequested;
-                                                customersMods = freeCustomersSeatsInSharedMem(customersMods, travelersToRemove,shm_ptr); //this also updates the customersMods struct with removed seats and returns this struct
+                                                customersMods = freeCustomersSeatsInSharedMem(customersMods,socket,travelersToRemove,shm_ptr); //this also updates the customersMods struct with removed seats and returns this struct
                                                 customersMods.numberOfTravelers = numberOfTravelersRequested;
                                         }
                                         break;
@@ -120,7 +120,7 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                                 ticketNumber = ticketInquiryMenu(socket); //will ask for ticket
                                 customersMods = retrieveCustomersInfo(ticketNumber); //will retrieve customer info from summary file
                                 //displayTicketInfo(ticketNumber,socket); //display ticket info to customer
-                                freeCustomersSeatsInSharedMem(customersMods,0,shm_ptr); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory
+                                freeCustomersSeatsInSharedMem(customersMods,socket,0,shm_ptr); //uses customer struct properties dayOfTravel and bookedSeats[] to find and free seats in shared memory
                                 cancelReservation(customersMods,socket); //using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
                                 //message customer know reservation cancelled
                         }
