@@ -5,7 +5,7 @@
  */
 
 
-
+#include "trainTicketMaster.h"
 #include "trainSeating.h" //Include our own header file
 
 //calculates and then returns the number of available seats for a given day

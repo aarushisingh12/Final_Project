@@ -9,8 +9,6 @@
 #ifndef trainTicketMaster_h
 #define trainTicketMaster_h
 
-#include "trainSeating.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

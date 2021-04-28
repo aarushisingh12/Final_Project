@@ -9,7 +9,7 @@
 //will need to have synchronized access to available seats struct in shared memory and "summary" files
 
 #include "trainTicketMaster.h"
-//#include "trainSeating.h"
+#include "trainSeating.h"
 #include "caleb_server.h"
 #include "server_tempFunctions.h"
 

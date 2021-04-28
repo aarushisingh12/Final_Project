@@ -6,8 +6,6 @@
 #ifndef TRAINSEATING_H
 #define TRAINSEATING_H
 
-#include "trainTicketMaster.h"
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
