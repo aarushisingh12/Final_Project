@@ -3,6 +3,7 @@
 #define server_tempFunctions_h
 
 #include "trainTicketMaster.h"
+#include "trainSeating.h"
 
 #define STRING_BUFFER_MAX 300//for tcp
 
@@ -21,8 +22,6 @@
 #include <netinet/in.h>
 
 #include <time.h> //for date
-
-#include "trainSeating.h"
 
 //to use:   char date[20];
 //          strcpy(date,getTodaysDate().today)

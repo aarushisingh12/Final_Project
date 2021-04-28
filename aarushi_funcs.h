@@ -16,7 +16,7 @@
 
 #include "trainTicketMaster.h"
 #include "server_tempFunctions.h"
-#include "trainSeating.h"
+//#include "trainSeating.h"
 
 //will have to comment out versions in server_tempFunctions .c and .h to with rest of system
 void writeToSummaryFile(customerInfo,int server_name,int socket);

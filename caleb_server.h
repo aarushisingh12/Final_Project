@@ -3,7 +3,7 @@
 #define caleb_server_h
 
 #include "trainTicketMaster.h"
-#include "trainSeating.h"
+//#include "trainSeating.h"
 
 #define STRING_BUFFER_MAX 300//for tcp
 #define SEATS 40

@@ -3,6 +3,11 @@
  */
 
 
+#ifndef TRAINSEATING_H
+#define TRAINSEATING_H
+
+#include "trainTicketMaster.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,9 +25,6 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#ifndef TRAINSEATING_H
-#define TRAINSEATING_H
-
 #define STRING_BUFFER_MAX 300//for tcp 
 
 typedef struct StructForSeating {
@@ -39,20 +41,6 @@ typedef struct StructForSeating {
     //(just like the assignment document shows).
     int seats[27]; 
 }availableSeats;
-
-//sturct used to hold customers info, during reservation process
-typedef struct customerInfo {
-    char fullName[60];
-    char dateOfBirth[20];
-    char gender[10];
-    char governmentID[20];
-    int dayOfTravel; //1 for day, 2 for tomorrow
-    char dateOfTravel[20];// if dayOfTravel = 1, can use getTodaysDate()
-    int numberOfTravelers;
-    int ticketNumber; //assigned when confirming reservation with assignTicketNumber() func
-    int bookedSeats[27]; //assigned after selectAvailableSeats()
-
-}customerInfo;
 
 
 //int trainSeating();
