@@ -7,45 +7,43 @@
 #include "server_tempFunctions.h"
 
 
-// // mainMenu func, sends of tcp and returns int
-// int mainMenu(int socket){
-//     printf("\nMain menu called.\n");
-//     char stringBuffer[STRING_BUFFER_MAX];
 
-//     //send printTrain string
-//     strcpy(stringBuffer,"Hello User! Welcome to the Group I train ticket reservation system!\n");
-//     send(socket,stringBuffer,sizeof(stringBuffer),0);
-//     strcpy(stringBuffer, "1. Make a reservation\n2. Inquiry about the ticket.\n3. Modify the reservation.\n4. Cancel the reservation.\n5. Exit the program\n\n");
-//     send(socket,stringBuffer,sizeof(stringBuffer),0);
+void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
+    printf("writeToSummaryFile() called\n"); //for debugging
+    //accesses date and writes reservation info to day's summary file
+}
 
-//     //receive response via tcp
-//     strcpy(stringBuffer,"needint"); //code that customer will read and no to scanf for int
-//     send(socket,stringBuffer,sizeof(stringBuffer),0);
+//will search summary files for ticketNumber and send to customer via tcp
+void displayTicketInfo(int ticketNumber,int socket){
+    printf("diplayTicketInfo() called\n"); //for debugging
 
-//     int intInput; //int buffer to hold client main menu input
-//     recv(socket,&intInput,sizeof(int),0);
-//     if (intInput == 5) {
-//         return 5;
-//     }
-//     else if (intInput == 4) {
-//         return 4;
-//     }
-//     else if (intInput == 3) {
-//         return 3;
-//     }
-//     else if (intInput == 2) {
-//         return 2;
-//     }
-//     else if (intInput == 1) {
-//         return 1;
-//     }
-//     else {
-//         strcpy(stringBuffer,"isn't a valid input, please try again!\n");
-//         send(socket,stringBuffer, sizeof(stringBuffer), 0);
-//         mainMenu(socket); //call itself recursively
-//     }
-//     return 0;
-// }
+}
+
+
+//will use customerMods.ticketNumber to search, commits modification to summary files,
+//adds note at end saying which server made modificaitons
+void modifyReservation(customerInfo customerMods, int server_name, int socket){
+    printf("modifyReservation() called\n"); //for debugging
+}
+
+
+ 
+//need to be synchronized
+//using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
+void cancelReservation(customerInfo customer,int socket){
+    printf("cancelReservation() called\n"); //for debugging
+}
+
+//NEW FUNC
+//find customers entry in by ticket number and save to struct, return struct
+customerInfo retrieveCustomersInfo(int ticketNumber){
+    printf("\nretrieveCustomersInfo called\n"); //for debugging
+    customerInfo customersInfo;
+   
+    return customersInfo;
+}
+
+
 
 
 //to use:   char date[20];
@@ -59,161 +57,68 @@ struct Date getTodaysDate() {
 }
 
 
-
-//will ask for and receive via TCP customerInfo, and save to customerInfo struct and return struct
-//customerInfo reservationMenu(int socket){
-//    customerInfo nextCustomersInfo;
-//
-//    return nextCustomersInfo;
-//}
-
-
-// //needs to be synchronized
-// bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket){
-//     printf("\ncheckIfavailableSeats() called\n"); //for debugging
-//         //or false if not enough available to cover numberOfTravelers
-//     return true;
-// }
-
-
-
-// bool confirmReservationMenu(int socket){
-//    printf("\nconfirmtReservationMenu() called\n"); //for debugging
-// //return false if they do not confirm, could say reservation not confirmed or something
-//
-//    return true;
-// }
-
-
-// //needs to be synchronized
-// //shows seats customer selects starting index (seat) and #of travelers fills in seats
-// //accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
-// void displayAvailableSeats(int dayOfTravel,int numberOfTravelers, int socket){
-//     printf("diplayAvailalbeSeats() called\n"); //for debugging
-
-// }
-
-
-
-
-// //needs to be synchronized
-// //accesses shared memory and alows customer to select from available seats and writes to shared memory
-// //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers 
-// //had to add addedSeatsIfModified for when just adding select number number of seats
-// //if addedSeatsIfModified is non-zero than that is the number you would use for the aount of seats that can be selected
-// //then update .bookedSeats struct member accordingly
-// customerInfo selectAvailableSeats(customerInfo nextCustomer, int socket, int addedSeatsIfModified){
-//     printf("selectAvailalbeSeats() called\n"); //for debugging
-
-//     return nextCustomer;
-// }
-
-// //NEW FUNC
-// customerInfo freeCustomersSeatsInSharedMem(customerInfo customersMods, int customersRequestedSeatReduction){
-//     printf("\nfreeCustomersSeatsInSharedMem called");
-//     //using customerForSeatsFreed.dayOfTravel and cusomerForSeatsFreed.bookedSeats, find customers seats in shared memory and free them
-//     //if customer modifying their ticket by removing a few seats, you can use customersRequestedSeatReduction to delete this number of seats but keep the rest of theirs)
-//     //basically you would want to check if their is a non-zero value in customersRequestedSeatReduction and if so that is the number you use for amount of seats to be freed
-//     //then update their booked seats accordingly
-//     return customersMods;  //return used when customer modifies seats by deselecting some
-// }
-
-
-// //accesses shared memory struct member .nextTicketNumber to assign next available ticket number to customer
-// //then increments ticket number for next customer
-// int assignTicketNumber(int socket){
-//     printf("assignTicketNumber() called\n"); //for debugging
-//     int nextTicketNumber;
-//       //struct that holds modfied info
-//     return nextTicketNumber;
-// }
-
-
-void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
-    printf("writeToSummaryFile() called\n"); //for debugging
-    //accesses date and writes reservation info to day's summary file
-}
-
-//NEW FUNC
-//find customers entry in by ticket number and save to struct, return struct
-customerInfo retrieveCustomersInfo(int ticketNumber){
-    printf("\nretrieveCustomersInfo called\n"); //for debugging
-    customerInfo customersInfo;
-   
-    return customersInfo;
-}
-
-
 void sendReceipt(customerInfo nextCustomer, int socket,int server_name){
     printf("sendReceipt() called\n"); //for debugging
     //send "receipt" code to customer via tcp (client will then know to run acceptReceipt() func)
     //then sends receipt data in form of strings (client acceptReceipt func will create/open receipt file print)
+    char stringBuffer [STRING_BUFFER_MAX];
+    char bookedSeatsString [100];
+    char nextSeat[3];
+
+    strcpy(stringBuffer,"receipt");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    sprintf(stringBuffer,"\nYour Receipt From Server %d:\n",server_name);
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    
+
+	sprintf(stringBuffer,"Ticket Number: %d\n",nextCustomer.ticketNumber);
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+
+ 	sprintf(stringBuffer,"Your Name: %s\n",nextCustomer.fullName);
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    //hardcoded dates per TA's comment that this would be acceptable
+    if (nextCustomer.dayOfTravel == 1){
+        strcpy(stringBuffer,"Date of Travel: May 5,2021\n");
+        send(socket,stringBuffer,sizeof(stringBuffer),0);
+    } else {
+        strcpy(stringBuffer,"Date of Travel: May 6,2021\n");
+        send(socket,stringBuffer,sizeof(stringBuffer),0);
+    }
+
+	// sprintf(stringBuffer,"Date of Travel: %s\n",nextCustomer.dateOfTravel);
+    // send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+	sprintf(stringBuffer,"Number Of Travelers: %d\n",nextCustomer.numberOfTravelers);
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+	for (int i = 0; i<27;i ++){
+		if (nextCustomer.bookedSeats[i] == 1) {
+		    sprintf(nextSeat," %d",i);
+		    strcat(bookedSeatsString,nextSeat);
+		}
+	}
+
+	sprintf(stringBuffer,"Your Booked Seats: %s\n",bookedSeatsString);
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+    strcpy(stringBuffer,"THANKYOU AND HAVE A SAFE TRIP!\n");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+
+	strcpy(stringBuffer,"endreceipt");
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
 
 }
 
 
-
-// //will ask for ticket customer via tcp for ticket number, returns ticket number
-// int ticketInquiryMenu(int socket){
-//    printf("ticketInquiryMenu() called\n"); //for debugging
-//    int ticketNumber;
-//
-//    return ticketNumber;
-// }
-
-
-
-//will search summary files for ticketNumber and send to customer via tcp
-void displayTicketInfo(int ticketNumber,int socket){
-    printf("diplayTicketInfo() called\n"); //for debugging
-
-}
-
-
-//asks what fields customer want to modifiy, returns struct holding customers modified info
-//have to get ticket number to use to search summary files
-// customerInfo modifyReservationMenu(int socket){
-//    printf("diplayAvailalbeSeats() called\n"); //for debugging
-//    customerInfo customersMods;  //struct that holds modfied info/
-//
-//    return customersMods;
-// }
-
-
-//will use customerMods.ticketNumber to search, commits modification to summary files,
-//adds note at end saying which server made modificaitons
-void modifyReservation(customerInfo customerMods, int server_name, int socket){
-    printf("modifyReservation() called\n"); //for debugging
-}
-
-
- 
-
-
-
-
-//cancel confirmation sent over tcp if customer sends back yes then returns true, else false
-// bool confirmCancellationMenu(int socket){
-//    printf("cancelMenu() called\n"); //for debugging
-//    //or false if they don't confirm
-//    return true;
-// }
-
-
-//need to be synchronized
-//using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
-void cancelReservation(customerInfo customer,int socket){
-    printf("cancelReservation() called\n"); //for debugging
-
-
-}
 
 int exitProgram(int socket,availableSeats* ptr,int shm_fd){
 
     const int SIZE = sizeof(availableSeats)*2;
  // name of the shared memory object
     const char *name = "CS4323";
-
 
     printf("exitProgram() called\n"); //for debugging
     char stringBuffer[STRING_BUFFER_MAX];
