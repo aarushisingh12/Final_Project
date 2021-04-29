@@ -87,6 +87,11 @@ int assignTicketNumber(customerInfo nextCustomer, int socket, availableSeats *pt
     //Update the ticketNumber in shared memory (just increment by 1)
     (ptr+currentDayModifier)->ticketNumber = (ptr+currentDayModifier)->ticketNumber + 1;
     
+	//Send a message to the client to let them know what their ticket number is.
+    char messageToPassToClient[100] = "";
+    sprintf(messageToPassToClient, "\nYour ticket number is: %d", nextTicketNumber);
+    seatingSendMessageToClient(messageToPassToClient, socket);
+    
     return nextTicketNumber;
 }
 
@@ -161,7 +166,8 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int added
     int currentDayModifier = matchDayOfTravel(ptr, nextCustomer.dayOfTravel);
 
     //Begin gathering user input
-    seatingSendMessageToClient("\nFor the following prompt(s), please enter an integer (value 0 to 26) matching an available seat from above.\n", socket);
+    seatingSendMessageToClient("\nFor the following prompt(s), please enter an integer (value 0 to 26) matching an available seat from above.", socket);
+    seatingSendMessageToClient("\nA seat is available if it has a 0 next to it. So for example, 6:0 would be open while 6:1 would be taken.\n", socket);
     for(int i = 0; i < addedSeatsIfModified; i++) {
         char messageToPassToClient[100] = "";
         sprintf(messageToPassToClient, "\nPlease select seat %d out of %d: ", i+1, addedSeatsIfModified);
