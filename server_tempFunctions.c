@@ -62,8 +62,9 @@ void sendReceipt(customerInfo nextCustomer, int socket,int server_name){
     //send "receipt" code to customer via tcp (client will then know to run acceptReceipt() func)
     //then sends receipt data in form of strings (client acceptReceipt func will create/open receipt file print)
     char stringBuffer [STRING_BUFFER_MAX];
-    char bookedSeatsString [100];
-    char nextSeat[3];
+    char bookedSeatsString [100] = " ";
+    char nextSeat[8];
+
 
     strcpy(stringBuffer,"receipt");
     send(socket,stringBuffer,sizeof(stringBuffer),0);
@@ -96,12 +97,16 @@ void sendReceipt(customerInfo nextCustomer, int socket,int server_name){
 
 	for (int i = 0; i<27;i ++){
 		if (nextCustomer.bookedSeats[i] == 1) {
-		    sprintf(nextSeat," %d",i);
+		    snprintf(nextSeat,sizeof(int)," %d",i);
+            //printf("testing seat %d",i);
 		    strcat(bookedSeatsString,nextSeat);
 		}
 	}
 
-	sprintf(stringBuffer,"Your Booked Seats: %s\n",bookedSeatsString);
+    printf("\nBooked seats test: %s\n",bookedSeatsString);
+
+	sprintf(stringBuffer,"Your Booked Seats: %s \n",bookedSeatsString);
+
     send(socket,stringBuffer,sizeof(stringBuffer),0);
 
     strcpy(stringBuffer,"THANKYOU AND HAVE A SAFE TRIP!\n");

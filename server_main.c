@@ -24,14 +24,15 @@
 
 #define THREAD_NUM 5
 
-//multi thread code
+//multi thread/Thread ppol code
 typedef struct Job {
-    int (*functionToExecute)(int, int, availableSeats*,int); //this will become void (*trainTicketMaster(int,int));
-    int arg1, arg2, arg4; //will be for clients socket and server_name
+    int (*functionToExecute)(int, int, availableSeats*,int); //this will become int (*trainTicketMaster());
+    int arg1, arg2, arg4; //will be for clients socket and server_name, shm ptr and shm fd
     availableSeats* arg3;
 } Job;
 
-Job jobQueue[200];
+//a queue of jobs that can be assigned to the next thread
+Job jobQueue[200]; //don't really need 200 here
 int jobCount = 0;
 pthread_mutex_t mutexQueue;
 pthread_cond_t condQueue;
@@ -40,6 +41,7 @@ void executeJob(Job* job) {
     job->functionToExecute(job->arg1, job->arg2, job->arg3,job->arg4);
 }
 
+//submitting job to be execetued with mutex to make sure more than one thread doesn't update
 void submitJobForExecution(Job job) {
     pthread_mutex_lock(&mutexQueue);
     jobQueue[jobCount] = job;
@@ -48,6 +50,7 @@ void submitJobForExecution(Job job) {
     pthread_cond_signal(&condQueue);
 }
 
+//thread pool thread initiated
 void* startThread(void* args) {
     
         Job job;
@@ -72,11 +75,14 @@ void* startThread(void* args) {
 
 int main() {
 
-    int exitProgramReturnVal = 0;
+
+    printf("\nServer %d says hello\n",getpid()); //for debugging
 
 
-//NEED TO ADD SHARED MEMORY ACCESS
-//setUpSharedMemory(&day1, &day2);
+    int exitProgramReturnVal = 0; //unused at moment
+
+
+    //Shared Memory Code (shared mem code by Max, integrated with Andrew)
     availableSeats *ptr; //pointer to shared memory object
     
     // size (in bytes) of shared memory object
@@ -123,14 +129,7 @@ int main() {
 
 
 
-
-
-
-   printf("\nServer %d says hello\n",getpid()); //for debugging
-
-   //TODO: Set up thread pool code
-
-
+    //FIFO WITH SERVER_DRIVER
 
    int fd = open("myfifo1", O_RDONLY); //fifo between server_driver and server_main
 
@@ -143,7 +142,9 @@ int main() {
    printf("\nServer %d is alive and named!\n",server_name);
    close(fd);
 
+
    
+   //THREAD CREATION FOR THREAD POOL
    pthread_t th[THREAD_NUM];
    pthread_mutex_init(&mutexQueue, NULL);
    pthread_cond_init(&condQueue, NULL);
@@ -156,7 +157,7 @@ int main() {
     }
 
 
-      /* creation of the socket */
+    //creation of the socket to communicaqte with client
    int server_socket, c;
    server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -195,14 +196,13 @@ int main() {
 
 
    int client_socket;
-   //client_socket = accept(server_socket, NULL, NULL); //if not in accept loop
-
-//live server code
+   
+   
+    //live server code
    while( (client_socket = accept(server_socket, (struct sockaddr *)&client_address, (socklen_t*)&c)) ){
 	    printf("\nConnection accepted from within accept loop");
         printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
-      //will eventually assign thread to call this with pointer to function:
-      //trainTicketMaster(client_socket,server_name);
+      //assign thread to call run trainTicketMaster
         Job t = {.functionToExecute = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name, .arg3 = ptr, .arg4 = shm_fd }; //ptr = shared mem ptr
         submitJobForExecution(t);
    }
