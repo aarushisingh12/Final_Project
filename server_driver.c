@@ -12,6 +12,10 @@
 #include <errno.h>
 #include <string.h>
 
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+
 int main() {
 
    printf("\nServer Driver says hello!\n"); //for debugging
@@ -25,6 +29,45 @@ int main() {
       return 1;
    }
 
+
+  //creation of the socket to communicaqte with client
+   int server_socket, c;
+   server_socket = socket(AF_INET, SOCK_STREAM, 0);
+
+   if (server_socket == -1){
+		printf("Could not create socket");
+	}
+
+   struct sockaddr_in server_address, client_address;
+   server_address.sin_family = AF_INET;
+   server_address.sin_addr.s_addr = INADDR_ANY; 
+   //windows ports maybe: 7400,7401,7402
+   //based on server_name, port is assigned
+
+    server_address.sin_port = htons(8001); //for local connections
+//    switch(server_name) {
+//       case 1:
+//          server_address.sin_port = htons(8001); //for local connections
+//       case 2:
+//          server_address.sin_port = htons(8002); //for local connections
+//       case 3:
+//          server_address.sin_port = htons(8003); //for local connections
+//    }
+
+
+   //for debugging. shutting down other unused servers before port binding
+//    if (server_name!=1){
+//       printf("\nserver %d exited\n",server_name);
+//       exit(0);
+//    }
+  
+   //Bind
+   if( bind(server_socket,(struct sockaddr *)&server_address , sizeof(server_address)) < 0){
+	   printf("bind failed");
+   }
+
+   listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
+   printf("\nserver %d listening for clients\n",server_name);
    //creating 3 servers
    for (int i = 0;i<3;i++){
 
@@ -54,7 +97,18 @@ int main() {
       //printf("%d",server_name);
    }
 
+    //sending names to servers
+   for (int i=0;i<3;i++){
+      write(fd, &server_socket, sizeof(int));
+      //server_name++; //incrementing name
+      //printf("%d",server_name);
+   }
+
+   //sleep(1);
+
    printf("\nserver_driver complete");
+
+   wait(NULL);
 
    //sleep(10); //for debugging to give time for child servers to print to terminal
    //close(fd);
