@@ -27,6 +27,10 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+#define SEM_NAME "/semaphore_example"
+#define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+#define INITIAL_VALUE 0
+
 
 int mainMenu(int socket);
 

@@ -15,6 +15,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include "caleb_server.h"
 
 
 
@@ -42,7 +43,7 @@ int main() {
 
    struct sockaddr_in server_address, client_address;
    server_address.sin_family = AF_INET;
-   server_address.sin_addr.s_addr = INADDR_ANY; 
+   server_address.sin_addr.s_addr = INADDR_ANY;
 
    server_address.sin_port = htons(8001); //for local connections
 
@@ -52,7 +53,7 @@ int main() {
    }
 
    listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
-  
+
    //creating 3 servers
    for (int i = 0;i<3;i++){
 
