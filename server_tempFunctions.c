@@ -30,18 +30,18 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket){
  
 //need to be synchronized
 //using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
-void cancelReservation(customerInfo customer,int socket){
-    printf("cancelReservation() called\n"); //for debugging
-}
+// void cancelReservation(customerInfo customer,int socket){
+//     printf("cancelReservation() called\n"); //for debugging
+// }
 
 //NEW FUNC
 //find customers entry in by ticket number and save to struct, return struct
-customerInfo retrieveCustomersInfo(int ticketNumber){
-    printf("\nretrieveCustomersInfo called\n"); //for debugging
-    customerInfo customersInfo;
+// customerInfo retrieveCustomersInfo(int ticketNumber){
+//     printf("\nretrieveCustomersInfo called\n"); //for debugging
+//     customerInfo customersInfo;
    
-    return customersInfo;
-}
+//     return customersInfo;
+// }
 
 
 

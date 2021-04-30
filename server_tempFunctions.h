@@ -31,7 +31,7 @@ struct Date getTodaysDate();
 
 //new functions related to modifying reservation//ask Andrew
 
-customerInfo retrieveCustomersInfo(int ticketNumber); //uses ticket number to access sumary files and save and return customer struct
+// customerInfo retrieveCustomersInfo(int ticketNumber); //uses ticket number to access sumary files and save and return customer struct
 
 // customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods,int travelersToRemove);
 
@@ -111,7 +111,7 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
 //need to be synchronized
 //using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
-void cancelReservation(customerInfo customer,int socket);
+// void cancelReservation(customerInfo customer,int socket);
 
 
 //needs to close socket and have process exit/return thread to pool
