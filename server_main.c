@@ -110,14 +110,14 @@ int main() {
     availableSeats day1; //Struct for the first day
     availableSeats day2; //Struct for the second day
     
-    strcpy(day1.dateStr, "Yesterday"); //Create string the date for the first struct
-    strcpy(day2.dateStr, "Today"); //Create string the date for the second struct
+    // strcpy(day1.dateStr, "Yesterday"); //Create string the date for the first struct
+    // strcpy(day2.dateStr, "Today"); //Create string the date for the second struct
     
     day1.dateInt = 1; //Create the integer date for the first struct
     day2.dateInt = 2; //Create the integer date for the second struct
     
-    day1.ticketNumber = 1; //Assign the ticketNumber for the first struct
-    day2.ticketNumber = 1; //Assign the ticketNumber for the second struct
+    day1.ticketNumber = 101; //Assign the ticketNumber for the first struct
+    day2.ticketNumber = 201; //Assign the ticketNumber for the second struct
     
     const int sizeOfSeatsArray = sizeof(day1.seats) / sizeof(int);
     
