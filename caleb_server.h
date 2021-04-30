@@ -14,7 +14,8 @@
 #define SEM_READER_NAME "/sem_readers"
 #define SEM_WRITER_NAME "/sem_writers"
 #define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
-#define INITIAL_VALUE 5
+#define INITIAL_VALUE_WRITER 1
+#define INITIAL_VALUE_READER 15
 
 #include <stdbool.h>
 #include <string.h>

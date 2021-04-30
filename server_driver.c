@@ -36,8 +36,8 @@ int main() {
    sem_unlink(SEM_READER_NAME);
    sem_unlink(SEM_WRITER_NAME);
    //We initialize the semaphore counter to (INITIAL_VALUE) in caleb_server.h
-   sem_t *read_semaphore = sem_open(SEM_READER_NAME, O_CREAT | O_EXCL, SEM_PERMS, INITIAL_VALUE);
-   sem_t *write_semaphore = sem_open(SEM_WRITER_NAME, O_CREAT | O_EXCL, SEM_PERMS, INITIAL_VALUE);
+   sem_t *read_semaphore = sem_open(SEM_READER_NAME, O_CREAT | O_EXCL, SEM_PERMS, INITIAL_VALUE_READER);
+   sem_t *write_semaphore = sem_open(SEM_WRITER_NAME, O_CREAT | O_EXCL, SEM_PERMS, INITIAL_VALUE_WRITER);
 
 
 
