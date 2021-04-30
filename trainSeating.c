@@ -106,6 +106,9 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, a
     
     if(numberOfTravelers > numberOfAvailableSeats) {
         //more travelers than available seats
+        char messageToPassToClient[100] = "";
+        sprintf(messageToPassToClient, "\nSorry, but there aren't %d seats available right now. We only have %d seats open.", numberOfTravelers, numberOfAvailableSeats);
+        seatingSendMessageToClient(messageToPassToClient, socket);
         return false;
     } else {
         //equal to or more than enough seats for the number of travelers
@@ -152,10 +155,7 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int added
         
         //check to make sure we have enough seats available based on what the user just entered.
         if(!checkIfAvailableSeats(nextCustomer.dayOfTravel, addedSeatsIfModified, socket, ptr)) {
-        	char messageToPassToClient[100] = "";
-            sprintf(messageToPassToClient, "\nSorry, but there aren't %d seats available right now. Please enter a lower amount.", addedSeatsIfModified);
-            seatingSendMessageToClient(messageToPassToClient, socket);
-            addedSeatsIfModified = 0;
+        	addedSeatsIfModified = 0;
         }
     }
         
@@ -252,70 +252,3 @@ customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods, int socket
     
     return customerMods;
 }
-
-// int trainSeating() {
-//     availableSeats day1; //Struct for the first day
-//     availableSeats day2; //Struct for the second day
-    
-//     strcpy(day1.dateStr, "Yesterday"); //Create string the date for the first struct
-//     strcpy(day2.dateStr, "Today"); //Create string the date for the second struct
-    
-//     day1.dateInt = 1; //Create the integer date for the first struct
-//     day2.dateInt = 2; //Create the integer date for the second struct
-    
-//     day1.ticketNumber = 1; //Assign the ticketNumber for the first struct
-//     day2.ticketNumber = 1; //Assign the ticketNumber for the second struct
-    
-//     //const int sizeOfSeatsArray = sizeof(day1.seats) / sizeof(int);
-    
-//     //Use for loop to initialize all array values to zero as every seat starts as being open
-//     for(int i = 0; i < sizeOfSeatsArray; i++) {
-//         day1.seats[i] = 0;
-//         day2.seats[i] = 0;
-//     }
-    
-//     //setUpSharedMemory(&day1, &day2);
-//     availableSeats *ptr; //pointer to shared memory object
-    
-//     // size (in bytes) of shared memory object
-//     const int SIZE = sizeof(availableSeats) * 2; //Size of our struct * 2 so we can hold two days of entries
-//     // name of the shared memory object
-//     const char *name = "CS4323";
-//     // shared memory file descriptor 
-//     int shm_fd;
-    
-//     // Create or open a shared memory object
-//     shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666); 
-//     // Set the shared memory object size
-//     ftruncate(shm_fd, SIZE);
-//     // Map the shared memory object into the current address space
-//     ptr = mmap(0, SIZE,  PROT_WRITE, MAP_SHARED, shm_fd, 0);
-    
-//     //store each newProduct into shared memory object 
-//     *(ptr) = day1;
-//     *(ptr + 1) = day2;
-    
-//     // memory map the shared memory object
-//     ptr = (availableSeats *) mmap(0, SIZE, O_RDWR, MAP_SHARED, shm_fd, 0);
-    
-//     customerInfo testCustomer;
-//     testCustomer.dayOfTravel = 1;
-//     for(int i = 0; i < 27; i++) {
-//         testCustomer.bookedSeats[i] = 0; 
-//     }
-//     testCustomer = selectAvailableSeats(testCustomer, 0, 0, ptr);
-    
-//     displayAvailableSeats(1, 0, 0, ptr);
-    
-//     updateDays(ptr, "Today"); //Call to update day
-//     updateDays(ptr, "Today"); //Double check to confirm the update
-    
-    // // Unmap the shared memory
-    // munmap(&ptr, SIZE);
-    // // Close the shared memory object
-    // close(shm_fd);
-    // // Delete the shared memory object
-    // shm_unlink(name);
-    
-//     return 0;
-// }
