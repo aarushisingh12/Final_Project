@@ -14,9 +14,11 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#include "trainTicketMaster.h"
-#include "trainSeating.h"
-#include "server_tempFunctions.h"
+#include "andrew_trainTicketMaster.h"
+#include "max_trainSeating.h"
+
+#include "andrew_serverFuncs.h"
+
 #include <time.h> //for date
 
 

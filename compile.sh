@@ -1,4 +1,4 @@
-gcc server_main.c trainTicketMaster.c server_tempFunctions.c caleb_server.c trainSeating.c aarushi_funcs.c -o server_main -lpthread -lrt
-gcc server_driver.c -o server_driver -lpthread
-gcc client_main.c andrew_clientFuncs.c -o client_main
+gcc aarushi_funcs.c  andrew_serverFuncs.c andrew_trainTicketMaster.c andrew_server_main.c caleb_server.c max_trainSeating.c  -o server_main -lpthread -lrt
+gcc andrew_server_driver.c -o server_driver -lpthread
+gcc andrew_client_main.c andrew_clientFuncs.c -o client
 

@@ -2,7 +2,7 @@
 #ifndef caleb_server_h
 #define caleb_server_h
 
-#include "trainTicketMaster.h"
+#include "andrew_trainTicketMaster.h"
 //#include "trainSeating.h"
 
 #define STRING_BUFFER_MAX 300//for tcp
