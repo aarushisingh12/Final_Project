@@ -16,9 +16,11 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+
+
 int main() {
 
-   printf("\nServer Driver says hello!\n"); //for debugging
+   printf("\nServer Driver is Alive and Creating 3 Servers!\n"); //for debugging
 
    int server_name = 1; //name of first server will be incremented as we go along
 
@@ -41,33 +43,16 @@ int main() {
    struct sockaddr_in server_address, client_address;
    server_address.sin_family = AF_INET;
    server_address.sin_addr.s_addr = INADDR_ANY; 
-   //windows ports maybe: 7400,7401,7402
-   //based on server_name, port is assigned
 
-    server_address.sin_port = htons(8001); //for local connections
-//    switch(server_name) {
-//       case 1:
-//          server_address.sin_port = htons(8001); //for local connections
-//       case 2:
-//          server_address.sin_port = htons(8002); //for local connections
-//       case 3:
-//          server_address.sin_port = htons(8003); //for local connections
-//    }
+   server_address.sin_port = htons(8001); //for local connections
 
-
-   //for debugging. shutting down other unused servers before port binding
-//    if (server_name!=1){
-//       printf("\nserver %d exited\n",server_name);
-//       exit(0);
-//    }
-  
    //Bind
    if( bind(server_socket,(struct sockaddr *)&server_address , sizeof(server_address)) < 0){
 	   printf("bind failed");
    }
 
    listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
-   printf("\nserver %d listening for clients\n",server_name);
+  
    //creating 3 servers
    for (int i = 0;i<3;i++){
 

@@ -22,6 +22,8 @@
 #include "trainTicketMaster.h"
 #include "server_tempFunctions.h"
 
+#include <semaphore.h>
+
 #define THREAD_NUM 5
 
 //multi thread/Thread ppol code
@@ -52,7 +54,9 @@ void submitJobForExecution(Job job) {
 
 //thread pool thread initiated
 void* startThread(void* args) {
-    
+
+
+    while (1){
         Job job;
 
         pthread_mutex_lock(&mutexQueue);
@@ -67,22 +71,20 @@ void* startThread(void* args) {
         }
         jobCount--;
         pthread_mutex_unlock(&mutexQueue);
-        
+       
         executeJob(&job);
+    }
     
 }
 
 
 int main() {
 
+    sem_t mutexSem;
+
+    sem_init(&mutexSem,0,1);
+
     int server_socket;
-
-    // int c;
-    // int client_address;
-
-
-    printf("\nServer %d says hello\n",getpid()); //for debugging
-
 
     int exitProgramReturnVal = 0; //unused at moment
 
@@ -168,56 +170,21 @@ int main() {
     }
 
 
-//     //creation of the socket to communicaqte with client
-//    int server_socket, c;
-//    server_socket = socket(AF_INET, SOCK_STREAM, 0);
-
-//    if (server_socket == -1){
-// 		printf("Could not create socket");
-// 	}
-
-//    struct sockaddr_in server_address, client_address;
-//    server_address.sin_family = AF_INET;
-//    server_address.sin_addr.s_addr = INADDR_ANY; 
-//    //windows ports maybe: 7400,7401,7402
-//    //based on server_name, port is assigned
-
-//     server_address.sin_port = htons(8001); //for local connections
-// //    switch(server_name) {
-// //       case 1:
-// //          server_address.sin_port = htons(8001); //for local connections
-// //       case 2:
-// //          server_address.sin_port = htons(8002); //for local connections
-// //       case 3:
-// //          server_address.sin_port = htons(8003); //for local connections
-// //    }
-
-
-//    //for debugging. shutting down other unused servers before port binding
-// //    if (server_name!=1){
-// //       printf("\nserver %d exited\n",server_name);
-// //       exit(0);
-// //    }
-  
-//    //Bind
-//    if( bind(server_socket,(struct sockaddr *)&server_address , sizeof(server_address)) < 0){
-// 	   printf("bind failed");
-//    }
-
-//    listen(server_socket, 5); //will update second number to reflect max number of customers allowed at a time
-//    printf("\nserver %d listening for clients\n",server_name);
-
 
    int client_socket;
    
    
     //live server code
    while( (client_socket = accept(server_socket, NULL, NULL)) ){
-	    printf("\nConnection accepted from within accept loop");
-        printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
+	    printf("\nConnection accepted by server %d,",server_name);
+        //printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
       //assign thread to call run trainTicketMaster
+        sem_wait(&mutexSem);
         Job t = {.functionToExecute = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name, .arg3 = ptr, .arg4 = shm_fd }; //ptr = shared mem ptr
+         
         submitJobForExecution(t);
+
+        sem_post(&mutexSem);
    }
 
    if (client_socket<0){
@@ -231,6 +198,7 @@ int main() {
         }
     }
 
+    sem_destroy(&mutexSem);
    pthread_mutex_destroy(&mutexQueue);
    pthread_cond_destroy(&condQueue);
 

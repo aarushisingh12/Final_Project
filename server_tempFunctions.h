@@ -31,7 +31,7 @@ struct Date getTodaysDate();
 
 //new functions related to modifying reservation//ask Andrew
 
-// customerInfo retrieveCustomersInfo(int ticketNumber); //uses ticket number to access sumary files and save and return customer struct
+//customerInfo retrieveCustomersInfo(int ticketNumber); //uses ticket number to access sumary files and save and return customer struct
 
 // customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods,int travelersToRemove);
 

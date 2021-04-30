@@ -4,7 +4,7 @@
 
 
 void reservationPortal(int sock){
-      printf("\nclient's reservation portal called\n");
+      //printf("\nclient's reservation portal called\n");
 
       int intBuffer = 0; //temp buffer to hold int from customer input to send to server
 
@@ -23,12 +23,12 @@ void reservationPortal(int sock){
                   exit(0);
             }
             if (strcmp(stringBuffer, "needstring") == 0){ //server will send this message when string input needed from client needed
-                  printf("\nReceived needstring code from server.\n"); //for debugging
+                  //printf("\nReceived needstring code from server.\n"); //for debugging
                   scanf("%s",stringBuffer);
                   send(sock, stringBuffer, sizeof(stringBuffer),0);
             }
             if (strcmp(stringBuffer, "needint") == 0){
-                  printf("\nReceived need needint code from server.\n"); //for debugging
+                  //printf("\nReceived need needint code from server.\n"); //for debugging
                   scanf("%d",&intBuffer);
                   send(sock, &intBuffer, sizeof(int),0);
             }
