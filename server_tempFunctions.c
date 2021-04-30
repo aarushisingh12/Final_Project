@@ -6,7 +6,7 @@
 
 #include "server_tempFunctions.h"
 
-
+//test
 
 // void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
 //     printf("writeToSummaryFile() called\n"); //for debugging
