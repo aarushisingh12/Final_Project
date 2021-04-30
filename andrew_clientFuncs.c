@@ -4,7 +4,7 @@
 
 
 void reservationPortal(int sock){
-      printf("\nclient's reservation portal called\n");
+      //printf("\nclient's reservation portal called\n");
 
       int intBuffer = 0; //temp buffer to hold int from customer input to send to server
 

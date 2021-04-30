@@ -22,6 +22,8 @@
 #include "trainTicketMaster.h"
 #include "server_tempFunctions.h"
 
+#include <semaphore.h>
+
 #define THREAD_NUM 5
 
 //multi thread/Thread ppol code
@@ -52,6 +54,8 @@ void submitJobForExecution(Job job) {
 
 //thread pool thread initiated
 void* startThread(void* args) {
+
+
     while (1){
         Job job;
 
@@ -67,7 +71,7 @@ void* startThread(void* args) {
         }
         jobCount--;
         pthread_mutex_unlock(&mutexQueue);
-        
+       
         executeJob(&job);
     }
     
@@ -75,6 +79,10 @@ void* startThread(void* args) {
 
 
 int main() {
+
+    sem_t mutexSem;
+
+    sem_init(&mutexSem,0,1);
 
     int server_socket;
 
@@ -168,11 +176,15 @@ int main() {
    
     //live server code
    while( (client_socket = accept(server_socket, NULL, NULL)) ){
-	    printf("\nConnection accepted from within accept loop");
-        printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
+	    printf("\nConnection accepted by server %d,",server_name);
+        //printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
       //assign thread to call run trainTicketMaster
+        sem_wait(&mutexSem);
         Job t = {.functionToExecute = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name, .arg3 = ptr, .arg4 = shm_fd }; //ptr = shared mem ptr
+         
         submitJobForExecution(t);
+
+        sem_post(&mutexSem);
    }
 
    if (client_socket<0){
@@ -186,6 +198,7 @@ int main() {
         }
     }
 
+    sem_destroy(&mutexSem);
    pthread_mutex_destroy(&mutexQueue);
    pthread_cond_destroy(&condQueue);
 
