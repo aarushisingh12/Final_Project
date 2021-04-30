@@ -151,19 +151,37 @@ Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, fil
             //printf("%s",read.bookedSeats[i]);
 
             // turn bookedseats into an struct
+            //char *token;
+            //char * temp[strlen(bookedseats)];
+            //token = strtok(bookedseats, ",");
+            
+            // variables for token
             char *token;
-            char * temp[strlen(bookedseats)];
-            token = strtok(bookedseats, ",");
+    char tempSeat[5];
+    
+    // get the first token
+    token = strtok(bookedseats, ",");
+    
+    // walk through other tokens
+   while( token != NULL ) {
+       sprintf(tempSeat, "%s", token );
 
-            for (int i = 0; i<= 50; i++) {
-                temp[i] = strtok(NULL, ",");
-                read.bookedSeats[i] = atoi(temp[i]);
-                printf("%d",read.bookedSeats[i]);
+       read.bookedSeats[atoi(tempSeat)] = 1;
+       //printf("%d",read.bookedSeats[atoi(tempSeat)]);
 
-            }
+       token = strtok(NULL, ",");
+   }
+   
+   //for (int i = 0; i<= 50; i++) {
+            //    temp[i] = strtok(NULL, ",");
+            //    read.bookedSeats[i] = atoi(temp[i]);
+            //    printf("%d",read.bookedSeats[i]);
+            //}
+            
             read.dayOfTravel = 1;
             return read;
         }
+
     }
     
     // TOMORROW
@@ -208,7 +226,7 @@ void cancelReservation(customerInfo customerMods, int socket) {
     memset(bookedseats,0,strlen(bookedseats));
     char filler[20];
     
-    printf("\n%s\n",customerMods.dateOfTravel);
+    //printf("\n%s\n",customerMods.dateOfTravel);
     
     // TODAY
     if (customerMods.dayOfTravel == 1) {
@@ -227,11 +245,9 @@ void cancelReservation(customerInfo customerMods, int socket) {
 
         // scan through summary file to find ticketNumber
         while(!feof(summary)) {
-            fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
+            fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
             if (customerMods.ticketNumber != read.ticketNumber) {
-                fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-                Modifications: \n",read.ticketNumber, server_name, read.fullName, read.dateOfBirth, read.gender, read.governmentID,
+                fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",read.ticketNumber, server_name, read.fullName, read.dateOfBirth, read.gender, read.governmentID,
                 read.numberOfTravelers, bookedseats);
             }
         }
@@ -258,12 +274,10 @@ Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, fil
         FILE * fdel = fopen("del.txt","w");
         
         // scan through summary file to find ticketNumber
-        while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-            Modifications: \n", &readTomorrowPTR->ticketNumber, &server_name, readTomorrowPTR->fullName, filler, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
+        while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n", &readTomorrowPTR->ticketNumber, &server_name, readTomorrowPTR->fullName, filler, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
             // copy over other ticketNumbers to fdel file
             if (customerMods.ticketNumber != readTomorrow.ticketNumber) {
-                fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-                Modifications: \n",readTomorrow.ticketNumber, server_name, readTomorrow.fullName, readTomorrow.dateOfBirth, readTomorrow.gender, readTomorrow.governmentID,readTomorrow.numberOfTravelers, bookedseats);
+                fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",readTomorrow.ticketNumber, server_name, readTomorrow.fullName, readTomorrow.dateOfBirth, readTomorrow.gender, readTomorrow.governmentID,readTomorrow.numberOfTravelers, bookedseats);
             }
         }
         // change fdel to summary file
@@ -273,9 +287,12 @@ Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, fil
         rename("del.txt",name);
     }
     // sends message to server
-    strcpy(stringBuffer,"\nThe receipt was removed from the summary file!\n");        
+    printf("\nThe receipt was removed from the summary file!\n");
+
+    //message to client
+    strcpy(stringBuffer,"\nYour reservation has been canceled\n");        
     send(socket,stringBuffer,sizeof(stringBuffer),0);
-    stringBuffer[0] = 0;
+   
 }
 
 // void modifyReservation(customerInfo customerMods, int server_name, int socket) { // modifies reservation on summary file

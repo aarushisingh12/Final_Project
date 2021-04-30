@@ -40,8 +40,6 @@ typedef struct customerInfo {
 }customerInfo;
 
 typedef struct StructForSeating {
-    //string for the date.
-    //char dateStr[20];
     //int for the date (1 or 2)
     int dateInt;
     //int for keeping track of which ticket number we are on each day.

@@ -39,40 +39,6 @@ void seatingSendMessageToClient(char *message, int socket){
 }
 
 
-// //Function for moving data to a new day:
-// //We copy day2 into day1 and reset day2.
-// void updateDays(availableSeats *ptr, char currentDate[20]) {
-//     //NOTE: It may not be very complex if they are just saved as "today" and "tomorrow"
-//    
-//    //Check if day1's date does not match the current date
-//    if(!strcmp((ptr+0)->dateStr, currentDate) == 0) {
-//        printf("---Updating Days---\n");
-//        
-//        //Copy Day2 dateStr to Day1 dateStr
-//       strcpy((ptr+0)->dateStr, (ptr+1)->dateStr);
-//        //Reset Day2 dateStr
-//        strcpy((ptr+1)->dateStr, "Tomorrow");
-//        
-//        //Reset Day1 dateInt
-//        (ptr+0)->dateInt = 1;
-//        //Reset Day2 dateInt
-//        (ptr+1)->dateInt = 2;
-//        
-//        //Reset Day1 ticketNumber
-//       (ptr+0)->ticketNumber = 1;
-//        //Reset Day2 ticketNumber
-//        (ptr+1)->ticketNumber = 1;
-//        
-//        //Copy Day2 array to Day1 array and reset the Day2 array
-//        for(int i = 0; i < sizeof((ptr+0)->seats) / sizeof(int); i++) {
-//            (ptr+0)->seats[i] = (ptr+1)->seats[i];
-//            (ptr+1)->seats[i] = 0;
-//        }
-//    } else {
-//        printf("---Days Match. No Update Performed---\n");
-//    }
-//}
-
 //accesses shared memory struct member .nextTicketNumber to assign next available ticket number to customer
 //then increments ticket number for next customer
 int assignTicketNumber(customerInfo nextCustomer, int socket, availableSeats *ptr){
