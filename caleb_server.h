@@ -11,9 +11,10 @@
 #define ANSI_COLOR_RED   "\x1b[31m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-#define SEM_NAME "/semaphore_example"
+#define SEM_READER_NAME "/sem_readers"
+#define SEM_WRITER_NAME "/sem_writers"
 #define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
-#define INITIAL_VALUE 0
+#define INITIAL_VALUE 5
 
 #include <stdbool.h>
 #include <string.h>

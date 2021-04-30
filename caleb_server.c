@@ -269,7 +269,23 @@ int requestInt(char *message, int socket){
  recv(socket,&returnInt,sizeof(int),0);
 
  return returnInt;
+}/*
+void requestReadSemaphor(sem_t *read, sem_t *write){
+  sem_wait(read);
+  int readers = sem_getValue(read);
+  if (readers == 4) {
+  }
+
 }
+void giveBackReadSemaphor(sem_t *mutex, sem_t *write){
+
+}
+void requestWriteSemaphor(sem_t *write){
+  sem_wait(write);
+}
+void giveBackWrtieSemaphor(sem_t *write){
+  sem_post(write);
+}*/
 /*
 int readFromUser(){
   printTrain();

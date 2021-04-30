@@ -33,26 +33,29 @@ int main() {
    }
 
    // Semaphore Syncronization start
-   /* We initialize the semaphore counter to (INITIAL_VALUE) in caleb_server.h */
-   sem_t *semaphore = sem_open(SEM_NAME, O_CREAT | O_EXCL, SEM_PERMS, INITIAL_VALUE);
+   /* We initialize the semaphore counter to (INITIAL_VALUE) in caleb_server.h
+   sem_t *read_semaphore = sem_open(SEM_READER_NAME, O_CREAT | O_EXCL, SEM_PERMS, INITIAL_VALUE);
+   sem_t *write_semaphore = sem_open(SEM_WRITER_NAME, O_CREAT | O_EXCL, SEM_PERMS, INITIAL_VALUE);
 
-   //creation of the socket to communicaqte with client
-   int server_socket, c;
-   server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
-   if (semaphore == SEM_FAILED) {
+
+   if (read_semaphore == SEM_FAILED || write_semaphore) {
         perror("sem_open(3) error");
         exit(EXIT_FAILURE);
     }
 
-    /* Close the semaphore as we won't be using it in the parent process */
-    if (sem_close(semaphore) < 0) {
+    //Close the semaphore as we won't be using it in the parent process
+    if (sem_close(write_semaphore) < 0 && sem_close(read_semaphore) < 0) {
         perror("sem_close(3) failed");
-        /* We ignore possible sem_unlink(3) errors here */
+        // We ignore possible sem_unlink(3) errors here
         sem_unlink(SEM_NAME);
         exit(EXIT_FAILURE);
-    }
+    }*/
     // Semaphore First part done
+
+       //creation of the socket to communicaqte with client
+    int server_socket, c;
+    server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
    if (server_socket == -1){
 		printf("Could not create socket");
@@ -106,11 +109,11 @@ int main() {
       //server_name++; //incrementing name
       //printf("%d",server_name);
    }
-
+/*
    //sleep(1);
    if (sem_unlink(SEM_NAME) < 0){
     perror("sem_unlink(3) failed");
-   }
+  }*/
    printf("\nserver_driver complete");
 
    wait(NULL);
