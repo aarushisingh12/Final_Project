@@ -23,11 +23,12 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
         //char todaysDate[20]; //gets todays date if needed
         //strcpy(todaysDate,getTodaysDate().today);
 
+
         while(1) {//infinite loop until customer exits program
 
                 int customerResponse = 0;
                 dates date; //struct type dates will hold today and tomorrows date
-                
+
 
                 customerInfo nextCustomer; //temp struct to hold next customers info
                 int ticketNumber = 0;
@@ -40,7 +41,7 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                 int travelersToRemove = 0;
 
                 int exitReturnType = 0;
-          
+
 
                 customerResponse = mainMenu(socket); //returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
                 switch(customerResponse){
@@ -89,7 +90,7 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                                                 customersMods = freeCustomersSeatsInSharedMem(customersMods,socket,0,shm_ptr); //using customers old dayOfTravel and booked seats, frees customers seats,updates their bookedSeats[]
                                                 customersMods.dayOfTravel = newDayOfTravel;
                                                 displayAvailableSeats(customersMods.dayOfTravel,customersMods.numberOfTravelers,socket,shm_ptr);
-                                                customersMods = selectAvailableSeats(customersMods,socket,nextCustomer.numberOfTravelers,shm_ptr); 
+                                                customersMods = selectAvailableSeats(customersMods,socket,nextCustomer.numberOfTravelers,shm_ptr);
                                                 //send dayOfTravelChanged
                                         }else{
                                                 //send sorry not enought seats available on this day
@@ -114,7 +115,7 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                         }
                         modifyReservation(customersMods,server_name,socket); //will use customerMods.ticketNumber to search, commits modification to summary files, adds note at end saying which server made modificaitons
                         sendReceipt(customersMods,socket,server_name);
-                       
+
 
                 case 4: //cancelReservation  //writing to summary file needs to be synchronized
                         if (confirmCancellationMenu(socket) == true){ //confirm cancellation menu
@@ -136,8 +137,9 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                 default: //this is probably redundant
                         //send not a valid input message
                         trainTicketMaster(socket,server_name,shm_ptr,shm_fd); //recursvie call
-                        
+
                 }
         }
+
 
 }

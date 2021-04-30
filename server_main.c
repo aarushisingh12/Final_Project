@@ -21,6 +21,7 @@
 #include "trainSeating.h"
 #include "trainTicketMaster.h"
 #include "server_tempFunctions.h"
+#include "caleb_server.h"
 
 #include <semaphore.h>
 
@@ -65,16 +66,16 @@ void* startThread(void* args) {
         }
 
         job = jobQueue[0];
-       
+
         for (int i = 0; i < jobCount - 1; i++) {
             jobQueue[i] = jobQueue[i + 1];
         }
         jobCount--;
         pthread_mutex_unlock(&mutexQueue);
-       
+
         executeJob(&job);
     }
-    
+
 }
 
 
@@ -91,46 +92,46 @@ int main() {
 
     //Shared Memory Code (shared mem code by Max, integrated with Andrew)
     availableSeats *ptr; //pointer to shared memory object
-    
+
     // size (in bytes) of shared memory object
     const int SIZE = sizeof(availableSeats) * 2; //Size of our struct * 2 so we can hold two days of entries
     // name of the shared memory object
     const char *name = "CS4323";
-    // shared memory file descriptor 
+    // shared memory file descriptor
     int shm_fd;
-    
+
     // Create or open a shared memory object
-    shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666); 
+    shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
     // Set the shared memory object size
     ftruncate(shm_fd, SIZE);
     // Map the shared memory object into the current address space
     ptr = mmap(0, SIZE,  PROT_WRITE, MAP_SHARED, shm_fd, 0);
-    
+
 
     availableSeats day1; //Struct for the first day
     availableSeats day2; //Struct for the second day
-    
+
     // strcpy(day1.dateStr, "Yesterday"); //Create string the date for the first struct
     // strcpy(day2.dateStr, "Today"); //Create string the date for the second struct
-    
+
     day1.dateInt = 1; //Create the integer date for the first struct
     day2.dateInt = 2; //Create the integer date for the second struct
-    
+
     day1.ticketNumber = 101; //Assign the ticketNumber for the first struct
     day2.ticketNumber = 201; //Assign the ticketNumber for the second struct
-    
+
     const int sizeOfSeatsArray = sizeof(day1.seats) / sizeof(int);
-    
+
     //Use for loop to initialize all array values to zero as every seat starts as being open
     for(int i = 0; i < sizeOfSeatsArray; i++) {
         day1.seats[i] = 0;
         day2.seats[i] = 0;
     }
 
-  //store each newProduct into shared memory object 
+  //store each newProduct into shared memory object
     *(ptr) = day1;
     *(ptr + 1) = day2;
-    
+
     // memory map the shared memory object
     ptr = (availableSeats *) mmap(0, SIZE, O_RDWR, MAP_SHARED, shm_fd, 0);
 
@@ -155,8 +156,13 @@ int main() {
    printf("\nServer %d is alive and named!\n",server_name);
    close(fd);
 
+   sem_t *reader_sem = sem_open(SEM_READER_NAME, O_RDWR);
+   sem_t *writer_sem = sem_open(SEM_WRITER_NAME, O_RDWR);
+   if (reader_sem == SEM_FAILED || writer_sem == SEM_FAILED) {
+       perror("sem_open(3) failed");
+       exit(EXIT_FAILURE);
+   }
 
-   
    //THREAD CREATION FOR THREAD POOL
    pthread_t th[THREAD_NUM];
    pthread_mutex_init(&mutexQueue, NULL);
@@ -172,8 +178,8 @@ int main() {
 
 
    int client_socket;
-   
-   
+
+
     //live server code
    while( (client_socket = accept(server_socket, NULL, NULL)) ){
 	    printf("\nConnection accepted by server %d,",server_name);
@@ -181,7 +187,7 @@ int main() {
       //assign thread to call run trainTicketMaster
         sem_wait(&mutexSem);
         Job t = {.functionToExecute = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name, .arg3 = ptr, .arg4 = shm_fd }; //ptr = shared mem ptr
-         
+
         submitJobForExecution(t);
 
         sem_post(&mutexSem);
@@ -202,6 +208,9 @@ int main() {
    pthread_mutex_destroy(&mutexQueue);
    pthread_cond_destroy(&condQueue);
 
+   if (  sem_unlink(SEM_READER_NAME) < 0 || sem_unlink(SEM_WRITER_NAME) < 0){
+    perror("sem_unlink(3) failed");
+   }
    close(server_socket);
 
    printf("\nServer Exited from main\n"); //for debugging

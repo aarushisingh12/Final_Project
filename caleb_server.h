@@ -25,6 +25,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <sys/mman.h>
 #include <semaphore.h> // Needed for semaphores
 #include <sys/stat.h>
 #include <sys/types.h>

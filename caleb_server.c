@@ -274,7 +274,9 @@ void requestReadSemaphor(sem_t *read, sem_t *write){
   sem_wait(read);
   int readers = sem_getValue(read);
   if (readers == 4) {
+    requestWriteSemaphor(write);
   }
+
 
 }
 void giveBackReadSemaphor(sem_t *mutex, sem_t *write){
