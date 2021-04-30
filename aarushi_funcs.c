@@ -98,10 +98,6 @@ Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, fil
         if (read.ticketNumber == ticketNumber) { break; }
     }
 
-    send(socket,stringBuffer,sizeof(stringBuffer),0);
-    stringBuffer[0] = 0;    
-    fclose(summary);
-
     // TOMORROW
     // gets tomorrows date for summary file
     memset(name,0,strlen(name));
@@ -126,83 +122,79 @@ Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, fil
     fclose(summary);
 }
 
-// customerInfo retrieveCustomersInfo(int ticketNumber) { //uses ticket number to access sumary files and save and return customer struct
-//     dates date;
-//     printf("\nretrieveCustomersInfo called\n"); //for debugging
+customerInfo retrieveCustomersInfo(int ticketNumber) { //uses ticket number to access sumary files and save and return customer struct
+    dates date;
+    printf("\nretrieveCustomersInfo called1\n"); //for debugging
 
-//     // TODAY
-//     // gets todays date
-//     char name[20];
-//     strcpy(name,getTodaysDate().today);
-//     char stringBuffer[500];
+    // TODAY
+    // gets todays date
+    char name[20];
+    strcpy(name,getTodaysDate().today);
+    char stringBuffer[500];
 
-//     // open summary file
-//     FILE * summary = fopen(name,"r");
-//     // struct to read file
-//     struct customerInfo read;
-//     struct customerInfo *readPTR =
-//     readPTR = &read;
-//     int server_name;
-//     char bookedseats[50];
-//     memset(bookedseats,0,strlen(bookedseats));
+    // open summary file
+    FILE * summary = fopen(name,"r");
+    // struct to read file
+    struct customerInfo read;
+    struct customerInfo *readPTR =
+    readPTR = &read;
+    int server_name = 0;
+    char filler[20];
+    char bookedseats[50];
+    memset(bookedseats,0,strlen(bookedseats));
 
-//     // scan through summary file to find ticketNumber
-//     while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-//         Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, readPTR->fullName, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats) != EOF) {
-//         if (read.ticketNumber == ticketNumber) {
-//             // turn bookedseats into an struct
-//             char *token;
-//             char * temp[10];
-//             token = strtok(bookedseats, ",");
-//             int i = 0;
-//             while( token != NULL ) {
-//                 temp[i] = token;
-//                 token = strtok(NULL, ",");
-//                 i++;
-//             }
-//             for (int i = 0; i<10; i++) {
-//                 read.bookedSeats[i] = atoi(temp[i]);
-//             }
-//             return read;
-//         }
-//     }
+    // scan through summary file to find ticketNumber
+    while(!feof(summary)) {
+        fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
+        if (read.ticketNumber == ticketNumber) {
+            // turn bookedseats into an struct
+            char *token;
+            char * temp[strlen(bookedseats)];
+            token = strtok(bookedseats, ",");
 
-//     // TOMORROW
-//     // gets tomorrows date
-//     char name2[20];
-//     strcpy(name2,getTomorrowsDate().tomorrow);
+            for (int i = 0; i<= 50; i++) {
+                temp[i] = strtok(NULL, ",");
+            }
+            for (int i = 0; i<=50; i++) {
+                read.bookedSeats[i] = atoi(temp[i]);
+                printf("\n%d\n",read.bookedSeats[i]); // should print the seats as ints
+
+            }
+            return read;
+        }
+    }
     
-//     // struct to read file
-//     struct customerInfo readTomorrow;
-//     struct customerInfo *readTomorrowPTR =
-//     readTomorrowPTR = &readTomorrow;
+    // TOMORROW
+    // gets tomorrows date for summary file
+    memset(name,0,strlen(name));
+    strcpy(name,getTomorrowsDate().tomorrow);   
+    memset(bookedseats,0,strlen(bookedseats));
+    // open summary file
+    summary = fopen(name,"r");
 
-//     // open summary file
-//     FILE * summary1 = fopen(name,"r");
-//     memset(bookedseats,0,strlen(bookedseats));
+    // scan through summary file to find ticketNumber
+    while(!feof(summary)) {
+        fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
+        if (read.ticketNumber == ticketNumber) {
+            // turn bookedseats into an struct
+            char *token;
+            char * temp[strlen(bookedseats)];
+            token = strtok(bookedseats, ",");
+            printf("%s",bookedseats);
 
-//     // scan through summary file to find ticketNumber
-//     while (fscanf(summary1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-//         Modifications: \n", &readTomorrowPTR->ticketNumber, &server_name, readTomorrowPTR->fullName,readTomorrowPTR->fullName, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, readTomorrowPTR->governmentID,
-//             &readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
-//         if (readTomorrow.ticketNumber == ticketNumber) {
-//             // turn bookedseats into an struct
-//             char *token;
-//             char * temp[10];
-//             token = strtok(bookedseats, ",");
-//             int i = 0;
-//             while( token != NULL ) {
-//                 temp[i] = token;
-//                 token = strtok(NULL, ",");
-//                 i++;
-//             }
-//             for (int i = 0; i<10; i++) {
-//                 readTomorrow.bookedSeats[i] = atoi(temp[i]);
-//             }
-//             return readTomorrow;
-//          }
-//     }
-// }
+            for (int i = 0; i<= 50; i++) {
+                temp[i] = strtok(NULL, ",");
+            }
+            for (int i = 0; i<=50; i++) {
+                read.bookedSeats[i] = atoi(temp[i]);
+                printf("\n%d\n",read.bookedSeats[i]); // should print the seats as ints
+            }
+            return read;
+        }
+    }
+}
 
 // void cancelReservation(customerInfo customerMods, int socket) {
 //     dates date;
