@@ -182,7 +182,7 @@ int ticketInquiryMenu(int socket){
 //asks what fields customer want to modifiy, returns int based on choice
 int modifyReservationMenu(int socket){
     printf("modifyReservation() called\n"); //for debugging
- 
+
     int option = requestInt("\nWhich would you like to modify:\n1.Seat\n2.Travel Date\n3.Size of party\n",socket);
 
     if (option == 1) {
@@ -215,7 +215,7 @@ int modifyReservationMenu(int socket){
 
 //     if (option == 1) {
 //       sendMessageToClient("\nSeat Changed!\n", socket); // will need more info on seats
-//     
+//
 //     }
 //     else if (option == 2) {
 //       customersMods.dayOfTravel = requestInt("\nWhen would you prefer to travel:\n1.Today\n2.Tomorrow\n",socket);

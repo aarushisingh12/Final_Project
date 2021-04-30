@@ -11,7 +11,9 @@
 #define ANSI_COLOR_RED   "\x1b[31m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-// to comipile code, run "gcc -o UICaleb caleb_client.c"
+#define SEM_NAME "/semaphore_example"
+#define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+#define INITIAL_VALUE 0
 
 #include <stdbool.h>
 #include <string.h>
@@ -22,14 +24,16 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <semaphore.h> // Needed for semaphores
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
 #include <sys/types.h> //need these for sockets
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#define SEM_NAME "/semaphore_example"
-#define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
-#define INITIAL_VALUE 0
 
 
 int mainMenu(int socket);
