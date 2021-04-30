@@ -63,9 +63,9 @@ int main() {
        close(sock);
        return 0;
     }
-    printf("connected with server\n");
+    printf("\nwaitint ot connect with server...\n");
 
-   printf("\nclient about to call reservation portal\n"); 
+   //printf("\nclient about to call reservation portal\n"); 
    reservationPortal(sock); //will close socket and exit from within
 
 

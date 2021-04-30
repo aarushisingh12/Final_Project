@@ -52,7 +52,7 @@ void submitJobForExecution(Job job) {
 
 //thread pool thread initiated
 void* startThread(void* args) {
-    
+    while (1){
         Job job;
 
         pthread_mutex_lock(&mutexQueue);
@@ -69,6 +69,7 @@ void* startThread(void* args) {
         pthread_mutex_unlock(&mutexQueue);
         
         executeJob(&job);
+    }
     
 }
 

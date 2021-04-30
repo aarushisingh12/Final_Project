@@ -36,12 +36,12 @@ void cancelReservation(customerInfo customer,int socket){
 
 //NEW FUNC
 //find customers entry in by ticket number and save to struct, return struct
-customerInfo retrieveCustomersInfo(int ticketNumber){
-    printf("\nretrieveCustomersInfo called\n"); //for debugging
-    customerInfo customersInfo;
+// customerInfo retrieveCustomersInfo(int ticketNumber){
+//     printf("\nretrieveCustomersInfo called\n"); //for debugging
+//     customerInfo customersInfo;
    
-    return customersInfo;
-}
+//     return customersInfo;
+// }
 
 
 
