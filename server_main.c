@@ -82,7 +82,7 @@ int main() {
     // int client_address;
 
 
-    printf("\nServer %d says hello\n",getpid()); //for debugging
+    //printf("\nServer %d says hello\n",getpid()); //for debugging
 
 
     int exitProgramReturnVal = 0; //unused at moment
