@@ -20,6 +20,9 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+#include <semaphore.h>
+
+
 #define STRING_BUFFER_MAX 300//for tcp
 
 //sturct used to hold customers info, during reservation process
@@ -57,8 +60,6 @@ typedef struct Date {
      char tomorrow[20];
 } dates;
 
-
-
-int trainTicketMaster(int, int,availableSeats*,int);
+int trainTicketMaster(int, int,availableSeats*,int,sem_t *reader, sem_t *writer);
 
 #endif /* trainTicketMaster_h */

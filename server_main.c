@@ -29,9 +29,11 @@
 
 //multi thread/Thread ppol code
 typedef struct Job {
-    int (*functionToExecute)(int, int, availableSeats*,int); //this will become int (*trainTicketMaster());
+    int (*functionToExecute)(int, int, availableSeats*,int,sem_t*,sem_t*); //this will become int (*trainTicketMaster());
     int arg1, arg2, arg4; //will be for clients socket and server_name, shm ptr and shm fd
     availableSeats* arg3;
+    sem_t *arg5;
+    sem_t *arg6;
 } Job;
 
 //a queue of jobs that can be assigned to the next thread
@@ -41,7 +43,7 @@ pthread_mutex_t mutexQueue;
 pthread_cond_t condQueue;
 
 void executeJob(Job* job) {
-    job->functionToExecute(job->arg1, job->arg2, job->arg3,job->arg4);
+    job->functionToExecute(job->arg1, job->arg2, job->arg3,job->arg4,job->arg5,job->arg6);
 }
 
 //submitting job to be execetued with mutex to make sure more than one thread doesn't update
@@ -186,7 +188,7 @@ int main() {
         //printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
       //assign thread to call run trainTicketMaster
         sem_wait(&mutexSem);
-        Job t = {.functionToExecute = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name, .arg3 = ptr, .arg4 = shm_fd }; //ptr = shared mem ptr
+        Job t = {.functionToExecute = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name, .arg3 = ptr, .arg4 = shm_fd, .arg5 = reader_sem,.arg6 = writer_sem }; //ptr = shared mem ptr
 
         submitJobForExecution(t);
 

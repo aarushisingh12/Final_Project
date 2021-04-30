@@ -18,7 +18,7 @@
 //trainTicketMaster: will need to add address pointer to shared memory as parameter, pointers to today and tomorrow's reserations files
 
 
-int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int shm_fd){
+int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int shm_fd, sem_t *reader, sem_t *writer){
 
         //char todaysDate[20]; //gets todays date if needed
         //strcpy(todaysDate,getTodaysDate().today);
@@ -58,11 +58,11 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                                         // then sends receipt strings to client//
                                 }
                                 else {//customer didn't confirm reservation //
-                                        trainTicketMaster(socket,server_name,shm_ptr,shm_fd); //recursively
+                                        trainTicketMaster(socket,server_name,shm_ptr,shm_fd,reader,writer); //recursively
                                 }
                         }
                         else {//sorry not enough seats available!
-                                trainTicketMaster(socket,server_name,shm_ptr,shm_fd); //recursivley
+                                trainTicketMaster(socket,server_name,shm_ptr,shm_fd,reader,writer); //recursivley
                         }
                         break;
 
@@ -136,7 +136,7 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
 
                 default: //this is probably redundant
                         //send not a valid input message
-                        trainTicketMaster(socket,server_name,shm_ptr,shm_fd); //recursvie call
+                        trainTicketMaster(socket,server_name,shm_ptr,shm_fd,reader,writer); //recursvie call
 
                 }
         }
