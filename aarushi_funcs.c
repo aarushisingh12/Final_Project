@@ -9,7 +9,7 @@ struct Date getTodaysDate() {
      return date;
 }
 void writeToSummaryFile(customerInfo nextCustomer,int server_name,int socket) { // writes to appropriate day's summary file, ticket number will be used to search summary later on 
-    printf("\nwriteToSummaryFile() called\n"); //for debugging
+    printf("\nwriteToSummaryFile() called...\n"); //for debugging
     dates date;
 
     char stringBuffer[STRING_BUFFER_MAX]; // used to send output to server
@@ -18,12 +18,16 @@ void writeToSummaryFile(customerInfo nextCustomer,int server_name,int socket) { 
     char seat[3];
     char bookedseats[50];
     memset(bookedseats,0,strlen(bookedseats));
-    for (int i = 0; i < 50; i++) {
-        sprintf(seat,"%d\t",nextCustomer.bookedSeats[i]);
-        strcat(bookedseats,seat);
-    }
+    char nextSeat[8];
+
+	for (int i = 0; i<27;i ++){
+		if (nextCustomer.bookedSeats[i] == 1) {
+		    snprintf(nextSeat,sizeof(int),"%d ",i);
+            strcat(bookedseats,nextSeat);
+		}
+	}
     for(int i = 0; i < (strlen(bookedseats)); i++){
-        if(bookedseats[i] == '\t') {
+        if(bookedseats[i] == ' ') {
             bookedseats[i] = ',';
         }
     }
@@ -61,86 +65,66 @@ Modifications: \n",nextCustomer.ticketNumber, server_name, nextCustomer.fullName
     stringBuffer[0] = 0;
 }
 
-// void displayTicketInfo(int ticketNumber,int socket) {
+void displayTicketInfo(int ticketNumber,int socket) {
 
-//     dates date;
-//     printf("\ndisplayTicketInfo() called!\n"); //for debugging
+    dates date;
+    printf("\ndisplayTicketInfo() called.\n"); //for debugging
 
-//     // TODAY
-//     // gets todays date for summary file
-//     char name[20];
-//     strcpy(name,getTodaysDate().today);
-//     // used to send output to server
-//     char stringBuffer[STRING_BUFFER_MAX];
-//     // open summary file
-//     FILE * summary = fopen(name,"r");
-//     // struct to read file
-//     struct customerInfo readToday;
-//     struct customerInfo *readTodayPTR =
-//     readTodayPTR = &readToday;
-//     int server_name=0;
-//     char bookedseats[50];
-//     memset(bookedseats,0,strlen(bookedseats));
+    // TODAY
+    // gets todays date for summary file
+    char name[20];
+    strcpy(name,getTodaysDate().today);
+    // used to send output to server
+    char stringBuffer[STRING_BUFFER_MAX];
+    // open summary file
+    FILE * summary = fopen(name,"r");
+    // struct to read file
+    struct customerInfo read;
+    struct customerInfo *readPTR =
+    readPTR = &read;
+    char filler[20];
+    int server_name=0;
+    char bookedseats[50];
+    memset(bookedseats,0,strlen(bookedseats));
 
-//     // scan through summary file to find ticketNumber
-//     while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: \n", &readTodayPTR->ticketNumber, server_name, readTodayPTR->fullName, readTodayPTR->fullName, readTodayPTR->dateOfBirth, readTodayPTR->gender, readTodayPTR->governmentID,&readTodayPTR->numberOfTravelers, bookedseats) != EOF) {
-//         printf("\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",
-//         readToday.ticketNumber, server_name, readToday.fullName, readToday.dateOfBirth, readToday.gender, readToday.governmentID,readToday.numberOfTravelers, bookedseats);
-//         break;
-//         // printf("Looking for ticket...\n"); //for debugging
-// //         if (readToday.ticketNumber == ticketNumber) {
-// //             sprintf(stringBuffer,"\n\nToday:\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// // Modifications: \n",readToday.ticketNumber, server_name, readToday.fullName, readToday.dateOfBirth, readToday.gender, readToday.governmentID, readToday.numberOfTravelers,bookedseats);
-// //         }
-// //         else {
-// //             sprintf(stringBuffer,"Can't find reservation with that ticket number.");
-// //             break;
-// //         }
-// //         printf("quit!");
-// //         break;
-// // break;
-//     }
-//     // send ticketNumber and customerInfo to server
-//             // send(socket,stringBuffer,sizeof(stringBuffer),0);
-//             // stringBuffer[0] = 0;
-//             // printf("quit!");
+    // scan through summary file to find ticketNumber
+    while(!feof(summary)) {
+        fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
+        if (read.ticketNumber == ticketNumber) {
+            sprintf(stringBuffer,"\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",
+            read.ticketNumber, server_name, read.fullName, read.dateOfBirth, read.gender, read.governmentID, read.numberOfTravelers, bookedseats);
+        }
+        if (read.ticketNumber == ticketNumber) { break; }
+    }
 
-//     fclose(summary);
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    stringBuffer[0] = 0;    
+    fclose(summary);
 
-// //     // TOMORROW
-// //     // gets tomorrows date for summary file
-// //     char name2[20];
-// //     strcpy(name2,getTomorrowsDate().tomorrow);
-// //     // struct to read file
-// //     struct customerInfo readTomorrow;
-// //     struct customerInfo *readTomorrowPTR =
-// //     readTomorrowPTR = &readTomorrow;
-// //     memset(bookedseats,0,strlen(bookedseats));
-// //     // open summary file
-// //     FILE * summary1 = fopen(name2,"r");
+    // TOMORROW
+    // gets tomorrows date for summary file
+    memset(name,0,strlen(name));
+    strcpy(name,getTomorrowsDate().tomorrow);   
+    memset(bookedseats,0,strlen(bookedseats));
+    // open summary file
+    summary = fopen(name,"r");
 
-// //     // scan through summary file to find ticketNumber
-// //     while (fscanf(summary1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// // Modifications: \n", &readTomorrowPTR->ticketNumber, &server_name, readTomorrowPTR->fullName, readTomorrowPTR->fullName, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
-// //         if (readTomorrow.ticketNumber == ticketNumber) {
-// //             sprintf(stringBuffer,"\n\nTomorrow:\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// // Modifications: \n",readTomorrow.ticketNumber, server_name, readTomorrow.fullName, readTomorrow.dateOfBirth, readTomorrow.gender, readTomorrow.governmentID, readTomorrow.numberOfTravelers,bookedseats);
-// //             // send ticketNumber and customerInfo to server
-// //             send(socket,stringBuffer,sizeof(stringBuffer),0);
-// //             stringBuffer[0] = 0;
-// //             break;
-// //         }
-// //         else {
-// //             sprintf(stringBuffer,"Can't find reservation with that ticket number.");
-// //             // send ticketNumber and customerInfo to server
-// //             send(socket,stringBuffer,sizeof(stringBuffer),0);
-// //             stringBuffer[0] = 0;
-// //             break;
-// //         }
-// //     }
-// //     fclose(summary1);
-// }
+    // scan through summary file to find ticketNumber
+    while(!feof(summary)) {
+        fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
+        if (read.ticketNumber == ticketNumber) {
+            sprintf(stringBuffer,"\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",
+            read.ticketNumber, server_name, read.fullName, read.dateOfBirth, read.gender, read.governmentID, read.numberOfTravelers, bookedseats);
+        }
+        if (read.ticketNumber == ticketNumber) { break; }
+    }
+    
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    stringBuffer[0] = 0;    
+    fclose(summary);
+}
 
 // customerInfo retrieveCustomersInfo(int ticketNumber) { //uses ticket number to access sumary files and save and return customer struct
 //     dates date;
@@ -479,7 +463,7 @@ Modifications: \n",nextCustomer.ticketNumber, server_name, nextCustomer.fullName
 //     strcpy(stringBuffer,"\nThe receipt was modified in the  summary file!\n");        
 //     send(socket,stringBuffer,sizeof(stringBuffer),0);
 //     stringBuffer[0] = 0;
-}
+// }
 struct Date getTomorrowsDate() {
 
     struct Date today;

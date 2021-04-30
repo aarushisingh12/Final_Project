@@ -76,7 +76,7 @@ customerInfo retrieveCustomersInfo(int ticketNumber); //uses ticket number to ac
 
 
 //accesses date and writes reservation info to day's summary file
-void writeToSummaryFile(customerInfo nextCustomer,int server_name, int socket);
+// void writeToSummaryFile(customerInfo nextCustomer,int server_name, int socket);
 
 
 
@@ -93,7 +93,7 @@ void sendReceipt(customerInfo nextCustomer, int socket, int server_name);
 
 
 //will search summary files for ticketNumber and send to customer via tcp
-void displayTicketInfo(int ticketNumber, int socket);
+// void displayTicketInfo(int ticketNumber, int socket);
 
 
 // //asks what fields customer want to modifiy, returns struct holding customers modified info //have to get ticket number

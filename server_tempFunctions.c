@@ -8,16 +8,16 @@
 
 
 
-void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
-    printf("writeToSummaryFile() called\n"); //for debugging
-    //accesses date and writes reservation info to day's summary file
-}
+// void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
+//     printf("writeToSummaryFile() called\n"); //for debugging
+//     //accesses date and writes reservation info to day's summary file
+// }
 
 //will search summary files for ticketNumber and send to customer via tcp
-void displayTicketInfo(int ticketNumber,int socket){
-    printf("diplayTicketInfo() called\n"); //for debugging
+// void displayTicketInfo(int ticketNumber,int socket){
+//     printf("diplayTicketInfo() called\n"); //for debugging
 
-}
+// }
 
 
 //will use customerMods.ticketNumber to search, commits modification to summary files,
@@ -48,13 +48,13 @@ customerInfo retrieveCustomersInfo(int ticketNumber){
 
 //to use:   char date[20];
 //          strcpy(date,getTodaysDate().today)
-struct Date getTodaysDate() {
-     struct Date date;
-     time_t t = time(NULL);
-     struct tm tm = *localtime(&t);
-     sprintf(date.today,"%d-%02d-%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
-     return date;
-}
+// struct Date getTodaysDate() {
+//      struct Date date;
+//      time_t t = time(NULL);
+//      struct tm tm = *localtime(&t);
+//      sprintf(date.today,"%d-%02d-%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
+//      return date;
+// }
 
 
 void sendReceipt(customerInfo nextCustomer, int socket,int server_name){

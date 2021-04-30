@@ -12,6 +12,7 @@
 #include "trainSeating.h"
 #include "caleb_server.h"
 #include "server_tempFunctions.h"
+#include "aarushi_funcs.h"
 
 
 //trainTicketMaster: will need to add address pointer to shared memory as parameter, pointers to today and tomorrow's reserations files
