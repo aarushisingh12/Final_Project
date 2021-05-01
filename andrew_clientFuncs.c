@@ -18,6 +18,7 @@ void reservationPortal(int sock){
 
             if (strcmp(stringBuffer, "end") == 0){  //server send end message, indicating client sent exit program to main menu
                   printf("\nReceived end code from server.\n"); //for debugging
+                  strcpy(stringBuffer,"");
                   sleep(1);
                   close(sock);
                   exit(0);
@@ -29,14 +30,17 @@ void reservationPortal(int sock){
             }
             if (strcmp(stringBuffer, "needint") == 0){
                   //printf("\nReceived need needint code from server.\n"); //for debugging
+                  strcpy(stringBuffer,"");
                   scanf("%d",&intBuffer);
                   send(sock, &intBuffer, sizeof(int),0);
             }
             if (strcmp(stringBuffer, "receipt") == 0){
+                  strcpy(stringBuffer,"");
                   acceptReceipt(sock); //function that opens file and prints recieved data (receipt) to
             }
             else {//diplay server messages
                   printf("%s",stringBuffer);
+                  strcpy(stringBuffer,"");
             }
       }
 }
