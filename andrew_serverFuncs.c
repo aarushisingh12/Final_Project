@@ -6,19 +6,6 @@
 
 #include "andrew_serverFuncs.h"
 
-//test
-
-// void writeToSummaryFile(customerInfo nextCustomer, int server_name, int socket){
-//     printf("writeToSummaryFile() called\n"); //for debugging
-//     //accesses date and writes reservation info to day's summary file
-// }
-
-//will search summary files for ticketNumber and send to customer via tcp
-// void displayTicketInfo(int ticketNumber,int socket){
-//     printf("diplayTicketInfo() called\n"); //for debugging
-
-// }
-
 
 //will use customerMods.ticketNumber to search, commits modification to summary files,
 //adds note at end saying which server made modificaitons
@@ -26,35 +13,6 @@ void modifyReservation(customerInfo customerMods, int server_name, int socket){
     printf("modifyReservation() called\n"); //for debugging
 }
 
-
- 
-//need to be synchronized
-//using customers info .dayOfTravel and .bookedSeats[], cancel reservation by deleting from summary files
-// void cancelReservation(customerInfo customer,int socket){
-//     printf("cancelReservation() called\n"); //for debugging
-// }
-
-//NEW FUNC
-//find customers entry in by ticket number and save to struct, return struct
-// customerInfo retrieveCustomersInfo(int ticketNumber){
-//     printf("\nretrieveCustomersInfo called\n"); //for debugging
-//     customerInfo customersInfo;
-   
-//     return customersInfo;
-// }
-
-
-
-
-//to use:   char date[20];
-//          strcpy(date,getTodaysDate().today)
-// struct Date getTodaysDate() {
-//      struct Date date;
-//      time_t t = time(NULL);
-//      struct tm tm = *localtime(&t);
-//      sprintf(date.today,"%d-%02d-%02d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday);
-//      return date;
-// }
 
 
 void sendReceipt(customerInfo nextCustomer, int socket,int server_name){
@@ -121,7 +79,7 @@ void sendReceipt(customerInfo nextCustomer, int socket,int server_name){
 
 int exitProgram(int socket,availableSeats* ptr,int shm_fd){
 
-    const int SIZE = sizeof(availableSeats)*2;
+    const int SIZE = sizeof(availableSeats)*2; //for available seats struct in shared mem, both days
  // name of the shared memory object
     const char *name = "CS4323";
 
@@ -162,8 +120,5 @@ int exitProgram(int socket,availableSeats* ptr,int shm_fd){
         exit(0); //will need to delete this later once live server loop in place
         
         return 2;
-
-
-
     }
 }

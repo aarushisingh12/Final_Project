@@ -32,7 +32,7 @@ int main() {
       return 1;
    }
 
-   // Semaphore Syncronization start
+   // Semaphore Syncronization start //CALEB ADDED SEMAPHORE CODE 
    sem_unlink(SEM_READER_NAME);
    sem_unlink(SEM_WRITER_NAME);
    //We initialize the semaphore counter to (INITIAL_VALUE) in caleb_server.h
@@ -56,7 +56,8 @@ int main() {
     }
     // Semaphore First part done
 
-       //creation of the socket to communicaqte with client
+
+   //creation of the socket to communicate with client
     int server_socket, c;
     server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -103,17 +104,14 @@ int main() {
    for (int i=0;i<3;i++){
       write(fd, &server_name, sizeof(int));
       server_name++; //incrementing name
-      //printf("%d",server_name);
    }
 
-    //sending names to servers
+    //sending server_socket id to servers
    for (int i=0;i<3;i++){
       write(fd, &server_socket, sizeof(int));
-      //server_name++; //incrementing name
-      //printf("%d",server_name);
    }
 
-   //sleep(1);
+ 
    sleep(3);
    if (  sem_unlink(SEM_READER_NAME) < 0 || sem_unlink(SEM_WRITER_NAME) < 0){
     perror("sem_unlink(3) failed");
@@ -121,11 +119,6 @@ int main() {
    printf("\nserver_driver complete");
 
    wait(NULL);
-
-   //sleep(10); //for debugging to give time for child servers to print to terminal
-   //close(fd);
-   //wait(NULL);
-   //printf("\nAll child processes complete, Server Driver will exit\n");
 
    return 0;
 }

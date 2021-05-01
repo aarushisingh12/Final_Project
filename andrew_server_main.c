@@ -28,7 +28,8 @@
 
 #define THREAD_NUM 5
 
-//multi thread/Thread ppol code
+//multi thread/Thread pool code
+//job that will be added to cue
 typedef struct Job {
     int (*functionToExecute)(int, int, availableSeats*,int,sem_t*,sem_t*); //this will become int (*trainTicketMaster());
     int arg1, arg2, arg4; //will be for clients socket and server_name, shm ptr and shm fd
@@ -43,6 +44,7 @@ int jobCount = 0;
 pthread_mutex_t mutexQueue;
 pthread_cond_t condQueue;
 
+//called to execute actual job in this case trainTicketMaster
 void executeJob(Job* job) {
     job->functionToExecute(job->arg1, job->arg2, job->arg3,job->arg4,job->arg5,job->arg6);
 }
@@ -59,11 +61,11 @@ void submitJobForExecution(Job job) {
 //thread pool thread initiated
 void* startThread(void* args) {
 
-
     while (1){
         Job job;
-
+        //mutex locked so job count incremented correctly
         pthread_mutex_lock(&mutexQueue);
+        //when no jobs thead will wait
         while (jobCount == 0) {
             pthread_cond_wait(&condQueue, &mutexQueue);
         }
@@ -76,7 +78,7 @@ void* startThread(void* args) {
         jobCount--;
         pthread_mutex_unlock(&mutexQueue);
 
-        executeJob(&job);
+        executeJob(&job); //thread will Run TrainTickeMaster
     }
 
 }
@@ -84,14 +86,13 @@ void* startThread(void* args) {
 
 int main() {
 
+
+    //semaphores to make sure not more than one thread tries to run trainTicketMaster at same instant
     sem_t mutexSem;
 
     sem_init(&mutexSem,0,1);
 
-    int server_socket;
-
-    int exitProgramReturnVal = 0; //unused at moment
-
+    int server_socket; //socket for tcp
 
     //Shared Memory Code (shared mem code by Max, integrated with Andrew)
     availableSeats *ptr; //pointer to shared memory object
@@ -114,8 +115,6 @@ int main() {
     availableSeats day1; //Struct for the first day
     availableSeats day2; //Struct for the second day
 
-    // strcpy(day1.dateStr, "Yesterday"); //Create string the date for the first struct
-    // strcpy(day2.dateStr, "Today"); //Create string the date for the second struct
 
     day1.dateInt = 1; //Create the integer date for the first struct
     day2.dateInt = 2; //Create the integer date for the second struct
@@ -137,6 +136,9 @@ int main() {
 
     // memory map the shared memory object
     ptr = (availableSeats *) mmap(0, SIZE, O_RDWR, MAP_SHARED, shm_fd, 0);
+
+
+
 
 
 
@@ -180,20 +182,18 @@ int main() {
 
 
 
-   int client_socket;
-
+   int client_socket; //socket for client
 
     //live server code
    while( (client_socket = accept(server_socket, NULL, NULL)) ){
 	    printf("\nConnection accepted by server %d,",server_name);
         //printf("\nserver %d about to call trainTicketMaster()\n",server_name); //for debugging
-      //assign thread to call run trainTicketMaster
-        sem_wait(&mutexSem);
+      //assign thread to call run trainTicketMaster, protected from concurrecy issues with sem mutex
+        sem_wait(&mutexSem); //sem decremented
         Job t = {.functionToExecute = &trainTicketMaster, .arg1 = client_socket, .arg2 = server_name, .arg3 = ptr, .arg4 = shm_fd, .arg5 = reader_sem,.arg6 = writer_sem }; //ptr = shared mem ptr
 
         submitJobForExecution(t);
-
-        sem_post(&mutexSem);
+        sem_post(&mutexSem); //sem incremented
    }
 
    if (client_socket<0){
@@ -207,16 +207,17 @@ int main() {
         }
     }
 
-    sem_destroy(&mutexSem);
-   pthread_mutex_destroy(&mutexQueue);
-   pthread_cond_destroy(&condQueue);
+    sem_destroy(&mutexSem); //destroy my mutexSem
+    pthread_mutex_destroy(&mutexQueue); //destroy threads
+    pthread_cond_destroy(&condQueue);
+    
+    //unlink from semaphore file
+    if (  sem_unlink(SEM_READER_NAME) < 0 || sem_unlink(SEM_WRITER_NAME) < 0){
+        perror("sem_unlink(3) failed");
+    }
+    close(server_socket);
 
-   if (  sem_unlink(SEM_READER_NAME) < 0 || sem_unlink(SEM_WRITER_NAME) < 0){
-    perror("sem_unlink(3) failed");
-   }
-   close(server_socket);
+    printf("\nServer Exited from main\n"); //for debugging
 
-   printf("\nServer Exited from main\n"); //for debugging
-
-   return 0;
+    return 0;
 }

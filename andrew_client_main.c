@@ -45,7 +45,7 @@ int main() {
     }
     printf("\nWaiting to connect with server...\n");
 
-  
+   //client function that takes all input and sends responses to server
    reservationPortal(sock); //will close socket and exit from within
 
 

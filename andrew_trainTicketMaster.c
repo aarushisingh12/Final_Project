@@ -14,14 +14,8 @@
 #include "andrew_serverFuncs.h"
 #include "aarushi_funcs.h"
 
-//test 3
-//trainTicketMaster: will need to add address pointer to shared memory as parameter, pointers to today and tomorrow's reserations files
-
 
 int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int shm_fd, sem_t *reader, sem_t *writer){
-
-        //char todaysDate[20]; //gets todays date if needed
-        //strcpy(todaysDate,getTodaysDate().today);
 
 
         while(1) {//infinite loop until customer exits program
@@ -34,13 +28,13 @@ int trainTicketMaster(int socket, int server_name, availableSeats* shm_ptr, int 
                 int ticketNumber = 0;
                 customerInfo customersMods; //struct that holds customers info for modification or cancellation
                 bool cancelConfirmation = false;
-                int previousDayOfTravel = 0;
-                int newDayOfTravel = 0;
-                int numberOfTravelersRequested = 0;
-                int addedTravelers = 0;
-                int travelersToRemove = 0;
+                int previousDayOfTravel = 0; //used to hold previous day during modify day of travel
+                int newDayOfTravel = 0; //for modify day of travel
+                int numberOfTravelersRequested = 0; //for changing day of travel
+                int addedTravelers = 0; //if more travelers added during modify reservations
+                int travelersToRemove = 0; //if less travelers than before during modify reseravation
 
-                int exitReturnType = 0;
+                int exitReturnType = 0; //unused for now
 
 
                 customerResponse = mainMenu(socket); //returns the int response (see below)- presents main menu to customer via tcp, receives response and returns int response adapted from Caleb's readFromUser()
