@@ -29,8 +29,6 @@
 
 
 
-//int trainSeating();
-
 //calculates and then returns the number of available seats for a given day
 int countNumberOfAvailableSeats(availableSeats*);
 
@@ -50,16 +48,13 @@ void updateDays(availableSeats*, char[20]);
 //returns int ticket number
 int assignTicketNumber(customerInfo, int, availableSeats*);
 
-//needs to be synchronized 
 //checks shared memory using customers numberOfTravelers
 bool checkIfAvailableSeats(int, int, int, availableSeats*);
 
-//needs to be synchronized
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
-//accessess shared memory to read seats avaialbe and copies to string buffer and then sends to client via tcp
+//accessess shared memory to read seats available and copies to string buffer and then sends to client via tcp
 void displayAvailableSeats(int, int, int, availableSeats*);
 
-//needs to be synchronized
 //accesses shared memory and alows customer to select from available seats and writes to shared memory and saves seats to customer struct copy
 //will use int nextCustomer.dayOfTravel and mextCustomer.numberOfTravelers
 //had to add addedSeatsIf Modified for when just adding select number number of seats
