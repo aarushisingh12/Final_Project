@@ -62,7 +62,9 @@ int assignTicketNumber(customerInfo nextCustomer, int socket, availableSeats *pt
     return nextTicketNumber;
 }
 
-//needs to be synchronized
+//Checks to make sure there is a seat available for the client based on the numberOfTravelers they requested.
+//Returns true if there are seats available and false if there aren't seats available.
+//Also displays a message to the client if there aren't enough seats available.
 bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, availableSeats *ptr){
     printf("\ncheckIfavailableSeats() called\n"); //for debugging
     
@@ -83,7 +85,6 @@ bool checkIfAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, a
     }
 }
 
-//needs to be synchronized
 //shows seats customer selects starting index (seat) and #of travelers fills in seats
 //accesses shared memory to read seats available and copies to string buffer and then sends to client via tcp
 void displayAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, availableSeats *ptr){
@@ -106,6 +107,9 @@ void displayAvailableSeats(int dayOfTravel, int numberOfTravelers, int socket, a
     seatingSendMessageToClient(messageToPassToClient, socket);
 }
 
+//Allows the client to select their seats on the train.
+//This is done by asking the to select each seat individually up to the amount of seats they specified on their ticket in the addedSeatsIfModified variable.
+//Returns the customerInfo struct with the client's selected seats and updates those seats in shared memory too.
 customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int addedSeatsIfModified, availableSeats *ptr) {
     printf("\nselectAvailalbeSeats() called\n"); //for debugging
     char stringBuffer[STRING_BUFFER_MAX];
@@ -165,6 +169,8 @@ customerInfo selectAvailableSeats(customerInfo nextCustomer,int socket,int added
     return nextCustomer;
 }
 
+//Frees either all of the passed customerInfo struct's seats from the struct and from shared memory or frees a client specified amount.
+//If the user wants to reduce their seats by a specific amount, then they will be asked to individually select which seats they no longer want up to that amount.
 customerInfo freeCustomersSeatsInSharedMem(customerInfo customerMods, int socket, int customersRequestedSeatReduction, availableSeats *ptr) {
     printf("\nfreeCustomersSeatsInSharedMem() called\n"); //for debugging
     char stringBuffer[STRING_BUFFER_MAX];
