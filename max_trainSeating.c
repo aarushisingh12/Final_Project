@@ -32,6 +32,7 @@ int matchDayOfTravel(availableSeats *ptr, int dayOfTravel) {
     }
 }
 
+//sends a message to the client through tcp
 void seatingSendMessageToClient(char *message, int socket){
   	char stringBuffer[STRING_BUFFER_MAX];
   	strcpy(stringBuffer,message);
