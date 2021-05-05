@@ -31,7 +31,7 @@ struct Date getTodaysDate();
 //then sends receipt data in form of strings (client acceptReceipt func will create/open receipt file print)
 void sendReceipt(customerInfo nextCustomer, int socket, int server_name);
 
-void modifyReservation(customerInfo customerMods, int server_name, int socket);
+// void modifyReservation(customerInfo customerMods, int server_name, int socket);
 
 //needs to close socket and have process exit/return thread to pool
 int exitProgram(int socket,availableSeats*, int);

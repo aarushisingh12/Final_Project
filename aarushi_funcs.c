@@ -1,4 +1,5 @@
 #include "aarushi_funcs.h"
+// Group I, Aarushi Singh, aarushi.singh@okstate.edu
 
 #define STRING_BUFFER_MAX 300 //tcp string buffer, fixed size for send and receive
 struct Date getTodaysDate() {
@@ -65,7 +66,7 @@ Modifications: \n",nextCustomer.ticketNumber, server_name, nextCustomer.fullName
     stringBuffer[0] = 0;
 }
 
-void displayTicketInfo(int ticketNumber,int socket) {
+int displayTicketInfo(int ticketNumber,int socket) {
 
     dates date;
     printf("\ndisplayTicketInfo() called.\n"); //for debugging
@@ -89,15 +90,18 @@ void displayTicketInfo(int ticketNumber,int socket) {
 
     // scan through summary file to find ticketNumber
     while(!feof(summary)) {
-        fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
-        if (read.ticketNumber == ticketNumber) {
-            sprintf(stringBuffer,"\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",
-            read.ticketNumber, server_name, read.fullName, read.dateOfBirth, read.gender, read.governmentID, read.numberOfTravelers, bookedseats);
+        fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
+        printf("Looking for ticket...");
+        if (ticketNumber == read.ticketNumber) {
+            snprintf(stringBuffer, 500,"\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",read.ticketNumber, server_name, read.fullName, read.dateOfBirth, read.gender, read.governmentID, read.numberOfTravelers, bookedseats);
+            send(socket,stringBuffer,sizeof(stringBuffer),0);
+            return 1;
         }
-        if (read.ticketNumber == ticketNumber) { break; }
     }
 
+    fclose(summary);
+
+    printf("made it!");
     // TOMORROW
     // gets tomorrows date for summary file
     memset(name,0,strlen(name));
@@ -108,23 +112,21 @@ Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, fil
 
     // scan through summary file to find ticketNumber
     while(!feof(summary)) {
-        fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
-        if (read.ticketNumber == ticketNumber) {
-            sprintf(stringBuffer,"\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",
-            read.ticketNumber, server_name, read.fullName, read.dateOfBirth, read.gender, read.governmentID, read.numberOfTravelers, bookedseats);
+        fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
+        printf("Looking for ticket...");
+        if (ticketNumber == read.ticketNumber) {
+            snprintf(stringBuffer, 500,"\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",read.ticketNumber, server_name, read.fullName, read.dateOfBirth, read.gender, read.governmentID, read.numberOfTravelers, bookedseats);
+            send(socket,stringBuffer,sizeof(stringBuffer),0);
+            return 1;
         }
-        if (read.ticketNumber == ticketNumber) { break; }
     }
     
-    send(socket,stringBuffer,sizeof(stringBuffer),0);
-    stringBuffer[0] = 0;    
     fclose(summary);
 }
 
 customerInfo retrieveCustomersInfo(int ticketNumber) { //uses ticket number to access sumary files and save and return customer struct
     dates date;
-    printf("\nretrieveCustomersInfo called1\n"); //for debugging
+    printf("\nretrieveCustomersInfo called\n"); //for debugging
 
     // TODAY
     // gets todays date
@@ -148,40 +150,24 @@ customerInfo retrieveCustomersInfo(int ticketNumber) { //uses ticket number to a
         fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
 Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
         if (read.ticketNumber == ticketNumber) {
-            //printf("%s",read.bookedSeats[i]);
-
-            // turn bookedseats into an struct
-            //char *token;
-            //char * temp[strlen(bookedseats)];
-            //token = strtok(bookedseats, ",");
-            
             // variables for token
             char *token;
-    char tempSeat[5];
+            char tempSeat[5];
     
-    // get the first token
-    token = strtok(bookedseats, ",");
+            // get the first token
+            token = strtok(bookedseats, ",");
     
-    // walk through other tokens
-   while( token != NULL ) {
-       sprintf(tempSeat, "%s", token );
+            // walk through other tokens
+            while( token != NULL ) {
+                sprintf(tempSeat, "%s", token );
+                read.bookedSeats[atoi(tempSeat)] = 1;
+                token = strtok(NULL, ",");
+                printf("\nretrieveCustomersInfo called\n"); //for debugging
 
-       read.bookedSeats[atoi(tempSeat)] = 1;
-       //printf("%d",read.bookedSeats[atoi(tempSeat)]);
-
-       token = strtok(NULL, ",");
-   }
-   
-   //for (int i = 0; i<= 50; i++) {
-            //    temp[i] = strtok(NULL, ",");
-            //    read.bookedSeats[i] = atoi(temp[i]);
-            //    printf("%d",read.bookedSeats[i]);
-            //}
-            
-            read.dayOfTravel = 1;
+            }
+            read.dayOfTravel =1;
             return read;
         }
-
     }
     
     // TOMORROW
@@ -197,20 +183,22 @@ Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, fil
         fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
 Modifications: \n", &readPTR->ticketNumber, &server_name, readPTR->fullName, filler, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats);
         if (read.ticketNumber == ticketNumber) {
-            // turn bookedseats into an struct
-
-            char * temp[50];
-            char * token = strtok(bookedseats, ",");
-            printf("%s",bookedseats);
-
-            for (int i = 0; i<= 50; i++) {
-                temp[i] = strtok(NULL, ",");
-                read.bookedSeats[i] = atoi(temp[i]);
-                printf("%d",read.bookedSeats[i]);
+            // variables for token
+            char *token;
+            char tempSeat[5];
+    
+            // get the first token
+            token = strtok(bookedseats, ",");
+    
+            // walk through other tokens
+            while( token != NULL ) {
+                sprintf(tempSeat, "%s", token );
+                read.bookedSeats[atoi(tempSeat)] = 1;
+                token = strtok(NULL, ",");
+                printf("\nretrieveCustomersInfo called\n"); //for debugging
             }
-            read.dayOfTravel = 2;
-
-            return read;
+        read.dayOfTravel = 2;
+        return read;
         }
     }
 }
@@ -228,6 +216,7 @@ void cancelReservation(customerInfo customerMods, int socket) {
     
     //printf("\n%s\n",customerMods.dateOfTravel);
     
+    printf("\n%d\n",customerMods.dayOfTravel);
     // TODAY
     if (customerMods.dayOfTravel == 1) {
         // struct to read file
@@ -274,8 +263,8 @@ void cancelReservation(customerInfo customerMods, int socket) {
         FILE * fdel = fopen("del.txt","w");
         
         // scan through summary file to find ticketNumber
-        while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n", &readTomorrowPTR->ticketNumber, &server_name, readTomorrowPTR->fullName, filler, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
-            // copy over other ticketNumbers to fdel file
+         while(!feof(summary)) {
+            fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s%s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n", &readTomorrowPTR->ticketNumber, &server_name,readTomorrowPTR->fullName, filler,readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats);
             if (customerMods.ticketNumber != readTomorrow.ticketNumber) {
                 fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\nModifications: \n",readTomorrow.ticketNumber, server_name, readTomorrow.fullName, readTomorrow.dateOfBirth, readTomorrow.gender, readTomorrow.governmentID,readTomorrow.numberOfTravelers, bookedseats);
             }
@@ -295,188 +284,189 @@ void cancelReservation(customerInfo customerMods, int socket) {
    
 }
 
-// void modifyReservation(customerInfo customerMods, int server_name, int socket) { // modifies reservation on summary file
-//     printf("\nmodifyReservation()\n"); //for debugging
-//     char stringBuffer[STRING_BUFFER_MAX]; // used to send output to server
+void modifyReservation(customerInfo customerMods, int server_name, int socket) { // modifies reservation on summary file
+    printf("\nmodifyReservation()\n"); //for debugging
+    char stringBuffer[STRING_BUFFER_MAX]; // used to send output to server
 
-//     // convert customerMods bookedseats into a string
-//     char seat[3];
-//     char bookedseatsUpdated[200];
-//     memset(bookedseatsUpdated,0,strlen(bookedseatsUpdated));
-//     for (int i = 0; i < 10; i++) {
-//         sprintf(seat,"%d\t",customerMods.bookedSeats[i]);
-//         strcat(bookedseatsUpdated,seat);
-//     }
-//     for(int i = 0; i < (strlen(bookedseatsUpdated)); i++){
-//         if(bookedseatsUpdated[i] == '\t') {
-//             bookedseatsUpdated[i] = ',';
-//         }
-//     }
+    // convert customerMods bookedseats into a string
+    char seat[3];
+    char bookedseatsUpdated[200];
+    memset(bookedseatsUpdated,0,strlen(bookedseatsUpdated));
+    for (int i = 0; i < 10; i++) {
+        sprintf(seat,"%d\t",customerMods.bookedSeats[i]);
+        strcat(bookedseatsUpdated,seat);
+    }
+    for(int i = 0; i < (strlen(bookedseatsUpdated)); i++){
+        if(bookedseatsUpdated[i] == '\t') {
+            bookedseatsUpdated[i] = ',';
+        }
+    }
 
-//     // variables to read server_name and bookedseats
-//     int server_name_read;
-//     char bookedseats[50];
-//     memset(bookedseats,0,strlen(bookedseats));
+    // variables to read server_name and bookedseats
+    int server_name_read;
+    char bookedseats[50];
+    memset(bookedseats,0,strlen(bookedseats));
 
-//     // TODAY
-//     if (customerMods.dayOfTravel == 1) {
-//         // struct to read summary file
-//         struct customerInfo read;
-//         struct customerInfo *readPTR =
-//         readPTR = &read;
+    // TODAY
+    if (customerMods.dayOfTravel == 1) {
+        // struct to read summary file
+        struct customerInfo read;
+        struct customerInfo *readPTR =
+        readPTR = &read;
 
-//         // gets todays date for summary file
-//         char name[20];
-//         strcpy(name,getTodaysDate().today);
+        // gets todays date for summary file
+        char name[20];
+        strcpy(name,getTodaysDate().today);
 
-//         // creates summary file and fdel file to hold modified info
-//         FILE * summary = fopen(name,"r");
-//         FILE * fdel = fopen("del.txt","w");
+        // creates summary file and fdel file to hold modified info
+        FILE * summary = fopen(name,"r");
+        FILE * fdel = fopen("del.txt","w");
 
-//         // read through summary file
-//         while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-//             Modifications: \n", &readPTR->ticketNumber, &server_name_read, readPTR->fullName, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats) != EOF) {
-//             // copies all information (besides modified ticket) to fdel 
-//             if (customerMods.ticketNumber != read.ticketNumber) {
-//                 fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: \n",read.ticketNumber, server_name_read, read.fullName, read.dateOfBirth, read.gender, read.governmentID,
-//                 read.numberOfTravelers, bookedseats);
-//             }
-//             // copies modified ticket to fdel
-//             else {
-//                 fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: Made by server %d\n",customerMods.ticketNumber, server_name_read, customerMods.fullName, customerMods.dateOfBirth, customerMods.gender, customerMods.governmentID,
-//                 customerMods.numberOfTravelers, bookedseatsUpdated, server_name);
-//             }
-//         }
-//         // if dayOfTravel changes, accesses tomorrows document
-//         // gets tomorrows date for summary1 file
-//         char name1[20];
-//         strcpy(name1,getTomorrowsDate().tomorrow);
+        // read through summary file
+        while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+            Modifications: \n", &readPTR->ticketNumber, &server_name_read, readPTR->fullName, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,&readPTR->numberOfTravelers, bookedseats) != EOF) {
+            // copies all information (besides modified ticket) to fdel 
+            if (customerMods.ticketNumber != read.ticketNumber) {
+                fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: \n",read.ticketNumber, server_name_read, read.fullName, read.dateOfBirth, read.gender, read.governmentID,
+                read.numberOfTravelers, bookedseats);
+            }
+            // copies modified ticket to fdel
+            else {
+                fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: Made by server %d\n",customerMods.ticketNumber, server_name_read, customerMods.fullName, customerMods.dateOfBirth, customerMods.gender, customerMods.governmentID,
+                customerMods.numberOfTravelers, bookedseatsUpdated, server_name);
+            }
+        }
+        // if dayOfTravel changes, accesses tomorrows document
+        // gets tomorrows date for summary1 file
+        char name1[20];
+        strcpy(name1,getTomorrowsDate().tomorrow);
 
-//         // creates struct to read summary1 file
-//         struct customerInfo readTomorrow;
-//         struct customerInfo *readTomorrowPTR =
-//         readTomorrowPTR = &readTomorrow;
+        // creates struct to read summary1 file
+        struct customerInfo readTomorrow;
+        struct customerInfo *readTomorrowPTR =
+        readTomorrowPTR = &readTomorrow;
         
-//         // creates summary1 file and fdel1 file to hold modified info           
-//         FILE * summary1 = fopen(name1,"r");
-//         FILE * fdel1 = fopen("del1.txt","w");
+        // creates summary1 file and fdel1 file to hold modified info           
+        FILE * summary1 = fopen(name1,"r");
+        FILE * fdel1 = fopen("del1.txt","w");
 
-//         // read through summary1 file
-//         while (fscanf(summary1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-//             Modifications: \n", &readTomorrowPTR->ticketNumber, &server_name_read, readTomorrowPTR->fullName, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
-//             // copies modified ticket to fdel
-//             if (customerMods.ticketNumber == readTomorrow.ticketNumber) {
-//                fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: Made by server %d\n",customerMods.ticketNumber, server_name_read, customerMods.fullName, customerMods.dateOfBirth, customerMods.gender, customerMods.governmentID,
-//                customerMods.numberOfTravelers, bookedseatsUpdated, server_name);
-//             }
-//             // removes modified ticket from summary1
-//             else {
-//                 fprintf(fdel1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: ",readTomorrow.ticketNumber, server_name_read, readTomorrow.fullName, readTomorrow.dateOfBirth, readTomorrow.gender, readTomorrow.governmentID,
-//                 readTomorrow.numberOfTravelers, bookedseats);
-//             }
-//         }
+        // read through summary1 file
+        while (fscanf(summary1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+            Modifications: \n", &readTomorrowPTR->ticketNumber, &server_name_read, readTomorrowPTR->fullName, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
+            // copies modified ticket to fdel
+            if (customerMods.ticketNumber == readTomorrow.ticketNumber) {
+               fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: Made by server %d\n",customerMods.ticketNumber, server_name_read, customerMods.fullName, customerMods.dateOfBirth, customerMods.gender, customerMods.governmentID,
+               customerMods.numberOfTravelers, bookedseatsUpdated, server_name);
+            }
+            // removes modified ticket from summary1
+            else {
+                fprintf(fdel1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: ",readTomorrow.ticketNumber, server_name_read, readTomorrow.fullName, readTomorrow.dateOfBirth, readTomorrow.gender, readTomorrow.governmentID,
+                readTomorrow.numberOfTravelers, bookedseats);
+            }
+        }
 
-//         // changes fdel file to summary file
-//         fclose(summary);
-//         fclose(fdel);
-//         remove(name);
-//         rename("del.txt",name);
+        // changes fdel file to summary file
+        fclose(summary);
+        fclose(fdel);
+        remove(name);
+        rename("del.txt",name);
 
-//         // changes fdel1 file to summary1 file
-//         fclose(summary1);
-//         fclose(fdel1);
-//         remove(name1);
-//         rename("del1.txt",name1);
-//     }
+        // changes fdel1 file to summary1 file
+        fclose(summary1);
+        fclose(fdel1);
+        remove(name1);
+        rename("del1.txt",name1);
+    }
 
-//     // variables to read server_name and bookedseats
-//     server_name_read = 0;
-//     memset(bookedseats,0,strlen(bookedseats));
+    // variables to read server_name and bookedseats
+    server_name_read = 0;
+    memset(bookedseats,0,strlen(bookedseats));
 
-//     // TOMORROW
-//     if (customerMods.dayOfTravel == 2) {
-//         // struct to read summary1 file
-//         struct customerInfo readTomorrow;
-//         struct customerInfo *readTomorrowPTR =
-//         readTomorrowPTR = &readTomorrow;
+    // TOMORROW
+    if (customerMods.dayOfTravel == 2) {
+        // struct to read summary1 file
+        struct customerInfo readTomorrow;
+        struct customerInfo *readTomorrowPTR =
+        readTomorrowPTR = &readTomorrow;
 
-//         // gets tomorrows date for summary1 file
-//         char name1[20];
-//         strcpy(name1,getTomorrowsDate().tomorrow);
+        // gets tomorrows date for summary1 file
+        char name1[20];
+        strcpy(name1,getTomorrowsDate().tomorrow);
 
-//         // creates summary1 file and fdel1 file to hold modified info
-//         FILE * summary1 = fopen(name1,"r");
-//         FILE * fdel1 = fopen("del1.txt","w");
+        // creates summary1 file and fdel1 file to hold modified info
+        FILE * summary1 = fopen(name1,"r");
+        FILE * fdel1 = fopen("del1.txt","w");
 
-//         // read through summary1 file
-//         while (fscanf(summary1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-//             Modifications: \n", &readTomorrowPTR->ticketNumber, &server_name_read, readTomorrowPTR->fullName, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, 
-//             readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
-//             // copies all information (besides modified ticket) to fdel1 
-//             if (customerMods.ticketNumber != readTomorrow.ticketNumber) {
-//                 fprintf(fdel1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: \n",readTomorrow.ticketNumber, server_name_read, readTomorrow.fullName, readTomorrow.dateOfBirth, readTomorrow.gender, readTomorrow.governmentID,
-//                 readTomorrow.numberOfTravelers, bookedseats);
-//             }
-//             // copies modified ticket to fdel1
-//             else {
-//                 fprintf(fdel1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: Made by server %d\n",customerMods.ticketNumber, server_name_read, customerMods.fullName, customerMods.dateOfBirth, customerMods.gender, customerMods.governmentID,
-//                 customerMods.numberOfTravelers, bookedseatsUpdated, server_name);
-//             }
-//         }
-//         // if dayOfTravel changes, accesses todays document
-//         // gets todays date for summary file
-//         char name[20];
-//         strcpy(name,getTodaysDate().today);
+        // read through summary1 file
+        while (fscanf(summary1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+            Modifications: \n", &readTomorrowPTR->ticketNumber, &server_name_read, readTomorrowPTR->fullName, readTomorrowPTR->dateOfBirth, readTomorrowPTR->gender, 
+            readTomorrowPTR->governmentID,&readTomorrowPTR->numberOfTravelers, bookedseats) != EOF) {
+            // copies all information (besides modified ticket) to fdel1 
+            if (customerMods.ticketNumber != readTomorrow.ticketNumber) {
+                fprintf(fdel1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: \n",readTomorrow.ticketNumber, server_name_read, readTomorrow.fullName, readTomorrow.dateOfBirth, readTomorrow.gender, readTomorrow.governmentID,
+                readTomorrow.numberOfTravelers, bookedseats);
+            }
+            // copies modified ticket to fdel1
+            else {
+                fprintf(fdel1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: Made by server %d\n",customerMods.ticketNumber, server_name_read, customerMods.fullName, customerMods.dateOfBirth, customerMods.gender, customerMods.governmentID,
+                customerMods.numberOfTravelers, bookedseatsUpdated, server_name);
+            }
+        }
+        // if dayOfTravel changes, accesses todays document
+        // gets todays date for summary file
+        char name[20];
+        strcpy(name,getTodaysDate().today);
 
-//         // creates struct to read summary file
-//         struct customerInfo read;
-//         struct customerInfo *readPTR =
-//         readPTR = &read;
+        // creates struct to read summary file
+        struct customerInfo read;
+        struct customerInfo *readPTR =
+        readPTR = &read;
         
-//         // creates summary1 file and fdel1 file to hold modified info           
-//         FILE * summary = fopen(name,"r");
-//         FILE * fdel = fopen("del.txt","w");
+        // creates summary1 file and fdel1 file to hold modified info           
+        FILE * summary = fopen(name,"r");
+        FILE * fdel = fopen("del.txt","w");
 
-//         // read through summary file
-//         while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-//             Modifications: \n", &readPTR->ticketNumber, &server_name_read, readPTR->fullName, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,
-//             &readPTR->numberOfTravelers, bookedseats) != EOF) {
-//             // copies modified ticket to fdel
-//             if (customerMods.ticketNumber == read.ticketNumber) {
-//                fprintf(fdel1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: Made by server %d\n",customerMods.ticketNumber, server_name_read, customerMods.fullName, customerMods.dateOfBirth, customerMods.gender, customerMods.governmentID,
-//                customerMods.numberOfTravelers, bookedseatsUpdated, server_name);
-//             }
-//             // removes modified ticket from summary
-//             else {
-//                 fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
-// Modifications: ",read.ticketNumber, server_name_read, read.fullName, read.dateOfBirth, read.gender, read.governmentID,read.numberOfTravelers, bookedseats);
-//             }
-//         }
+        // read through summary file
+        while (fscanf(summary, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+            Modifications: \n", &readPTR->ticketNumber, &server_name_read, readPTR->fullName, readPTR->dateOfBirth, readPTR->gender, readPTR->governmentID,
+            &readPTR->numberOfTravelers, bookedseats) != EOF) {
+            // copies modified ticket to fdel
+            if (customerMods.ticketNumber == read.ticketNumber) {
+               fprintf(fdel1, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: Made by server %d\n",customerMods.ticketNumber, server_name_read, customerMods.fullName, customerMods.dateOfBirth, customerMods.gender, customerMods.governmentID,
+               customerMods.numberOfTravelers, bookedseatsUpdated, server_name);
+            }
+            // removes modified ticket from summary
+            else {
+                fprintf(fdel, "\n\nTicket Number: %d\nServer ID: %d\nCustomer Name: %s\nDate of Birth: %s\nGender: %s\nGovernment ID: %s\nNumber of Travelers: %d\nSeats Booked: %s\n\
+Modifications: ",read.ticketNumber, server_name_read, read.fullName, read.dateOfBirth, read.gender, read.governmentID,read.numberOfTravelers, bookedseats);
+            }
+        }
 
-//         // changes fdel file to summary file
-//         fclose(summary);
-//         fclose(fdel);
-//         remove(name);
-//         rename("del.txt",name);
+        // changes fdel file to summary file
+        fclose(summary);
+        fclose(fdel);
+        remove(name);
+        rename("del.txt",name);
 
-//         // changes fdel1 file to summary1 file
-//         fclose(summary1);
-//         fclose(fdel1);
-//         remove(name1);
-//         rename("del1.txt",name1);
-//     }
-//     // sends message to server
-//     strcpy(stringBuffer,"\nThe receipt was modified in the  summary file!\n");        
-//     send(socket,stringBuffer,sizeof(stringBuffer),0);
-//     stringBuffer[0] = 0;
-// }
+        // changes fdel1 file to summary1 file
+        fclose(summary1);
+        fclose(fdel1);
+        remove(name1);
+        rename("del1.txt",name1);
+    }
+    // sends message to server
+    strcpy(stringBuffer,"\nThe receipt was modified in the  summary file!\n");        
+    send(socket,stringBuffer,sizeof(stringBuffer),0);
+    stringBuffer[0] = 0;
+}
+
 struct Date getTomorrowsDate() {
 
     struct Date today;

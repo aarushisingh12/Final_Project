@@ -9,9 +9,9 @@
 
 //will use customerMods.ticketNumber to search, commits modification to summary files,
 //adds note at end saying which server made modificaitons
-void modifyReservation(customerInfo customerMods, int server_name, int socket){
-    printf("modifyReservation() called\n"); //for debugging
-}
+// void modifyReservation(customerInfo customerMods, int server_name, int socket){
+//     printf("modifyReservation() called\n"); //for debugging
+// }
 
 
 

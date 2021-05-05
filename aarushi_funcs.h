@@ -25,7 +25,7 @@
 
 //will have to comment out versions in server_tempFunctions .c and .h to with rest of system
 void writeToSummaryFile(customerInfo,int server_name,int socket);
-void displayTicketInfo(int ticketNumber, int socket);
+int displayTicketInfo(int ticketNumber, int socket);
 customerInfo retrieveCustomersInfo(int ticketNumber);
 void cancelReservation(customerInfo customerMods, int socket);
 void modifyReservation(customerInfo customerMods, int server_name, int socket);
